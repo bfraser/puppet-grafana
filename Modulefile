@@ -9,3 +9,4 @@ project_page 'https://github.com/bfraser/puppet-grafana'
 
 ## Add dependencies, if any:
 # dependency 'username/name', '>= 1.2.0'
+dependency 'gini/archive', '>= 0.2.0'
