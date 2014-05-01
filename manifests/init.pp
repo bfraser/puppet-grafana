@@ -2,6 +2,8 @@ class grafana (
     $version            = $grafana::params::version,
     $download_url       = $grafana::params::download_url,
     $install_dir        = $grafana::params::install_dir,
+    $symlink            = $grafana::params::symlink,
+    $symlink_name       = $grafana::params::symlink_name,
     $user               = $grafana::params::user,
     $group              = $grafana::params::group,
     $graphite_host      = $grafana::params::graphite_host,
@@ -22,5 +24,13 @@ class grafana (
         owner   => $user,
         group   => $group,
         require => Archive["grafana-${version}"],
+    }
+
+    if $symlink {
+        file { $symlink_name:
+            ensure  => link,
+            target  => "${install_dir}/grafana-${version}",
+            require => Archive["grafana-${version}"],
+        }
     }
 }
