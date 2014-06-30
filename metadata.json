@@ -10,7 +10,7 @@
   "dependencies": [
     {
       "name": "gini/archive",
-      "version_range": ">= 0.2.0"
+      "version_requirement": ">= 0.2.0"
     }
   ]
 }
