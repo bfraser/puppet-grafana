@@ -1,6 +1,6 @@
 class grafana (
     $version            = $grafana::params::version,
-    $download_url       = $grafana::params::download_url,
+    $download_url       = "http://grafanarel.s3.amazonaws.com/grafana-${version}.tar.gz",
     $install_dir        = $grafana::params::install_dir,
     $symlink            = $grafana::params::symlink,
     $symlink_name       = $grafana::params::symlink_name,
