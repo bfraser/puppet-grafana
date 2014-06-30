@@ -70,7 +70,7 @@ This assumes that you have Graphite running on the same server as Grafana, and t
 
 ```puppet
     class { 'grafana':
-    	install_dir			=> '/usr/local'
+    	install_dir			=> '/usr/local',
 		graphite_host		=> '172.16.0.10',
         elasticsearch_host	=> '172.16.0.10',
     }
