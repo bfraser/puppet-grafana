@@ -1,5 +1,5 @@
 class grafana::params {
-    $version            = '1.5.3'
+    $version            = '1.6.1'
     $install_dir        = '/opt'
     $symlink            = true
     $symlink_name       = "${install_dir}/grafana"
