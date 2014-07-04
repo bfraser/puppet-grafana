@@ -18,9 +18,9 @@ function (Settings) {
       },
       influxdb: {
         type: 'influxdb',
-        url: "http://my_influxdb_server:8086/db/database_name",
-        username: 'admin',
-        password: 'admin'
+        url: "http://<%= @influxdb_host %>:<%= @influxdb_port %>/db/<%= @influxdb_dbname %>",
+        username: '<%= @influxdb_user %>',
+        password: '<%= @influxdb_password %>'
       },
     },
 

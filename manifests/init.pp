@@ -4,12 +4,17 @@ class grafana (
     $install_dir        = $grafana::params::install_dir,
     $symlink            = $grafana::params::symlink,
     $symlink_name       = $grafana::params::symlink_name,
-    $user               = $grafana::params::user,
-    $group              = $grafana::params::group,
-    $graphite_host      = $grafana::params::graphite_host,
-    $graphite_port      = $grafana::params::graphite_port,
+    $grafana_user       = $grafana::params::grafana_user,
+    $grafana_group      = $grafana::params::grafana_group,
     $elasticsearch_host = $grafana::params::elasticsearch_host,
     $elasticsearch_port = $grafana::params::elasticsearch_port,
+    $graphite_host      = $grafana::params::graphite_host,
+    $graphite_port      = $grafana::params::graphite_port,
+    $influxdb_host      = $grafana::params::influxdb_host,
+    $influxdb_port      = $grafana::params::influxdb_port,
+    $influxdb_user      = $grafana::parama::influxdb_user,
+    $influxdb_password  = $grafana::params::influxdb_password,
+    $influxdb_dbname    = $grafana::params::influxdb_dbname,
 ) inherits grafana::params {
     archive { "grafana-${version}":
         ensure      => present,
@@ -21,8 +26,8 @@ class grafana (
     file { "${install_dir}/grafana-${version}/config.js":
         ensure  => present,
         content => template('grafana/config.js.erb'),
-        owner   => $user,
-        group   => $group,
+        owner   => $grafana_user,
+        group   => $grafana_group,
         require => Archive["grafana-${version}"],
     }
 

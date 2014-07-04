@@ -104,13 +104,21 @@ Determines if a symlink should be created in the installation directory for the 
 
 Sets the name to be used for the symlink. The default is '${install_dir}/grafana'.
 
-#####`user`
+#####`grafana_user`
 
 The user that will own the installation directory. The default is 'root' and there is no logic in place to check that the value specified is a valid user on the system.
 
-#####`group`
+#####`grafana_group`
 
 The group that will own the installation directory. The default is 'root' and there is no login in place to check that the value specified is a valid group on the system.
+
+#####`elasticsearch_host`
+
+Controls the host that will be used as the Elasticsearch host in the Grafana configuration. The default is 'localhost'.
+
+#####`elasticsearch_port`
+
+The port on the Elasticsearch host that will be used to access Elasticsearch. The default is '9200'.
 
 #####`graphite_host`
 
@@ -120,13 +128,25 @@ Controls the host that will be used as the Graphite host in the Grafana configur
 
 The port on the Graphite host that will be used to access Graphite. The default is '80'.
 
-#####`elasticsearch_host`
+#####`influxdb_host`
 
-Controls the host that will be used as the Elasticsearch host in the Grafana configuration. The default is 'localhost'.
+Controls the host that will be used as the InfluxDB host in the Grafana configuration. The default is 'localhost'.
 
-#####`elasticsearch_port`
+#####`influxdb_port`
 
-The port on the Elasticsearch host that will be used to access Elasticsearch. The default is '9200'.
+The port on the InfluxDB host that will be used to access InfluxDB. The default is '8086'.
+
+#####`influxdb_user`
+
+The user that will be used to access the InfluxDB API. The default is 'root'.
+
+#####`influxdb_password`
+
+The password that will be used to access the InfluxDB API. The default is 'root'.
+
+#####`influxdb_dbname`
+
+Controls which InfluxDB database will be used to pull data from. The default is 'database_name' and should be changed.
 
 ###Templates
 
