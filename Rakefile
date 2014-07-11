@@ -1,6 +1,8 @@
 require 'rake'
 require 'rspec/core/rake_task'
 require 'puppet-lint/tasks/puppet-lint'
+require 'puppetlabs_spec_helper/rake_tasks'
+require 'rspec-system/rake_task'
 
 desc "Run all RSpec code examples"
 RSpec::Core::RakeTask.new(:rspec) do |t|
@@ -24,6 +26,8 @@ begin
     require 'puppet-lint/tasks/puppet-lint'
     PuppetLint.configuration.send('disable_80chars')
     PuppetLint.configuration.send('disable_class_inherits_from_params_class')
+    PuppetLint.configuration.send('disable_class_parameter_defaults')
+    PuppetLint.configuration.send('disable_documentation')
     PuppetLint.configuration.ignore_paths = ["pkg/**/*.pp", "spec/**/*.pp", "vendor/**/*.pp"]
     task :default => [:rspec, :lint]
   end
