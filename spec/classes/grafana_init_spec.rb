@@ -12,12 +12,12 @@ describe 'grafana', :type => 'class' do
   	end
 
   	it { should contain_file('/opt/grafana-1.6.1/config.js').with(
-  	  :ensure	=> 'present',
+  	  :ensure	=> 'present'
   	)}
 
   	it { should contain_file('/opt/grafana').with(
   	  :ensure	=> 'link',
-  	  :target	=> '/opt/grafana-1.6.1',
+  	  :target	=> '/opt/grafana-1.6.1'
   	)}
   end
 
