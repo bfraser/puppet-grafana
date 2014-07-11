@@ -2,7 +2,6 @@ class grafana::params {
     $version            = '1.6.1'
     $install_dir        = '/opt'
     $symlink            = true
-    $symlink_name       = "${install_dir}/grafana"
     $grafana_user       = 'root'
     $grafana_group      = 'root'
     $elasticsearch_host = 'localhost'
