@@ -12,7 +12,7 @@ class grafana (
     $graphite_port      = $grafana::params::graphite_port,
     $influxdb_host      = $grafana::params::influxdb_host,
     $influxdb_port      = $grafana::params::influxdb_port,
-    $influxdb_user      = $grafana::parama::influxdb_user,
+    $influxdb_user      = $grafana::params::influxdb_user,
     $influxdb_password  = $grafana::params::influxdb_password,
     $influxdb_dbname    = $grafana::params::influxdb_dbname,
 ) inherits grafana::params {
