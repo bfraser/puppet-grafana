@@ -13,12 +13,12 @@ function (Settings) {
     datasources: {
       graphite: {
         type: 'graphite',
-        url: "http://<%= @graphite_host %>:<%= @graphite_port %>",
+        url: "<%= @graphite_scheme %>://<%= @graphite_host %>:<%= @graphite_port %>",
         default: true
       },
       influxdb: {
         type: 'influxdb',
-        url: "http://<%= @influxdb_host %>:<%= @influxdb_port %>/db/<%= @influxdb_dbname %>",
+        url: "<%= @influxdb_scheme %>://<%= @influxdb_host %>:<%= @influxdb_port %>/db/<%= @influxdb_dbname %>",
         username: '<%= @influxdb_user %>',
         password: '<%= @influxdb_password %>'
       },
@@ -28,7 +28,7 @@ function (Settings) {
      * elasticsearch url:
      * For Basic authentication use: http://username:password@domain.com:9200
      */
-    elasticsearch: "http://<%= @elasticsearch_host %>:<%= @elasticsearch_port %>",
+    elasticsearch: "<%= @elascticsearch_scheme %>://<%= @elasticsearch_host %>:<%= @elasticsearch_port %>",
 
     // default start dashboard
     default_route: '/dashboard/file/default.json',
