@@ -4,6 +4,7 @@ class grafana (
     $install_dir        = $grafana::params::install_dir,
     $symlink            = $grafana::params::symlink,
     $symlink_name       = "${install_dir}/grafana",
+    $config_template    = "grafana/config.js.erb",
     $grafana_user       = $grafana::params::grafana_user,
     $grafana_group      = $grafana::params::grafana_group,
     $elasticsearch_scheme = $grafana::params::elasticsearch_scheme,
@@ -28,7 +29,7 @@ class grafana (
 
     file { "${install_dir}/grafana-${version}/config.js":
         ensure  => present,
-        content => template('grafana/config.js.erb'),
+        content => template($config_template),
         owner   => $grafana_user,
         group   => $grafana_group,
         require => Archive["grafana-${version}"],
