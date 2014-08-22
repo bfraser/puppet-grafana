@@ -4,10 +4,13 @@ class grafana::params {
     $symlink            = true
     $grafana_user       = 'root'
     $grafana_group      = 'root'
+    $elasticsearch_scheme = 'http'
     $elasticsearch_host = 'localhost'
     $elasticsearch_port = 9200
+    $graphite_scheme    = 'http'
     $graphite_host      = 'localhost'
     $graphite_port      = 80
+    $influxdb_scheme    = 'http'
     $influxdb_host      = 'localhost'
     $influxdb_port      = 8086
     $influxdb_user      = 'root'
