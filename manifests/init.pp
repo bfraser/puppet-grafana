@@ -13,12 +13,14 @@ class grafana (
     $influxdb_user      = $grafana::params::influxdb_user,
     $influxdb_password  = $grafana::params::influxdb_password,
     $opentsdb_url       = $grafana::params::opentsdb_url,
+    $admin_password     = $grafana::params::admin_password,
+    $playlist_timespan  = $grafana::params::playlist_timespan,
 ) inherits grafana::params {
     archive { "grafana-${version}":
-        ensure      => present,
-        url         => $download_url,
-        target      => $install_dir,
-        checksum    => false,
+        ensure   => present,
+        url      => $download_url,
+        target   => $install_dir,
+        checksum => false,
     }
 
     file { "${install_dir}/grafana-${version}/config.js":

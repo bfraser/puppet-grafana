@@ -11,4 +11,6 @@ class grafana::params {
     $influxdb_user      = 'root'
     $influxdb_password  = 'root'
     $opentsdb_url       = 'http://localhost:4242'
+    $admin_password     = ''
+    $playlist_timespan  = '1m'
 }
