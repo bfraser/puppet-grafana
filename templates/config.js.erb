@@ -16,8 +16,8 @@ function (Settings) {
     *  - basic authentication: use url syntax http://username:password@domain:port
     */
 
-  <% case @datasource -%>
-  <% when 'influxdb' -%>
+  <% case @datasource
+     when 'influxdb' -%>
     // InfluxDB example setup (the InfluxDB databases specified need to exist)
     datasources: {
       graphite: {
