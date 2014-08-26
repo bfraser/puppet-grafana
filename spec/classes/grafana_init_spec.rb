@@ -37,4 +37,51 @@ describe 'grafana', :type => 'class' do
       :target => '/usr/local/grafana-1.3.3.7'
     )}
   end
+
+  context 'allows to choose the datasource:' do
+    context 'influxdb' do
+      let :params do
+        {
+          :install_dir  => '/usr/local',
+          :version      => '1.3.3.7',
+          :datasource   => 'influxdb'
+        }
+      end
+      it 'configures influx and graphite' do
+        should contain_file('/usr/local/grafana-1.3.3.7/config.js').with({
+          :content => /graphite:.*influxdb:/m,
+        })
+      end
+    end
+
+    context 'graphite' do
+      let :params do
+        {
+          :install_dir  => '/usr/local',
+          :version      => '1.3.3.7',
+          :datasource   => 'graphite'
+        }
+      end
+      it 'configures graphite and elasticsearch' do
+        should contain_file('/usr/local/grafana-1.3.3.7/config.js').with({
+          :content => /graphite:.*elasticsearch:/m,
+        })
+      end
+    end
+
+    context 'opentsdb' do
+      let :params do
+        {
+          :install_dir  => '/usr/local',
+          :version      => '1.3.3.7',
+          :datasource   => 'opentsdb'
+        }
+      end
+      it 'configures opentsdb and elasticsearch' do
+        should contain_file('/usr/local/grafana-1.3.3.7/config.js').with({
+          :content => /opentsdb:.*elasticsearch:/m,
+        })
+      end
+    end
+  end
 end
