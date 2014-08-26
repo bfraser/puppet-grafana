@@ -1,40 +1,77 @@
-/** @scratch /configuration/config.js/1
- * == Configuration
- * config.js is where you will find the core Grafana configuration. This file contains parameter that
- * must be set before Grafana is run for the first time.
- */
+///// @scratch /configuration/config.js/1
+ // == Configuration
+ // config.js is where you will find the core Grafana configuration. This file contains parameter that
+ // must be set before Grafana is run for the first time.
+ ///
 define(['settings'],
 function (Settings) {
-  
-
   return new Settings({
 
-    // datasources, you can add multiple
+    /* Data sources
+    * ========================================================
+    * Datasources are used to fetch metrics, annotations, and serve as dashboard storage
+    *  - You can have multiple of the same type.
+    *  - grafanaDB: true    marks it for use for dashboard storage
+    *  - default: true      marks the datasource as the default metric source (if you have multiple)
+    *  - basic authentication: use url syntax http://username:password@domain:port
+    */
+
+  <% case @datasource
+     when 'influxdb' -%>
+    // InfluxDB example setup (the InfluxDB databases specified need to exist)
     datasources: {
       graphite: {
         type: 'graphite',
-        url: "http://<%= @graphite_host %>:<%= @graphite_port %>",
+        url: "<%= @graphite_url %>",
         default: true
       },
       influxdb: {
         type: 'influxdb',
-        url: "http://<%= @influxdb_host %>:<%= @influxdb_port %>/db/<%= @influxdb_dbname %>",
+        url: "<%= @influxdb_url %>",
         username: '<%= @influxdb_user %>',
         password: '<%= @influxdb_password %>'
-      },
     },
+  <% when 'graphite' -%>
+    // Graphite & Elasticsearch example setup
+    datasources: {
+      graphite: {
+        type: 'graphite',
+        url: "<%= @graphite_url %>",
+      },
+      elasticsearch: {
+        type: 'elasticsearch',
+        url: "<%= @elasticsearch_url %>",
+        index: 'grafana-dash',
+        grafanaDB: true,
+      }
+    },
+  <% when 'opentsdb' -%>
+    // OpenTSDB & Elasticsearch example setup
+    datasources: {
+      opentsdb: {
+        type: 'opentsdb',
+        url: "<%= @opentsdb_url %>",
+      },
+      elasticsearch: {
+        type: 'elasticsearch',
+        url: "<%= @elasticsearch_url %>",
+        index: 'grafana-dash',
+        grafanaDB: true,
+      }
+    },
+  <% end -%>
 
-    /**
-     * elasticsearch url:
-     * For Basic authentication use: http://username:password@domain.com:9200
-     */
-    elasticsearch: "http://<%= @elasticsearch_host %>:<%= @elasticsearch_port %>",
+    /* Global configuration options
+    * ========================================================
+    */
+
+    // specify the limit for dashboard search results
+    search: {
+      max_results: 20
+    },
 
     // default start dashboard
     default_route: '/dashboard/file/default.json',
-
-    // Elasticsearch index for storing dashboards
-    grafana_index: "grafana-dash",
 
     // timezoneOFfset:
     // If you experiance problems with zoom, it is probably caused by timezone diff between
@@ -53,12 +90,17 @@ function (Settings) {
 
     // set the default timespan for the playlist feature
     // Example: "1m", "1h"
-    playlist_timespan: "1m",
+    playlist_timespan: '<%= @playlist_timespan %>',
+
+    // If you want to specify password before saving, please specify it bellow
+    // The purpose of this password is not security, but to stop some users from accidentally changing dashboards
+    admin: {
+      password: '<%= @admin_password %>'
+    },
 
     // Add your own custom pannels
     plugins: {
       panels: []
     }
-
   });
 });

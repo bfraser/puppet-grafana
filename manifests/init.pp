@@ -6,21 +6,21 @@ class grafana (
     $symlink_name       = "${install_dir}/grafana",
     $grafana_user       = $grafana::params::grafana_user,
     $grafana_group      = $grafana::params::grafana_group,
-    $elasticsearch_host = $grafana::params::elasticsearch_host,
-    $elasticsearch_port = $grafana::params::elasticsearch_port,
-    $graphite_host      = $grafana::params::graphite_host,
-    $graphite_port      = $grafana::params::graphite_port,
-    $influxdb_host      = $grafana::params::influxdb_host,
-    $influxdb_port      = $grafana::params::influxdb_port,
+    $datasource         = $grafana::params::datasource,
+    $elasticsearch_url  = $grafana::params::elasticsearch_url,
+    $graphite_url       = $grafana::params::graphite_url,
+    $influxdb_url       = $grafana::params::influxdb_url,
     $influxdb_user      = $grafana::params::influxdb_user,
     $influxdb_password  = $grafana::params::influxdb_password,
-    $influxdb_dbname    = $grafana::params::influxdb_dbname,
+    $opentsdb_url       = $grafana::params::opentsdb_url,
+    $admin_password     = $grafana::params::admin_password,
+    $playlist_timespan  = $grafana::params::playlist_timespan,
 ) inherits grafana::params {
     archive { "grafana-${version}":
-        ensure      => present,
-        url         => $download_url,
-        target      => $install_dir,
-        checksum    => false,
+        ensure   => present,
+        url      => $download_url,
+        target   => $install_dir,
+        checksum => false,
     }
 
     file { "${install_dir}/grafana-${version}/config.js":
