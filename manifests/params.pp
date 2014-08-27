@@ -1,16 +1,21 @@
 class grafana::params {
-    $version            = '1.6.1'
+    $version            = '1.7.0'
+    $install_method     = 'archive'
     $install_dir        = '/opt'
-    $symlink            = true
+    $symlink            = false
     $grafana_user       = 'root'
     $grafana_group      = 'root'
-    $elasticsearch_host = 'localhost'
-    $elasticsearch_port = 9200
-    $graphite_host      = 'localhost'
-    $graphite_port      = 80
-    $influxdb_host      = 'localhost'
-    $influxdb_port      = 8086
-    $influxdb_user      = 'root'
-    $influxdb_password  = 'root'
-    $influxdb_dbname    = 'database_name'
+    $datasources        = {
+      'graphite' => {
+        'type'    => 'graphite',
+        'url'     => 'http://localhost:80',
+        'default' => 'true'
+      },
+      'elasticsearch' => {
+        'type'      => 'elasticsearch',
+        'url'       => 'http://localhost:9200',
+        'index'     => 'grafana-dash',
+        'grafanaDB' => 'true',
+      },
+    }
 }

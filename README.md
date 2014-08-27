@@ -26,10 +26,10 @@ This module assumes you will be using, and has only been tested against, Graphit
 
 This module assumes that you will be serving Grafana using a web server such as Apache or Nginx. It will:
 
-* Download and extract Grafana to an installation directory
-* Create a symlink in the installation directory to enable future version upgrades
+* Download and extract Grafana to an installation directory or use your package manager
+* Create a symlink in the installation directory to enable future version upgrades if not using a package manager
 * Configure Grafana with a default Graphite and Elasticsearch host of 'localhost'
-* Allow you to override the Grafana version, download URL, and Graphite / Elasticsearch hosts
+* Allow you to override the Grafana version, download URL, and Graphite / Elasticsearch urls
 
 Add the following to your manifest to create an Apache virtual host to serve Grafana. **NOTE** This requires the puppetlabs-apache module.
 
@@ -70,9 +70,19 @@ This assumes that you have Graphite running on the same server as Grafana, and t
 
 ```puppet
     class { 'grafana':
-    	install_dir			=> '/usr/local',
-		graphite_host		=> '172.16.0.10',
-        elasticsearch_host	=> '172.16.0.10',
+      install_dir  => '/usr/local',
+      datasources  =>
+        'graphite' => {
+          'type'    => 'graphite',
+          'url'     => 'http://172.16.0.10',
+          'default' => 'true'
+        },
+        'elasticsearch' => {
+          'type'      => 'elasticsearch',
+          'url'       => 'http://172.16.0.10:9200',
+          'index'     => 'grafana-dash',
+          'grafanaDB' => 'true',
+        },
     }
 ```
 ##Usage
@@ -112,45 +122,13 @@ The user that will own the installation directory. The default is 'root' and the
 
 The group that will own the installation directory. The default is 'root' and there is no login in place to check that the value specified is a valid group on the system.
 
-#####`elasticsearch_host`
+#####`datasources`
 
-Controls the host that will be used as the Elasticsearch host in the Grafana configuration. The default is 'localhost'.
-
-#####`elasticsearch_port`
-
-The port on the Elasticsearch host that will be used to access Elasticsearch. The default is '9200'.
-
-#####`graphite_host`
-
-Controls the host that will be used as the Graphite host in the Grafana configuration. The default is 'localhost'.
-
-#####`graphite_port`
-
-The port on the Graphite host that will be used to access Graphite. The default is '80'.
-
-#####`influxdb_host`
-
-Controls the host that will be used as the InfluxDB host in the Grafana configuration. The default is 'localhost'.
-
-#####`influxdb_port`
-
-The port on the InfluxDB host that will be used to access InfluxDB. The default is '8086'.
-
-#####`influxdb_user`
-
-The user that will be used to access the InfluxDB API. The default is 'root'.
-
-#####`influxdb_password`
-
-The password that will be used to access the InfluxDB API. The default is 'root'.
-
-#####`influxdb_dbname`
-
-Controls which InfluxDB database will be used to pull data from. The default is 'database_name' and should be changed.
+The graphite, elasticsearch, influxdb, and opentsdb connection properties. See params.pp for an example.
 
 ###Templates
 
-This module currently makes use of one template to manage Grafana's main configuration file, `config.js`. The content that is managed are the Graphite and Elasticsearch host addresses and ports.
+This module currently makes use of one template to manage Grafana's main configuration file, `config.js`.
 
 ##Limitations
 
