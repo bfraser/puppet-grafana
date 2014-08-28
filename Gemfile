@@ -10,6 +10,7 @@ group :development, :test do
   gem 'serverspec',              :require => false
   gem 'puppet-lint',             :require => false
   gem 'simplecov',               :require => false
+  gem 'debugger',                :require => false
 end
 
 if facterversion = ENV['FACTER_GEM_VERSION']
