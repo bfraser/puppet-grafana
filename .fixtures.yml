@@ -1,5 +1,5 @@
 fixtures:
-#  repositories:
-#    'archive': 'git://github.com/gini/puppet-archive'
+  repositories:
+     stdlib: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
   symlinks:
     'grafana': "#{source_dir}"

@@ -74,9 +74,14 @@ class grafana (
     $grafana_group      = $grafana::params::grafana_group,
     $datasources        = $grafana::params::datasources,
 ) inherits grafana::params {
+    include stdlib
 
     # TODO: make sure at least one is 'default = true' - probably requires use of lambdas
     # TODO: make sure at least one is 'grafanaDB = true' - probably requires use of lambdas
+
+    if empty($datasources) {
+        fail('Datasources cannot be empty')
+    }
 
     if $install_method == 'archive' {
 

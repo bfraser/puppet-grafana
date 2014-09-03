@@ -124,7 +124,7 @@ The group that will own the installation directory. The default is 'root' and th
 
 #####`datasources`
 
-The graphite, elasticsearch, influxdb, and opentsdb connection properties. See params.pp for an example.
+The graphite, elasticsearch, influxdb, and opentsdb connection properties. See init.pp for an example.
 
 ###Templates
 
