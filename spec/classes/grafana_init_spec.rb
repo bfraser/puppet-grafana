@@ -97,7 +97,7 @@ describe 'grafana', :type => 'class' do
         it {
           should contain_file('/opt/grafana-1.7.1/config.js')
             .with_content(/graphite: \{\n\s*default: true,\n\s*type: 'graphite',\n\s.*url: 'http:\/\/localhost:80/)
-            .with_content(/elasticsearch: {\n\s*grafanaDB: true,\n\s*index: 'grafana-dash',\n\s*type: 'elasticsearch',\n\s*url: 'http:\/\/localhost:9200',/)
+            .with_content(/elasticsearch: \{\n\s*grafanaDB: true,\n\s*index: 'grafana-dash',\n\s*type: 'elasticsearch',\n\s*url: 'http:\/\/localhost:9200',/)
         }
       end
     end
