@@ -75,9 +75,8 @@ class grafana (
     $datasources        = $grafana::params::datasources,
 ) inherits grafana::params {
 
-    # TODO: make sure $datasources is not empty
-    # TODO: make sure at least one is 'default = true'
-    # TODO: make sure at least one is 'grafanaDB = true'
+    # TODO: make sure at least one is 'default = true' - probably requires use of lambdas
+    # TODO: make sure at least one is 'grafanaDB = true' - probably requires use of lambdas
 
     if $install_method == 'archive' {
 
