@@ -1,5 +1,5 @@
 class grafana::params {
-    $version            = '1.7.0'
+    $version            = '1.7.1'
     $install_method     = 'archive'
     $install_dir        = '/opt'
     $symlink            = false

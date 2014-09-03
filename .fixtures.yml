@@ -1,5 +1,5 @@
 fixtures:
-  repositories:
-    'archive': 'git://github.com/gini/puppet-archive'
+#  repositories:
+#    'archive': 'git://github.com/gini/puppet-archive'
   symlinks:
     'grafana': "#{source_dir}"

@@ -79,20 +79,12 @@ class grafana (
     # TODO: make sure at least one is 'default = true'
     # TODO: make sure at least one is 'grafanaDB = true'
 
-#    if $install_method == 'archive' {
+    if $install_method == 'archive' {
 
-#        archive { "grafana-${version}":
-#            ensure      => present,
-#            url         => $download_url,
-#            target      => $install_dir,
-#            checksum    => false,
-#        }
-
-        # COMMENT archive OUT AND it { should compile } stops complaining
-        archive { "grafana-foo":
+        archive { "grafana-${version}":
             ensure      => present,
-            url         => 'foo',
-            target      => 'bar',
+            url         => $download_url,
+            target      => $install_dir,
             checksum    => false,
         }
 
@@ -106,21 +98,21 @@ class grafana (
                 require => Archive["grafana-${version}"],
             }
         }
-#    }
-#
-#    if $install_method == 'package' {
-#        package { "grafana":
-#            ensure => $version,
-#        }
-#        $require_target = Package['grafana']
-#        $config_js = '/usr/share/grafana/config.js'
-#    }
-#
-#    file { "${config_js}":
-#        ensure  => present,
-#        content => template('grafana/config.js.erb'),
-#        owner   => $grafana_user,
-#        group   => $grafana_group,
-#        #require => $require_target,
-#    }
+    }
+
+    if $install_method == 'package' {
+        package { "grafana":
+            ensure => $version,
+        }
+        $require_target = Package['grafana']
+        $config_js = '/usr/share/grafana/config.js'
+    }
+
+    file { "${config_js}":
+        ensure  => present,
+        content => template('grafana/config.js.erb'),
+        owner   => $grafana_user,
+        group   => $grafana_group,
+        require => $require_target,
+    }
 }
