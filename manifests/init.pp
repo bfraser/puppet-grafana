@@ -86,10 +86,10 @@ class grafana (
     if $install_method == 'archive' {
 
         archive { "grafana-${version}":
-            ensure      => present,
-            url         => $download_url,
-            target      => $install_dir,
-            checksum    => false,
+            ensure   => present,
+            url      => $download_url,
+            target   => $install_dir,
+            checksum => false,
         }
 
         $require_target = Archive["grafana-${version}"]
@@ -105,14 +105,14 @@ class grafana (
     }
 
     if $install_method == 'package' {
-        package { "grafana":
+        package { 'grafana':
             ensure => $version,
         }
         $require_target = Package['grafana']
         $config_js = '/usr/share/grafana/config.js'
     }
 
-    file { "${config_js}":
+    file { $config_js:
         ensure  => present,
         content => template('grafana/config.js.erb'),
         owner   => $grafana_user,

@@ -1,3 +1,7 @@
+# == Class: grafana
+#
+# Default parameters
+#
 class grafana::params {
     $version            = '1.7.1'
     $install_method     = 'archive'
