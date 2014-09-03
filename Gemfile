@@ -15,5 +15,4 @@ group :development do
   gem "beaker"
   gem "beaker-rspec"
   gem "vagrant-wrapper"
-  gem "simplecov"
 end
