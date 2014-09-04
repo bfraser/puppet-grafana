@@ -48,6 +48,7 @@ describe 'grafana', :type => 'class' do
 
         it { should contain_archive('grafana-1.7.0')}
         it { should contain_file('/opt/grafana-1.7.0/config.js').with_ensure('present') }
+        it { should_not contain_file('/opt/grafana').with_ensure('link').with_target('/opt/grafana-1.7.0') }
       end
 
       context 'installs via archive with symlink' do
