@@ -3,7 +3,7 @@
 # Default parameters
 #
 class grafana::params {
-    $version            = '1.7.1'
+    $version            = '1.7.0'
     $install_method     = 'archive'
     $install_dir        = '/opt'
     $symlink            = false
