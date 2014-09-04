@@ -2,8 +2,6 @@ language: ruby
 before_install:
   - gem update --system 2.1.11
   - gem --version
-before_script:
-  - 'git clone git://github.com/gini/puppet-archive spec/fixtures/modules/archive'
 script: "bundle exec rake lint && bundle exec rake spec"
 rvm:
   - 1.8.7

@@ -5,36 +5,29 @@
  */
 define(['settings'],
 function (Settings) {
-  
+  "use strict";
+
 
   return new Settings({
 
     // datasources, you can add multiple
     datasources: {
-      graphite: {
-        type: 'graphite',
-        url: "http://<%= @graphite_host %>:<%= @graphite_port %>",
-        default: true
-      },
-      influxdb: {
-        type: 'influxdb',
-        url: "http://<%= @influxdb_host %>:<%= @influxdb_port %>/db/<%= @influxdb_dbname %>",
-        username: '<%= @influxdb_user %>',
-        password: '<%= @influxdb_password %>'
-      },
-    },
 
-    /**
-     * elasticsearch url:
-     * For Basic authentication use: http://username:password@domain.com:9200
-     */
-    elasticsearch: "http://<%= @elasticsearch_host %>:<%= @elasticsearch_port %>",
+    <%- @datasources.keys.each do |ds_name| -%>
+      <%= "#{ds_name}: {" %>
+      <%- @datasources[ds_name].keys.sort.each do |ds_attr| -%>
+        <%- if ds_attr == 'default' or ds_attr == 'grafanaDB' -%>
+          <%= "#{ds_attr}: #{@datasources[ds_name][ds_attr]}," %>
+        <%- else -%>
+          <%= "#{ds_attr}: '#{@datasources[ds_name][ds_attr]}'," %>
+        <%- end -%>
+      <%- end -%>
+      },
+    <%- end -%>
+    },
 
     // default start dashboard
     default_route: '/dashboard/file/default.json',
-
-    // Elasticsearch index for storing dashboards
-    grafana_index: "grafana-dash",
 
     // timezoneOFfset:
     // If you experiance problems with zoom, it is probably caused by timezone diff between
