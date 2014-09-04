@@ -55,7 +55,7 @@ describe 'grafana', :type => 'class' do
         let :params do
           {
             :install_method	=> 'archive',
-            :symlink        => '/opt/grafana',
+            :symlink        => true,
             :datasources    => datasources
           }
         end
