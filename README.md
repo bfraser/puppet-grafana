@@ -71,7 +71,7 @@ This assumes that you have Graphite running on the same server as Grafana, and t
 ```puppet
     class { 'grafana':
       install_dir  => '/usr/local',
-      datasources  =>
+      datasources  => {
         'graphite' => {
           'type'    => 'graphite',
           'url'     => 'http://172.16.0.10',
@@ -83,6 +83,7 @@ This assumes that you have Graphite running on the same server as Grafana, and t
           'index'     => 'grafana-dash',
           'grafanaDB' => 'true',
         },
+      }
     }
 ```
 ##Usage
