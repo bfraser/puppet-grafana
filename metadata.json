@@ -1,6 +1,6 @@
 {
   "name": "bfraser-grafana",
-  "version": "0.1.3",
+  "version": "0.2.1",
   "author": "bfraser",
   "summary": "This module provides Grafana, a dashboard and graph editor for Graphite and InfluxDB.",
   "license": "Apache License, Version 2.0",
@@ -11,6 +11,10 @@
     {
       "name": "gini/archive",
       "version_requirement": ">= 0.2.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=3.2.0 <5.0.0"
     }
   ]
 }
