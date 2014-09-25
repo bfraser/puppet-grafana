@@ -7,6 +7,12 @@
   "source": "git://github.com/bfraser/puppet-grafana.git",
   "project_page": "https://github.com/bfraser/puppet-grafana",
   "issues_url": "https://github.com/bfraser/puppet-grafana/issues",
+  "operatingsystem_support": [
+    {
+      "operatingsystem":"RedHat",
+      "operatingsystmrelease":[ "6.0" ]
+    }
+  ],
   "dependencies": [
     {
       "name": "gini/archive",
