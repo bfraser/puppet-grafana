@@ -34,7 +34,7 @@ describe 'grafana', :type => 'class' do
           }
         end
 
-        it { should contain_package('grafana').with(:ensure	=> '1.7.0') }
+        it { should contain_package('grafana').with(:ensure	=> '1.8.1') }
         it { should contain_file('/usr/share/grafana/config.js').with_ensure('present') }
       end
 
@@ -46,9 +46,9 @@ describe 'grafana', :type => 'class' do
           }
         end
 
-        it { should contain_archive('grafana-1.7.0')}
-        it { should contain_file('/opt/grafana-1.7.0/config.js').with_ensure('present') }
-        it { should_not contain_file('/opt/grafana').with_ensure('link').with_target('/opt/grafana-1.7.0') }
+        it { should contain_archive('grafana-1.8.1')}
+        it { should contain_file('/opt/grafana-1.8.1/config.js').with_ensure('present') }
+        it { should_not contain_file('/opt/grafana').with_ensure('link').with_target('/opt/grafana-1.8.1') }
       end
 
       context 'installs via archive with symlink' do
@@ -60,9 +60,9 @@ describe 'grafana', :type => 'class' do
           }
         end
 
-        it { should contain_archive('grafana-1.7.0')}
-        it { should contain_file('/opt/grafana-1.7.0/config.js').with_ensure('present') }
-        it { should contain_file('/opt/grafana').with_ensure('link').with_target('/opt/grafana-1.7.0') }
+        it { should contain_archive('grafana-1.8.1')}
+        it { should contain_file('/opt/grafana-1.8.1/config.js').with_ensure('present') }
+        it { should contain_file('/opt/grafana').with_ensure('link').with_target('/opt/grafana-1.8.1') }
       end
 
       context 'install dir is not default' do
@@ -74,8 +74,8 @@ describe 'grafana', :type => 'class' do
           }
         end
 
-        it { should contain_archive('grafana-1.7.0')}
-        it { should contain_file('/tmp/grafana-1.7.0/config.js').with_ensure('present') }
+        it { should contain_archive('grafana-1.8.1')}
+        it { should contain_file('/tmp/grafana-1.8.1/config.js').with_ensure('present') }
       end
 
       context 'fail on empty datasources' do
@@ -96,7 +96,7 @@ describe 'grafana', :type => 'class' do
         end
 
         it {
-          should contain_file('/opt/grafana-1.7.0/config.js').with_content(/graphite: \{\n\s*default: true,\n\s*type: 'graphite',\n\s.*url: 'http:\/\/localhost:80/).with_content(/elasticsearch: \{\n\s*grafanaDB: true,\n\s*index: 'grafana-dash',\n\s*type: 'elasticsearch',\n\s*url: 'http:\/\/localhost:9200',/)
+          should contain_file('/opt/grafana-1.8.1/config.js').with_content(/graphite: \{\n\s*default: true,\n\s*type: 'graphite',\n\s.*url: 'http:\/\/localhost:80/).with_content(/elasticsearch: \{\n\s*grafanaDB: true,\n\s*index: 'grafana-dash',\n\s*type: 'elasticsearch',\n\s*url: 'http:\/\/localhost:9200',/)
         }
       end
     end
