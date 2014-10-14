@@ -1,45 +1,37 @@
-/** @scratch /configuration/config.js/1
- * == Configuration
- * config.js is where you will find the core Grafana configuration. This file contains parameter that
- * must be set before Grafana is run for the first time.
- */
+// == Configuration
+// config.js is where you will find the core Grafana configuration. This file contains parameter that
+// must be set before Grafana is run for the first time.
 define(['settings'],
 function (Settings) {
-  "use strict";
-
 
   return new Settings({
 
     // datasources, you can add multiple
     datasources: {
-
-    <%- @datasources.keys.each do |ds_name| -%>
-      <%= "#{ds_name}: {" %>
-      <%- @datasources[ds_name].keys.sort.each do |ds_attr| -%>
-        <%- if ds_attr == 'default' or ds_attr == 'grafanaDB' -%>
-          <%= "#{ds_attr}: #{@datasources[ds_name][ds_attr]}," %>
-        <%- else -%>
-          <%= "#{ds_attr}: '#{@datasources[ds_name][ds_attr]}'," %>
+      <%- @datasources.keys.each do |ds_name| -%>
+        <%= "#{ds_name}: {" %>
+        <%- @datasources[ds_name].keys.sort.each do |ds_attr| -%>
+          <%- if ds_attr == 'default' or ds_attr == 'grafanaDB' -%>
+            <%= "#{ds_attr}: #{@datasources[ds_name][ds_attr]}," %>
+          <%- else -%>
+            <%= "#{ds_attr}: '#{@datasources[ds_name][ds_attr]}'," %>
+          <%- end -%>
         <%- end -%>
+        },
       <%- end -%>
-      },
-    <%- end -%>
+    },
+
+    /* Global configuration options
+    * ========================================================
+    */
+
+    // specify the limit for dashboard search results
+    search: {
+      max_results: 20
     },
 
     // default start dashboard
     default_route: '/dashboard/file/default.json',
-
-    // timezoneOFfset:
-    // If you experiance problems with zoom, it is probably caused by timezone diff between
-    // your browser and the graphite-web application. timezoneOffset setting can be used to have Grafana
-    // translate absolute time ranges to the graphite-web timezone.
-    // Example:
-    //   If TIME_ZONE in graphite-web config file local_settings.py is set to America/New_York, then set
-    //   timezoneOffset to "-0500" (for UTC - 5 hours)
-    // Example:
-    //   If TIME_ZONE is set to UTC, set this to "0000"
-    //
-    timezoneOffset: null,
 
     // set to false to disable unsaved changes warning
     unsaved_changes_warning: true,
@@ -48,9 +40,22 @@ function (Settings) {
     // Example: "1m", "1h"
     playlist_timespan: "1m",
 
-    // Add your own custom pannels
+    // If you want to specify password before saving, please specify it bellow
+    // The purpose of this password is not security, but to stop some users from accidentally changing dashboards
+    admin: {
+      password: ''
+    },
+
+    // Change window title prefix from 'Grafana - <dashboard title>'
+    window_title_prefix: 'Grafana - ',
+
+    // Add your own custom panels
     plugins: {
-      panels: []
+      // list of plugin panels
+      panels: [],
+      // requirejs modules in plugins folder that should be loaded
+      // for example custom datasources
+      dependencies: [],
     }
 
   });
