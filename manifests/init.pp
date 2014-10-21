@@ -73,6 +73,7 @@ class grafana (
     $grafana_user       = $grafana::params::grafana_user,
     $grafana_group      = $grafana::params::grafana_group,
     $datasources        = $grafana::params::datasources,
+    $default_route      = $grafana::params::default_route,
 ) inherits grafana::params {
 
     # TODO: make sure at least one is 'default = true' - probably requires use of lambdas
