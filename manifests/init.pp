@@ -44,6 +44,9 @@
 # to graphite, elasticsearch, influxdb, and/or opentsb. See params.pp for the
 # defaults.
 #
+# [*default_route*]
+# The dashboard that will be opened if nothing was saved as Home.
+#
 # === Examples
 #
 #  class { '::grafana':
@@ -73,6 +76,7 @@ class grafana (
     $grafana_user       = $grafana::params::grafana_user,
     $grafana_group      = $grafana::params::grafana_group,
     $datasources        = $grafana::params::datasources,
+    $default_route      = $grafana::params::default_route,
 ) inherits grafana::params {
 
     # TODO: make sure at least one is 'default = true' - probably requires use of lambdas
