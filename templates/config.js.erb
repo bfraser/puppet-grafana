@@ -8,7 +8,7 @@ function (Settings) {
 
     // datasources, you can add multiple
     datasources: {
-      <%- @datasources.keys.each do |ds_name| -%>
+      <%- @datasources.keys.sort.each do |ds_name| -%>
         <%= "#{ds_name}: {" %>
         <%- @datasources[ds_name].keys.sort.each do |ds_attr| -%>
           <%- if ds_attr == 'default' or ds_attr == 'grafanaDB' -%>
