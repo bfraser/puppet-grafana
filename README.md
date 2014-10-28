@@ -123,6 +123,10 @@ The user that will own the installation directory. The default is 'root' and the
 
 The group that will own the installation directory. The default is 'root' and there is no login in place to check that the value specified is a valid group on the system.
 
+#####`default_route`
+
+The default start dashboard. Defaults to '/dashboard/file/default.json'.
+
 #####`datasources`
 
 The graphite, elasticsearch, influxdb, and opentsdb connection properties. See init.pp for an example.

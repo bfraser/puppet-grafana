@@ -39,6 +39,10 @@
 # The default is 'root' and there is no logic in place to check that the value
 # specified is a valid group on the system.
 #
+# [*default_route*]
+# The default start dashboard.
+# Defaults to '/dashboard/file/default.json'
+#
 # [*datasources*]
 # A hash of hashes that specifies all the connection properties for connecting
 # to graphite, elasticsearch, influxdb, and/or opentsb. See params.pp for the
@@ -72,6 +76,7 @@ class grafana (
     $symlink_name       = "${install_dir}/grafana",
     $grafana_user       = $grafana::params::grafana_user,
     $grafana_group      = $grafana::params::grafana_group,
+    $default_route      = $grafana::params::default_route,
     $datasources        = $grafana::params::datasources,
 ) inherits grafana::params {
     # TODO: make sure at least one is 'default = true' - probably requires use of lambdas

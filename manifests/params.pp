@@ -9,6 +9,7 @@ class grafana::params {
   $symlink            = true
   $grafana_user       = 'root'
   $grafana_group      = 'root'
+  $default_route      = '/dashboard/file/default.json'
   $datasources        = {
     'graphite' => {
       'type'    => 'graphite',
