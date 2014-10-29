@@ -93,6 +93,7 @@ class grafana (
             url      => $download_url,
             target   => $install_dir,
             checksum => false,
+            strip_components => 1,
         }
 
         $require_target = Archive["grafana-${version}"]
