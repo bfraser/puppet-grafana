@@ -55,16 +55,17 @@
 #    install_method  => 'package',
 #    datasources     => {
 #      'graphite' => {
-#        'type'    => 'graphite',
-#        'url'     => 'http://localhost:80',
+#        'type'  => 'graphite',
+#        'url'   => 'http://localhost:80',
 #        'default' => 'true'
 #      },
 #      'elasticsearch' => {
-#        'type'      => 'elasticsearch',
-#        'url'       => 'http://localhost:9200',
-#        'index'     => 'grafana-dash',
+#        'type'    => 'elasticsearch',
+#        'url'     => 'http://localhost:9200',
+#        'index'   => 'grafana-dash',
 #        'grafanaDB' => 'true',
 #      },
+#    }
 #  }
 #
 class grafana (
