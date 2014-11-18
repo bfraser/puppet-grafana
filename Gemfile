@@ -14,5 +14,4 @@ group :development do
   gem "travis-lint"
   gem "beaker"
   gem "beaker-rspec"
-  gem "vagrant-wrapper"
 end
