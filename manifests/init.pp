@@ -55,71 +55,72 @@
 #    install_method  => 'package',
 #    datasources     => {
 #      'graphite' => {
-#        'type'    => 'graphite',
-#        'url'     => 'http://localhost:80',
+#        'type'  => 'graphite',
+#        'url'   => 'http://localhost:80',
 #        'default' => 'true'
 #      },
 #      'elasticsearch' => {
-#        'type'      => 'elasticsearch',
-#        'url'       => 'http://localhost:9200',
-#        'index'     => 'grafana-dash',
+#        'type'    => 'elasticsearch',
+#        'url'     => 'http://localhost:9200',
+#        'index'   => 'grafana-dash',
 #        'grafanaDB' => 'true',
 #      },
+#    }
 #  }
 #
 class grafana (
-    $version            = $grafana::params::version,
-    $install_method     = $grafana::params::install_method,
-    $download_url       = "http://grafanarel.s3.amazonaws.com/grafana-${version}.tar.gz",
-    $install_dir        = $grafana::params::install_dir,
-    $symlink            = $grafana::params::symlink,
-    $symlink_name       = "${install_dir}/grafana",
-    $grafana_user       = $grafana::params::grafana_user,
-    $grafana_group      = $grafana::params::grafana_group,
-    $default_route      = $grafana::params::default_route,
-    $datasources        = $grafana::params::datasources,
+  $datasources    = $grafana::params::datasources,
+  $default_route  = $grafana::params::default_route,
+  $download_url   = "http://grafanarel.s3.amazonaws.com/grafana-${version}.tar.gz",
+  $grafana_group  = $grafana::params::grafana_group,
+  $grafana_user   = $grafana::params::grafana_user,
+  $install_dir    = $grafana::params::install_dir,
+  $install_method = $grafana::params::install_method,
+  $symlink        = $grafana::params::symlink,
+  $symlink_name   = "${install_dir}/grafana",
+  $version        = $grafana::params::version,
 ) inherits grafana::params {
-    # TODO: make sure at least one is 'default = true' - probably requires use of lambdas
-    # TODO: make sure at least one is 'grafanaDB = true' - probably requires use of lambdas
+  # TODO: make sure at least one is 'default = true' - probably requires use of lambdas
+  # TODO: make sure at least one is 'grafanaDB = true' - probably requires use of lambdas
 
-    if empty($datasources) {
-        fail('Datasources cannot be empty')
+  if empty($datasources) {
+    fail('Datasources cannot be empty')
+  }
+
+  if $install_method == 'archive' {
+    archive { "grafana-${version}":
+      ensure   => present,
+      checksum => false,
+      target   => $install_dir,
+      url      => $download_url,
     }
 
-    if $install_method == 'archive' {
+    $require_target = Archive["grafana-${version}"]
+    $config_js = "${install_dir}/grafana-${version}/config.js"
 
-        archive { "grafana-${version}":
-            ensure   => present,
-            url      => $download_url,
-            target   => $install_dir,
-            checksum => false,
-        }
+    if $symlink {
+      file { $symlink_name:
+        ensure  => link,
+        require => Archive["grafana-${version}"],
+        target  => "${install_dir}/grafana-${version}",
+      }
+    }
+  }
 
-        $require_target = Archive["grafana-${version}"]
-        $config_js = "${install_dir}/grafana-${version}/config.js"
-
-        if $symlink {
-            file { $symlink_name:
-                ensure  => link,
-                target  => "${install_dir}/grafana-${version}",
-                require => Archive["grafana-${version}"],
-            }
-        }
+  if $install_method == 'package' {
+    package { 'grafana':
+      ensure => $version,
     }
 
-    if $install_method == 'package' {
-        package { 'grafana':
-            ensure => $version,
-        }
-        $require_target = Package['grafana']
-        $config_js = '/usr/share/grafana/config.js'
-    }
+    $config_js = '/usr/share/grafana/config.js'
+    $require_target = Package['grafana']
+  }
 
-    file { $config_js:
-        ensure  => present,
-        content => template('grafana/config.js.erb'),
-        owner   => $grafana_user,
-        group   => $grafana_group,
-        require => $require_target,
-    }
+  file { $config_js:
+    ensure  => present,
+    content => template('grafana/config.js.erb'),
+    group   => $grafana_group,
+    owner   => $grafana_user,
+    require => $require_target,
+  }
 }

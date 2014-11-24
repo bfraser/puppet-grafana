@@ -3,24 +3,25 @@
 # Default parameters
 #
 class grafana::params {
-  $version            = '1.8.1'
-  $install_method     = 'archive'
-  $install_dir        = '/opt'
-  $symlink            = true
-  $grafana_user       = 'root'
-  $grafana_group      = 'root'
-  $default_route      = '/dashboard/file/default.json'
-  $datasources        = {
-    'graphite' => {
-      'type'    => 'graphite',
-      'url'     => 'http://localhost:80',
-      'default' => 'true' # lint:ignore:quoted_booleans
-    },
+  $datasources    = {
     'elasticsearch' => {
+      'grafanaDB' => 'true', # lint:ignore:quoted_booleans
+      'index'     => 'grafana-dash',
       'type'      => 'elasticsearch',
       'url'       => 'http://localhost:9200',
-      'index'     => 'grafana-dash',
-      'grafanaDB' => 'true' # lint:ignore:quoted_booleans
+    },
+    'graphite' => {
+      'default' => 'true', # lint:ignore:quoted_booleans
+      'type'    => 'graphite',
+      'url'     => 'http://localhost:80',
     },
   }
+
+  $default_route  = '/dashboard/file/default.json'
+  $grafana_group  = 'root'
+  $grafana_user   = 'root'
+  $install_dir    = '/opt'
+  $install_method = 'archive'
+  $symlink        = true
+  $version        = '1.8.1'
 }
