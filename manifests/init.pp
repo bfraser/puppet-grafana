@@ -48,6 +48,10 @@
 # to graphite, elasticsearch, influxdb, and/or opentsb. See params.pp for the
 # defaults.
 #
+# [*max_search_results*]
+# Max number of dashboards in search results.
+# Defaults to 20.
+#
 # === Examples
 #
 #  class { '::grafana':
@@ -69,16 +73,17 @@
 #  }
 #
 class grafana (
-  $datasources    = $grafana::params::datasources,
-  $default_route  = $grafana::params::default_route,
-  $download_url   = "http://grafanarel.s3.amazonaws.com/grafana-${version}.tar.gz",
-  $grafana_group  = $grafana::params::grafana_group,
-  $grafana_user   = $grafana::params::grafana_user,
-  $install_dir    = $grafana::params::install_dir,
-  $install_method = $grafana::params::install_method,
-  $symlink        = $grafana::params::symlink,
-  $symlink_name   = "${install_dir}/grafana",
-  $version        = $grafana::params::version,
+  $datasources        = $grafana::params::datasources,
+  $default_route      = $grafana::params::default_route,
+  $download_url       = "http://grafanarel.s3.amazonaws.com/grafana-${version}.tar.gz",
+  $grafana_group      = $grafana::params::grafana_group,
+  $grafana_user       = $grafana::params::grafana_user,
+  $install_dir        = $grafana::params::install_dir,
+  $install_method     = $grafana::params::install_method,
+  $max_search_results = $grafana::params::max_search_results,
+  $symlink            = $grafana::params::symlink,
+  $symlink_name       = "${install_dir}/grafana",
+  $version            = $grafana::params::version,
 ) inherits grafana::params {
   # TODO: make sure at least one is 'default = true' - probably requires use of lambdas
   # TODO: make sure at least one is 'grafanaDB = true' - probably requires use of lambdas
