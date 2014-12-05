@@ -117,7 +117,7 @@ class grafana (
       ensure => $version,
     }
 
-    $config_js = '/usr/share/grafana/config.js'
+    $config_js = "${install_dir}/config.js"
     $require_target = Package['grafana']
   }
 
