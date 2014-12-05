@@ -132,6 +132,10 @@ The default start dashboard. Defaults to '/dashboard/file/default.json'.
 
 The graphite, elasticsearch, influxdb, and opentsdb connection properties. See init.pp for an example.
 
+#####`max_search_results`
+
+Max number of dashboards in search results. Defaults to 20.
+
 ###Templates
 
 This module currently makes use of one template to manage Grafana's main configuration file, `config.js`.
