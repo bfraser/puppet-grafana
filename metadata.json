@@ -1,6 +1,6 @@
 {
   "name": "bfraser-grafana",
-  "version": "0.2.2",
+  "version": "1.0.0",
   "author": "bfraser",
   "summary": "This module provides Grafana, a dashboard and graph editor for Graphite and InfluxDB.",
   "license": "Apache License, Version 2.0",
