@@ -108,6 +108,10 @@ The graphite, elasticsearch, influxdb, and opentsdb connection properties. See i
 
 The default start dashboard. Defaults to '/dashboard/file/default.json'.
 
+#####`download_url`
+
+The URL to download Grafana from when using the 'archive' install method. The default is 'http://grafanarel.s3.amazonaws.com/grafana-${version}.tar.gz'.
+
 #####`grafana_group`
 
 The group that will own the installation directory. The default is 'root' and there is no login in place to check that the value specified is a valid group on the system.
@@ -119,6 +123,10 @@ The user that will own the installation directory. The default is 'root' and the
 #####`install_dir`
 
 Controls which directory Grafana is downloaded and extracted in. The default value is '/opt'.
+
+#####`install_method`
+
+Controls which method to use for installing Grafana. Valid options are 'archive' and 'package'. The default is 'archive'.
 
 #####`max_search_results`
 
