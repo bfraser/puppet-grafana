@@ -100,13 +100,29 @@ The Grafana module's primary class, `grafana`, guides the basic setup of Grafana
 ```
 **Parameters within `grafana`:**
 
-#####`version`
+#####`datasources`
 
-Controls the version of Grafana that gets downloaded and extracted. The default value is the latest stable version available at the time of module release.
+The graphite, elasticsearch, influxdb, and opentsdb connection properties. See init.pp for an example.
+
+#####`default_route`
+
+The default start dashboard. Defaults to '/dashboard/file/default.json'.
+
+#####`grafana_group`
+
+The group that will own the installation directory. The default is 'root' and there is no login in place to check that the value specified is a valid group on the system.
+
+#####`grafana_user`
+
+The user that will own the installation directory. The default is 'root' and there is no logic in place to check that the value specified is a valid user on the system.
 
 #####`install_dir`
 
 Controls which directory Grafana is downloaded and extracted in. The default value is '/opt'.
+
+#####`max_search_results`
+
+Max number of dashboards in search results. Defaults to 20.
 
 #####`symlink`
 
@@ -116,25 +132,9 @@ Determines if a symlink should be created in the installation directory for the 
 
 Sets the name to be used for the symlink. The default is '${install_dir}/grafana'.
 
-#####`grafana_user`
+#####`version`
 
-The user that will own the installation directory. The default is 'root' and there is no logic in place to check that the value specified is a valid user on the system.
-
-#####`grafana_group`
-
-The group that will own the installation directory. The default is 'root' and there is no login in place to check that the value specified is a valid group on the system.
-
-#####`default_route`
-
-The default start dashboard. Defaults to '/dashboard/file/default.json'.
-
-#####`datasources`
-
-The graphite, elasticsearch, influxdb, and opentsdb connection properties. See init.pp for an example.
-
-#####`max_search_results`
-
-Max number of dashboards in search results. Defaults to 20.
+Controls the version of Grafana that gets downloaded and extracted. The default value is the latest stable version available at the time of module release.
 
 ###Templates
 
