@@ -15,8 +15,8 @@
   ],
   "dependencies": [
     {
-      "name": "gini/archive",
-      "version_requirement": ">= 0.2.0"
+      "name": "camptocamp/archive",
+      "version_requirement": ">= 0.3.2"
     },
     {
       "name": "puppetlabs/stdlib",
