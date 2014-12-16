@@ -130,7 +130,7 @@ Controls which method to use for installing Grafana. Valid options are 'archive'
 
 #####`max_search_results`
 
-Max number of dashboards in search results. Defaults to 20.
+Max number of dashboards in search results. Defaults to 100.
 
 #####`symlink`
 

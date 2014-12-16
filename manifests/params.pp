@@ -22,7 +22,7 @@ class grafana::params {
   $grafana_user       = 'root'
   $install_dir        = '/opt'
   $install_method     = 'archive'
-  $max_search_results = 20
+  $max_search_results = 100
   $symlink            = true
   $version            = '1.9.0'
 }
