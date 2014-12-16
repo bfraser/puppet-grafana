@@ -50,7 +50,7 @@
 #
 # [*max_search_results*]
 # Max number of dashboards in search results.
-# Defaults to 20.
+# Defaults to 100.
 #
 # === Examples
 #
