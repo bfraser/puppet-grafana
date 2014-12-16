@@ -24,5 +24,5 @@ class grafana::params {
   $install_method     = 'archive'
   $max_search_results = 20
   $symlink            = true
-  $version            = '1.8.1'
+  $version            = '1.9.0'
 }
