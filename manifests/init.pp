@@ -39,6 +39,10 @@
 # The default is 'root' and there is no logic in place to check that the value
 # specified is a valid group on the system.
 #
+# [*admin_password*]
+# The admin password rquired when saving a dashboard.
+# The default is ''
+#
 # [*default_route*]
 # The default start dashboard.
 # Defaults to '/dashboard/file/default.json'
@@ -78,6 +82,7 @@ class grafana (
   $download_url       = "http://grafanarel.s3.amazonaws.com/grafana-${version}.tar.gz",
   $grafana_group      = $grafana::params::grafana_group,
   $grafana_user       = $grafana::params::grafana_user,
+  $admin_password     = $grafana::params::admin_password,
   $install_dir        = $grafana::params::install_dir,
   $install_method     = $grafana::params::install_method,
   $max_search_results = $grafana::params::max_search_results,

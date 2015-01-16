@@ -20,6 +20,7 @@ class grafana::params {
   $default_route      = '/dashboard/file/default.json'
   $grafana_group      = 'root'
   $grafana_user       = 'root'
+  $admin_password     = ''
   $install_dir        = '/opt'
   $install_method     = 'archive'
   $max_search_results = 100
