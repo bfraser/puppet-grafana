@@ -29,7 +29,8 @@ describe 'grafana', :type => 'class' do
       context 'installs via package' do
         let :params do
           {
-            :install_method	=> 'package',
+            :install_method => 'package',
+            :install_dir    => '/usr/share/grafana',
             :datasources    => datasources
           }
         end
