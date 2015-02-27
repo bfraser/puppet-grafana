@@ -5,13 +5,13 @@
 class grafana::params {
   $datasources        = {
     'elasticsearch' => {
-      'grafanaDB' => 'true', # lint:ignore:quoted_booleans
+      'grafanaDB' => true,
       'index'     => 'grafana-dash',
       'type'      => 'elasticsearch',
       'url'       => 'http://localhost:9200',
     },
     'graphite' => {
-      'default' => 'true', # lint:ignore:quoted_booleans
+      'default' => true,
       'type'    => 'graphite',
       'url'     => 'http://localhost:80',
     },
