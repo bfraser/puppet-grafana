@@ -1,3 +1,18 @@
+# 1.0.1 (2015-02-27)
+
+**Enhancements**
+- New parameter for Grafana admin password
+
+**Fixes**
+- Package install method now makes use of install_dir for config.js path
+
+**Behind The Scenes**
+- Add archive module to .fixtures.yml
+- Unquote booleans to make lint happy
+- Fix license identifier and unbounded dependencies in module metadata
+- Allow Travis to fail on Ruby 1.8.7
+- More Puppet versions are tested by Travis
+
 # 1.0.0 (2014-12-16)
 
 **Enhancements**
