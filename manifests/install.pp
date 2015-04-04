@@ -28,6 +28,9 @@ class grafana::install {
             source   => $::grafana::package_source
           }
         }
+        default: {
+          fail("${::operatingsystem} not supported")
+        }
       }
     }
     'archive': {
