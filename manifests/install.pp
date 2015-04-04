@@ -17,6 +17,7 @@ class grafana::install {
           }
           
           package { 'grafana':
+            ensure   => 'present',
             provider => 'dpkg',
             source   => '/tmp/grafana.deb',
             require  => Wget::Fetch['grafana']
@@ -24,6 +25,7 @@ class grafana::install {
         }
         'RedHat': {
           package { 'grafana':
+            ensure   => 'present',
             provider => 'rpm',
             source   => $::grafana::package_source
           }
