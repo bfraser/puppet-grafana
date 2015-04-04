@@ -12,20 +12,20 @@ class grafana::install {
       case $::osfamily {
         'Debian': {
           wget::fetch { 'grafana':
-            source    => $::grafana::package_source,
+            source      => $::grafana::package_source,
             destination => '/tmp/grafana.deb'
           }
           
           package { 'grafana':
-            provider  => 'dpkg',
-            source    => '/tmp/grafana.deb',
-            require   => Wget::Fetch['grafana']
+            provider => 'dpkg',
+            source   => '/tmp/grafana.deb',
+            require  => Wget::Fetch['grafana']
           }
         }
         'RedHat': {
           package { 'grafana':
-            provider  => 'rpm',
-            source    => $::grafana::package_source
+            provider => 'rpm',
+            source   => $::grafana::package_source
           }
         }
       }

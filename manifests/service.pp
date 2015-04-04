@@ -13,8 +13,8 @@ class grafana::service {
     }
     'package': {
       service { 'grafana':
-        ensure  => 'running',
-        enable  => true
+        ensure => 'running',
+        enable => true
       }
     }
     'archive': {
