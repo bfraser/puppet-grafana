@@ -21,5 +21,8 @@ class grafana::service {
       # start grafana by executing ./grafana web
       # working directory must be set to the root install dir
     }
+    default: {
+      fail("Installation method ${::grafana::install_method} not supported")
+    }
   }
 }

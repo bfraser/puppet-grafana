@@ -37,5 +37,8 @@ class grafana::install {
       # copy /opt/grafana/current/conf/defaults.ini to /etc/grafana/grafana.ini
       # create log directory /var/log/grafana (or parameterize)
     }
+    default: {
+      fail("Installation method ${::grafana::install_method} not supported")
+    }
   }
 }
