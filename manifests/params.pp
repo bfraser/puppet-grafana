@@ -1,29 +1,23 @@
-# == Class: grafana
+# == Class grafana::params
 #
-# Default parameters
+# This class is meant to be called from grafana
+# It sets variables according to platform
 #
 class grafana::params {
-  $datasources        = {
-    'elasticsearch' => {
-      'grafanaDB' => true,
-      'index'     => 'grafana-dash',
-      'type'      => 'elasticsearch',
-      'url'       => 'http://localhost:9200',
-    },
-    'graphite' => {
-      'default' => true,
-      'type'    => 'graphite',
-      'url'     => 'http://localhost:80',
-    },
+ $install_method = 'package'
+  case $::osfamily {
+    'Debian': {
+      $package_name   = 'grafana'
+      $package_source = 'https://grafanarel.s3.amazonaws.com/builds/grafana_2.0.0-beta1_amd64.deb'
+      $service_name   = 'grafana'
+    }
+    'RedHat', 'Amazon': {
+      $package_name   = 'grafana'
+      $package_source = 'https://grafanarel.s3.amazonaws.com/builds/grafana-2.0.0_beta1-1.x86_64.rpm'
+      $service_name   = 'grafana'
+    }
+    default: {
+      fail("${::operatingsystem} not supported")
+    }
   }
-
-  $default_route      = '/dashboard/file/default.json'
-  $grafana_group      = 'root'
-  $grafana_user       = 'root'
-  $admin_password     = ''
-  $install_dir        = '/opt'
-  $install_method     = 'archive'
-  $max_search_results = 100
-  $symlink            = true
-  $version            = '1.9.0'
 }

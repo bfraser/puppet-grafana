@@ -1,3 +1,9 @@
+# 2.0.0 (2015-04-04)
+
+**Enhancements**
+- Support for Grafana 2.0
+- Users of Grafana 1.x should stick to version 1.x of the Puppet module
+
 # 1.0.1 (2015-02-27)
 
 **Enhancements**

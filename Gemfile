@@ -14,4 +14,6 @@ group :development do
   gem "travis-lint"
   gem "beaker"
   gem "beaker-rspec"
+  gem "puppet-blacksmith"
+  gem "guard-rake"
 end

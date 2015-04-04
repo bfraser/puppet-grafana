@@ -11,7 +11,6 @@
     * [Beginning with Grafana](#beginning-with-grafana)
 4. [Usage](#usage)
     * [Classes and Defined Types](#classes-and-defined-types)
-    * [Templates](#templates)
 5. [Limitations](#limitations)
 6. [Copyright and License](#copyright-and-license)
 
@@ -21,43 +20,15 @@ This module installs Grafana, a dashboard and graph editor for Graphite, InfluxD
 
 ##Module Description
 
-This module assumes you will be using, and has only been tested against, Graphite. Therefore it is assumed you have a Graphite installation Grafana will be pulling data from. This module does **not** manage Graphite in any way.
+Version 2.x of this module is designed to work with version 2.x of Grafana. If you would like to continue to use Grafana 1.x, please use version 1.x of this module.
 
 ##Setup
 
-This module assumes that you will be serving Grafana using a web server such as Apache or Nginx. It will:
+This module will:
 
-* Download and extract Grafana to an installation directory or use your package manager
-* Create a symlink in the installation directory to enable future version upgrades if not using a package manager
-* Configure Grafana with a default Graphite and Elasticsearch host of 'localhost'
-* Allow you to override the Grafana version, download URL, and Graphite / Elasticsearch urls
-
-Add the following to your manifest to create an Apache virtual host to serve Grafana. **NOTE** This requires the puppetlabs-apache module.
-
-```puppet
-    # Grafana is to be served by Apache
-    class { 'apache':
-        default_vhost   => false,
-    }
-
-    # Create Apache virtual host
-    apache::vhost { 'grafana.example.com':
-        servername      => 'grafana.example.com',
-        port            => 80,
-        docroot         => '/opt/grafana',
-        error_log_file  => 'grafana-error.log',
-        access_log_file => 'grafana-access.log',
-        directories     => [
-            {
-                path            => '/opt/grafana',
-                options         => [ 'None' ],
-                allow           => 'from All',
-                allow_override  => [ 'None' ],
-                order           => 'Allow,Deny',
-            }
-        ]
-    }
-```
+* Install Grafana using your preferred method: package (default), Docker container, or tar archive
+* Allow you to override the version of Grafana to be installed, and / or the package source
+* Perform basic configuration of Grafana
 
 ###Beginning with Grafana
 
@@ -67,24 +38,11 @@ To install Grafana with the default parameters:
     class { 'grafana': }
 ```
 
-This assumes that you have Graphite running on the same server as Grafana, and that you want to install Grafana to in /opt. To establish customized parameters:
+This assumes that you with to install Grafana using the 'package' method. To establish customized parameters:
 
 ```puppet
     class { 'grafana':
-      install_dir  => '/usr/local',
-      datasources  => {
-        'graphite' => {
-          'type'    => 'graphite',
-          'url'     => 'http://172.16.0.10',
-          'default' => 'true'
-        },
-        'elasticsearch' => {
-          'type'      => 'elasticsearch',
-          'url'       => 'http://172.16.0.10:9200',
-          'index'     => 'grafana-dash',
-          'grafanaDB' => 'true',
-        },
-      }
+      install_method  => 'docker',
     }
 ```
 ##Usage
@@ -100,61 +58,17 @@ The Grafana module's primary class, `grafana`, guides the basic setup of Grafana
 ```
 **Parameters within `grafana`:**
 
-#####`datasources`
-
-The graphite, elasticsearch, influxdb, and opentsdb connection properties. See init.pp for an example.
-
-#####`default_route`
-
-The default start dashboard. Defaults to '/dashboard/file/default.json'.
-
-#####`download_url`
-
-The URL to download Grafana from when using the 'archive' install method. The default is 'http://grafanarel.s3.amazonaws.com/grafana-${version}.tar.gz'.
-
-#####`grafana_group`
-
-The group that will own the installation directory. The default is 'root' and there is no login in place to check that the value specified is a valid group on the system.
-
-#####`grafana_user`
-
-The user that will own the installation directory. The default is 'root' and there is no logic in place to check that the value specified is a valid user on the system.
-
-#####`install_dir`
-
-Controls which directory Grafana is downloaded and extracted in. The default value is '/opt'.
-
 #####`install_method`
 
-Controls which method to use for installing Grafana. Valid options are 'archive' and 'package'. The default is 'archive'.
-
-#####`max_search_results`
-
-Max number of dashboards in search results. Defaults to 100.
-
-#####`symlink`
-
-Determines if a symlink should be created in the installation directory for the extracted archive. The default is 'true'.
-
-#####`symlink_name`
-
-Sets the name to be used for the symlink. The default is '${install_dir}/grafana'.
-
-#####`version`
-
-Controls the version of Grafana that gets downloaded and extracted. The default value is the latest stable version available at the time of module release.
-
-###Templates
-
-This module currently makes use of one template to manage Grafana's main configuration file, `config.js`.
+Controls which method to use for installing Grafana. Valid options are: 'archive', 'docker' and 'package'. The default is 'package'. If you wish to use the 'docker' installation method, you will need to include the 'docker' class in your node's manifest / profile.
 
 ##Limitations
 
-This module has been tested on CentOS 6.4, serving Grafana with Apache. Other configurations should work with minimal, if any, additional effort.
+This module has been tested on Ubuntu 14.04, using the 'docker' and 'package' installation methods. Other configurations should work with minimal, if any, additional effort.
 
 ##Copyright and License
 
-Copyright (C) 2014 Bill Fraser
+Copyright (C) 2015 Bill Fraser
 
 Bill can be contacted at: fraser@pythian.com
 
