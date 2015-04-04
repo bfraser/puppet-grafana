@@ -39,7 +39,7 @@ PuppetLint::RakeTask.new :lint do |config|
   config.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
 
   # Compare module layout relative to the module root
-  config.relative = true
+  # config.relative = true
 end
 
 PuppetSyntax.exclude_paths = exclude_paths
