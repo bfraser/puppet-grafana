@@ -4,7 +4,7 @@
 # It sets variables according to platform
 #
 class grafana::params {
- $install_method = 'package'
+  $install_method = 'package'
   case $::osfamily {
     'Debian': {
       $package_name   = 'grafana'
