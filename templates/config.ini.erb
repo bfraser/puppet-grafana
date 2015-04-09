@@ -1,0 +1,13 @@
+# This file is managed by Puppet, any changes will be overwritten
+
+<%- @cfg.each_pair do |key, value|
+  if value.is_a?(Hash) -%>
+
+[<%= key %>]
+    <%- value.each_pair do |key, value| -%>
+<%= key %> = <%= value %>
+    <%- end -%>
+  <%- else -%>
+<%= key %> = <%= value %>
+  <%- end
+end -%>

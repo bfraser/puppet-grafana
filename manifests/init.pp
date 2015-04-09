@@ -21,9 +21,15 @@ class grafana (
   $package_source = $::grafana::params::package_source,
   $service_name   = $::grafana::params::service_name,
   $version        = $::grafana::params::version,
+
+  $cfg_location   = $::grafana::params::cfg_location,
+  $cfg            = $::grafana::params::cfg,
 ) inherits grafana::params {
 
   # validate parameters here
+  if !is_hash($cfg) {
+    fail('cfg parameter must be a hash')
+  }
 
   class { 'grafana::install': } ->
   class { 'grafana::config': } ~>
@@ -31,6 +37,6 @@ class grafana (
 
   contain 'grafana::install'
   contain 'grafana::service'
-  
+
   #Class['grafana']
 }
