@@ -62,6 +62,64 @@ The Grafana module's primary class, `grafana`, guides the basic setup of Grafana
 
 Controls which method to use for installing Grafana. Valid options are: 'archive', 'docker' and 'package'. The default is 'package'. If you wish to use the 'docker' installation method, you will need to include the 'docker' class in your node's manifest / profile.
 
+#####`cfg_location`
+
+Configures the location to which the Grafana configuration is written. The default location is '/etc/grafana/grafana.ini'.
+
+#####`cfg`
+
+Manages the Grafana configuration file. Grafana comes with its own default settings in a different configuration file (/opt/grafana/current/conf/defaults.ini), therefore this module does not supply any defaults.
+
+This parameter only accepts a hash as its value. Keys with hashes as values will generate sections, any other values are just plain values. The example below will result in...
+
+```puppet
+    class { 'grafana':
+      cfg => {
+        app_mode => 'production',
+        server   => {
+          http_port     => 8080,
+        },
+        database => {
+          type          => 'sqlite3',
+          host          => '127.0.0.1:3306',
+          name          => 'grafana',
+          user          => 'root',
+          password      => '',
+        },
+        users    => {
+          allow_sign_up => false,
+        },
+      },
+    }
+```
+
+...the following Grafana configuration:
+
+```ini
+# This file is managed by Puppet, any changes will be overwritten
+
+app_mode = production
+
+[server]
+http_port = 8080
+
+[database]
+type = sqlite3
+host = 127.0.0.1:3306
+name = grafana
+user = root
+password =
+
+[users]
+allow_sign_up = false
+```
+
+Some minor notes:
+
+ - If you want empty values, just use an empty string.
+ - Keys that contains dots (like auth.google) need to be quoted.
+ - The order of the keys in this hash is the same as they will be written to the configuration file. So settings that do not fall under a section will have to come before any sections in the hash.
+
 ##Limitations
 
 This module has been tested on Ubuntu 14.04, using the 'docker' and 'package' installation methods. Other configurations should work with minimal, if any, additional effort.

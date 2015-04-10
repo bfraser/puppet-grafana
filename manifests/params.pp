@@ -20,4 +20,7 @@ class grafana::params {
       fail("${::operatingsystem} not supported")
     }
   }
+
+  $cfg_location = '/etc/grafana/grafana.ini'
+  $cfg = {}
 }
