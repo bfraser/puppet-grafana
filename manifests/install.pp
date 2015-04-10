@@ -16,16 +16,16 @@ class grafana::install {
             destination => '/tmp/grafana.deb'
           }
           
-          package { 'grafana':
-            ensure   => 'present',
+          package { $::grafana::package_name:
+            ensure   => present,
             provider => 'dpkg',
             source   => '/tmp/grafana.deb',
             require  => Wget::Fetch['grafana']
           }
         }
         'RedHat': {
-          package { 'grafana':
-            ensure   => 'present',
+          package { $::grafana::package_name:
+            ensure   => present,
             provider => 'rpm',
             source   => $::grafana::package_source
           }
@@ -36,11 +36,55 @@ class grafana::install {
       }
     }
     'archive': {
-      # extract archive to /opt/grafana/versions/<version>
-      # symlink /opt/grafana/current to /opt/grafana/versions/<version>
-      # symlink /etc/init.d/grafana to /opt/grafana/current/scripts/init.sh
-      # copy /opt/grafana/current/conf/defaults.ini to /etc/grafana/grafana.ini
       # create log directory /var/log/grafana (or parameterize)
+
+      archive { $::grafana::version:
+        ensure           => present,
+        checksum         => false,
+        strip_components => 1,
+        target           => "${::grafana::install_dir}/versions/${::grafana::version}",
+        url              => $::grafana::archive_source
+      }
+
+      file { "${::grafana::install_dir}/current":
+        ensure  => link,
+        target  => "${::grafana::install_dir}/versions/${::grafana::version}",
+        require => Archive[$::grafana::version]
+      }
+
+      file { "${::grafana::install_dir}/current/scripts/init.sh":
+        ensure  => present,
+        mode    => '0755',
+        require => File["${::grafana::install_dir}/current"]
+      }
+      
+      file { '/etc/init.d/grafana':
+        ensure  => link,
+        target  => "${::grafana::install_dir}/current/scripts/init.sh",
+        require => File["${::grafana::install_dir}/current/scripts/init.sh"]
+      }
+
+      user { 'grafana':
+        ensure  => present,
+        home    => $::grafana::install_dir,
+        require => Archive[$::grafana::version]
+      }
+
+      file { $::grafana::install_dir:
+        ensure       => directory,
+        group        => 'grafana',
+        owner        => 'grafana',
+        recurse      => true,
+        recurselimit => 2,
+        require      => User['grafana']
+      }
+
+      file { '/etc/grafana':
+        ensure  => directory,
+        group   => 'grafana',
+        owner   => 'grafana',
+        require => User['grafana']
+      }
     }
     default: {
       fail("Installation method ${::grafana::install_method} not supported")

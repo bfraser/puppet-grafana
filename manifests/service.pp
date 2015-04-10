@@ -11,15 +11,11 @@ class grafana::service {
         ports => '3000' # parameterize this
       }
     }
-    'package': {
-      service { 'grafana':
-        ensure => 'running',
+    /(package|archive)/: {
+      service { $::grafana::service_name:
+        ensure => running,
         enable => true
       }
-    }
-    'archive': {
-      # start grafana by executing ./grafana web
-      # working directory must be set to the root install dir
     }
     default: {
       fail("Installation method ${::grafana::install_method} not supported")

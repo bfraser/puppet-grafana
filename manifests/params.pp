@@ -4,23 +4,11 @@
 # It sets variables according to platform
 #
 class grafana::params {
+  $cfg_location   = '/etc/grafana/grafana.ini'
+  $cfg            = {}
+  $install_dir    = '/opt/grafana'
   $install_method = 'package'
-  case $::osfamily {
-    'Debian': {
-      $package_name   = 'grafana'
-      $package_source = 'https://grafanarel.s3.amazonaws.com/builds/grafana_2.0.0-beta1_amd64.deb'
-      $service_name   = 'grafana'
-    }
-    'RedHat', 'Amazon': {
-      $package_name   = 'grafana'
-      $package_source = 'https://grafanarel.s3.amazonaws.com/builds/grafana-2.0.0_beta1-1.x86_64.rpm'
-      $service_name   = 'grafana'
-    }
-    default: {
-      fail("${::operatingsystem} not supported")
-    }
-  }
-
-  $cfg_location = '/etc/grafana/grafana.ini'
-  $cfg = {}
+  $package_name   = 'grafana'
+  $service_name   = 'grafana'
+  $version        = '2.0.0-beta1'
 }

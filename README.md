@@ -58,9 +58,9 @@ The Grafana module's primary class, `grafana`, guides the basic setup of Grafana
 ```
 **Parameters within `grafana`:**
 
-#####`install_method`
+#####`archive_source`
 
-Controls which method to use for installing Grafana. Valid options are: 'archive', 'docker' and 'package'. The default is 'package'. If you wish to use the 'docker' installation method, you will need to include the 'docker' class in your node's manifest / profile.
+The download location of a tarball to use with the 'archive' install method. Defaults to the URL of the latest version of Grafana available at the time of module release.
 
 #####`cfg_location`
 
@@ -120,9 +120,33 @@ Some minor notes:
  - Keys that contains dots (like auth.google) need to be quoted.
  - The order of the keys in this hash is the same as they will be written to the configuration file. So settings that do not fall under a section will have to come before any sections in the hash.
 
+#####`install_dir`
+
+The installation directory to be used with the 'archive' install method. Defaults to '/opt/grafana'.
+
+#####`install_method`
+
+Controls which method to use for installing Grafana. Valid options are: 'archive', 'docker' and 'package'. The default is 'package'. If you wish to use the 'docker' installation method, you will need to include the 'docker' class in your node's manifest / profile.
+
+#####`package_name`
+
+The name of the package managed with the 'package' install method. Defaults to 'grafana'.
+
+#####`package_source`
+
+The download location of a package to be used with the 'package' install method. Defaults to the URL of the latest version of Grafana available at the time of module release.
+
+#####`service_name`
+
+The name of the service managed with the 'archive' and 'package' install methods. Defaults to 'grafana'.
+
+#####`version`
+
+The version of Grafana to install and manage. Defaults to the latest version of Grafana available at the time of module release.
+
 ##Limitations
 
-This module has been tested on Ubuntu 14.04, using the 'docker' and 'package' installation methods. Other configurations should work with minimal, if any, additional effort.
+This module has been tested on Ubuntu 14.04, using each of the 'archive', docker' and 'package' installation methods. Other configurations should work with minimal, if any, additional effort.
 
 ##Copyright and License
 
