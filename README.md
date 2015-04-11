@@ -120,6 +120,21 @@ Some minor notes:
  - Keys that contains dots (like auth.google) need to be quoted.
  - The order of the keys in this hash is the same as they will be written to the configuration file. So settings that do not fall under a section will have to come before any sections in the hash.
 
+#####`container_cfg`
+
+Boolean to control whether a configuration file should be generated when using the 'docker' install method. If 'true', use the 'cfg' and 'cfg_location' parameters to control creation of the file. Defaults to false.
+
+#####`container_params`
+
+A hash of parameters to use when creating the Docker container. For use with the 'docker' install method. Refer to documentation of the 'docker::run' resource in the [garethr-docker](https://github.com/garethr/garethr-docker) module for details of available parameters. Defaults to:
+
+```puppet
+container_params => {
+  'image' => 'grafana/grafana:latest',
+  'ports' => '3000:3000'
+}
+```
+
 #####`install_dir`
 
 The installation directory to be used with the 'archive' install method. Defaults to '/opt/grafana'.

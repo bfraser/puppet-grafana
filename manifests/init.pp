@@ -7,6 +7,21 @@
 # Download location of tarball to be used with the 'archive' install method.
 # Defaults to the URL of the latest version of Grafana available at the time of module release.
 #
+# [*container_cfg*]
+# Boolean. Determines whether a configuration file should be generated when using the 'docker' install method.
+# If true, use the `cfg` and `cfg_location` parameters to control creation of the file.
+# Defaults to false.
+#
+# [*container_params*]
+# Hash of parameters to use when creating the Docker container. For use with the 'docker' install method.
+# Refer to documentation of the `docker::run` resource in the `garethr-docker` module for details of available parameters.
+# Defaults to:
+#
+#   container_params => {
+#     'image' => 'grafana/grafana:latest',
+#     'ports' => '3000'
+#   }
+#
 # [*install_dir*]
 # Installation directory to be used with the 'archive' install method.
 # Defaults to '/opt/grafana'.
@@ -40,19 +55,21 @@
 #  }
 #
 class grafana (
-  $archive_source = "https://grafanarel.s3.amazonaws.com/builds/grafana-${version}.x86_64.tar.gz",
-  $cfg_location   = $::grafana::params::cfg_location,
-  $cfg            = $::grafana::params::cfg,
-  $install_dir    = $::grafana::params::install_dir,
-  $install_method = $::grafana::params::install_method,
-  $package_name   = $::grafana::params::package_name,
-  $package_source = $::osfamily ? {
+  $archive_source   = "https://grafanarel.s3.amazonaws.com/builds/grafana-${version}.x86_64.tar.gz",
+  $cfg_location     = $::grafana::params::cfg_location,
+  $cfg              = $::grafana::params::cfg,
+  $container_cfg    = $::grafana::params::container_cfg,
+  $container_params = $::grafana::params::container_params,
+  $install_dir      = $::grafana::params::install_dir,
+  $install_method   = $::grafana::params::install_method,
+  $package_name     = $::grafana::params::package_name,
+  $package_source   = $::osfamily ? {
     'Debian'          => "https://grafanarel.s3.amazonaws.com/builds/grafana_${version}_amd64.deb",
     /(RedHat|Amazon)/ => 'https://grafanarel.s3.amazonaws.com/builds/grafana-2.0.0_beta1-1.x86_64.rpm',
     default           => $::grafana::archive_source
   },
-  $service_name   = $::grafana::params::service_name,
-  $version        = $::grafana::params::version
+  $service_name     = $::grafana::params::service_name,
+  $version          = $::grafana::params::version
 ) inherits grafana::params {
 
   # validate parameters here
