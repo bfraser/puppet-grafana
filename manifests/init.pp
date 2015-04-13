@@ -22,9 +22,13 @@
 #     'ports' => '3000'
 #   }
 #
+# [*data_dir*]
+# The directory Grafana will use for storing its data.
+# Defaults to '/var/lib/grafana'.
+#
 # [*install_dir*]
 # Installation directory to be used with the 'archive' install method.
-# Defaults to '/opt/grafana'.
+# Defaults to '/usr/share/grafana'.
 #
 # [*install_method*]
 # Set to 'archive' to install Grafana using the tar archive.
@@ -42,7 +46,7 @@
 #
 # [*service_name*]
 # The name of the service managed with the 'archive' and 'package' install methods.
-# Defaults to 'grafana'.
+# Defaults to 'grafana-server'.
 #
 # [*version*]
 # The version of Grafana to install and manage.
@@ -60,12 +64,13 @@ class grafana (
   $cfg              = $::grafana::params::cfg,
   $container_cfg    = $::grafana::params::container_cfg,
   $container_params = $::grafana::params::container_params,
+  $data_dir         = $::grafana::params::data_dir,
   $install_dir      = $::grafana::params::install_dir,
   $install_method   = $::grafana::params::install_method,
   $package_name     = $::grafana::params::package_name,
   $package_source   = $::osfamily ? {
     'Debian'          => "https://grafanarel.s3.amazonaws.com/builds/grafana_${version}_amd64.deb",
-    /(RedHat|Amazon)/ => 'https://grafanarel.s3.amazonaws.com/builds/grafana-2.0.0_beta1-1.x86_64.rpm',
+    /(RedHat|Amazon)/ => 'https://grafanarel.s3.amazonaws.com/builds/grafana-2.0.0_beta3-1.x86_64.rpm',
     default           => $::grafana::archive_source
   },
   $service_name     = $::grafana::params::service_name,

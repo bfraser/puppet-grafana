@@ -135,9 +135,13 @@ container_params => {
 }
 ```
 
+#####`data_dir`
+
+The directory Grafana will use for storing its data. Defaults to '/var/lib/grafana'.
+
 #####`install_dir`
 
-The installation directory to be used with the 'archive' install method. Defaults to '/opt/grafana'.
+The installation directory to be used with the 'archive' install method. Defaults to '/usr/share/grafana'.
 
 #####`install_method`
 
@@ -153,7 +157,7 @@ The download location of a package to be used with the 'package' install method.
 
 #####`service_name`
 
-The name of the service managed with the 'archive' and 'package' install methods. Defaults to 'grafana'.
+The name of the service managed with the 'archive' and 'package' install methods. Defaults to 'grafana-server'.
 
 #####`version`
 

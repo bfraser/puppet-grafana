@@ -16,7 +16,7 @@ describe 'grafana' do
         it { should contain_class('grafana::config') }
         it { should contain_class('grafana::service').that_subscribes_to('grafana::config') }
 
-        it { should contain_service('grafana') }
+        it { should contain_service('grafana-server') }
         it { should contain_package('grafana').with_ensure('present') }
       end
     end
