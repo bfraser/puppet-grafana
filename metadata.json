@@ -7,10 +7,42 @@
   "source": "git://github.com/bfraser/puppet-grafana.git",
   "project_page": "https://github.com/bfraser/puppet-grafana",
   "issues_url": "https://github.com/bfraser/puppet-grafana/issues",
+  "tags": [
+    "grafana",
+    "graphite",
+    "influxdb",
+    "monitoring",
+    "redhat",
+    "centos",
+    "ubuntu",
+    "debian"
+  ],
   "operatingsystem_support": [
     {
-      "operatingsystem":"RedHat",
-      "operatingsystmrelease":[ "6.0" ]
+      "operatingsystem": "RedHat",
+      "operatingsystmrelease": [ "6.0" ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystmrelease": [ "6.0" ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystmrelease": [ "14.04" ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystmrelease": [ "7.0" ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
     }
   ],
   "dependencies": [
