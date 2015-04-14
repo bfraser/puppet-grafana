@@ -58,10 +58,12 @@ class grafana::install {
       }
 
       file { $::grafana::install_dir:
-        ensure  => directory,
-        group   => 'grafana',
-        owner   => 'grafana',
-        require => User['grafana']
+        ensure       => directory,
+        group        => 'grafana',
+        owner        => 'grafana',
+        recurse      => true,
+        recurselimit => 3,
+        require      => User['grafana']
       }
     }
     default: {
