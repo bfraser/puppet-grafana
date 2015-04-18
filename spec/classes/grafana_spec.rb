@@ -16,7 +16,7 @@ describe 'grafana' do
         it { should contain_class('grafana::config') }
         it { should contain_class('grafana::service').that_subscribes_to('grafana::config') }
 
-        it { should contain_service('grafana-server') }
+        it { should contain_service('grafana-server').with_ensure('running').with_enable(true) }
         it { should contain_package('grafana').with_ensure('present') }
       end
     end
@@ -64,6 +64,42 @@ describe 'grafana' do
       describe 'install the package' do
         it { should contain_package('grafana').with_provider('rpm') }
       end
+    end
+  end
+
+  context 'archive install method' do
+    let(:params) {{
+      :install_method => 'archive'
+    }}
+
+    install_dir    = '/usr/share/grafana'
+    service_config = '/usr/share/grafana/conf/custom.ini'
+
+    describe 'extract archive to install_dir' do
+      it { should contain_archive('grafana').with_ensure('present') }
+      it { should contain_archive('grafana').with_target(install_dir) }
+      it { should contain_archive('grafana').with_strip_components(1) }
+      it { should contain_archive('grafana').that_comes_before('User[grafana]') }
+    end
+
+    describe 'create grafana user' do
+      it { should contain_user('grafana').with_ensure('present').with_home(install_dir) }
+      it { should contain_user('grafana').that_comes_before('File[/usr/share/grafana]') }
+    end
+
+    describe 'manage install_dir' do
+      it { should contain_file(install_dir).with_ensure('directory') }
+      it { should contain_file(install_dir).with_group('grafana').with_owner('grafana') }
+      it { should contain_file(install_dir).with_recurse(true).with_recurselimit(3) }
+    end
+
+    describe 'configure grafana' do
+      it { should contain_file(service_config).with_ensure('present') }
+    end
+
+    describe 'run grafana as service' do
+      it { should contain_service('grafana-server').with_ensure('running').with_provider('base') }
+      it { should contain_service('grafana-server').with_hasrestart(false).with_hasstatus(false) }
     end
   end
 
