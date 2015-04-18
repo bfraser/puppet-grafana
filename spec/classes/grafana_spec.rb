@@ -33,6 +33,40 @@ describe 'grafana' do
     end
   end
 
+  context 'package install method' do
+    context 'debian' do
+      let(:facts) {{
+        :osfamily => 'Debian'
+      }}
+      
+      download_location = '/tmp/grafana.deb'
+
+      describe 'use wget to fetch the package to a temporary location' do
+        it { should contain_wget__fetch('grafana').with_destination(download_location) }
+        it { should contain_wget__fetch('grafana').that_comes_before('Package[grafana]') }
+      end
+
+      describe 'install dependencies first' do
+        it { should contain_package('libfontconfig').with_ensure('present').that_comes_before('Package[grafana]') }
+      end
+
+      describe 'install the package' do
+        it { should contain_package('grafana').with_provider('dpkg') }
+        it { should contain_package('grafana').with_source(download_location) }
+      end
+    end
+
+    context 'redhat' do
+      let(:facts) {{
+        :osfamily => 'RedHat'
+      }}
+
+      describe 'install the package' do
+        it { should contain_package('grafana').with_provider('rpm') }
+      end
+    end
+  end
+
   context 'invalid parameters' do
     context 'cfg' do
       let(:facts) {{
