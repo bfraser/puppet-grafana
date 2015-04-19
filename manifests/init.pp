@@ -89,6 +89,14 @@ class grafana (
   $symlink            = $grafana::params::symlink,
   $symlink_name       = "${install_dir}/grafana",
   $version            = $grafana::params::version,
+  $manage_repository  = $grafana::params::manage_repository,
+  $config_ini         = $grafana::params::config_ini,
+  $database_type      = $grafana::params::database_type,
+  $database_host      = $grafana::params::database_host,
+  $database_name      = $grafana::params::database_name,
+  $database_user      = $grafana::params::database_user,
+  $database_password  = $grafana::params::database_password,
+
 ) inherits grafana::params {
   # TODO: make sure at least one is 'default = true' - probably requires use of lambdas
   # TODO: make sure at least one is 'grafanaDB = true' - probably requires use of lambdas
@@ -126,11 +134,32 @@ class grafana (
     $require_target = Package['grafana']
   }
 
-  file { $config_js:
-    ensure  => present,
-    content => template('grafana/config.js.erb'),
-    group   => $grafana_group,
-    owner   => $grafana_user,
-    require => $require_target,
+  if $manage_repository {
+    include grafana::repository
+  }
+
+  if $version == 'latest' {
+
+    file { $config_ini:
+      ensure  => present,
+      content => template('grafana/grafana.ini.erb'),
+      group   => $grafana_group,
+      owner   => $grafana_user,
+      require => $require_target,
+    }
+
+    service {'grafana-server':
+      ensure => running,
+      require => [ $require_target, File[$config_ini]];
+    }
+
+  } else {
+    file { $config_js:
+      ensure  => present,
+      content => template('grafana/config.js.erb'),
+      group   => $grafana_group,
+      owner   => $grafana_user,
+      require => $require_target,
+    }
   }
 }
