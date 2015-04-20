@@ -59,22 +59,24 @@
 #  }
 #
 class grafana (
-  $archive_source   = "https://grafanarel.s3.amazonaws.com/builds/grafana-${version}.x86_64.tar.gz",
-  $cfg_location     = $::grafana::params::cfg_location,
-  $cfg              = $::grafana::params::cfg,
-  $container_cfg    = $::grafana::params::container_cfg,
-  $container_params = $::grafana::params::container_params,
-  $data_dir         = $::grafana::params::data_dir,
-  $install_dir      = $::grafana::params::install_dir,
-  $install_method   = $::grafana::params::install_method,
-  $package_name     = $::grafana::params::package_name,
-  $package_source   = $::osfamily ? {
+  $archive_source     = "https://grafanarel.s3.amazonaws.com/builds/grafana-${version}.x86_64.tar.gz",
+  $cfg_location       = $::grafana::params::cfg_location,
+  $cfg                = $::grafana::params::cfg,
+  $container_cfg      = $::grafana::params::container_cfg,
+  $container_params   = $::grafana::params::container_params,
+  $data_dir           = $::grafana::params::data_dir,
+  $install_dir        = $::grafana::params::install_dir,
+  $install_method     = $::grafana::params::install_method,
+  $package_name       = $::grafana::params::package_name,
+  $package_source     = $::osfamily ? {
     'Debian'          => "https://grafanarel.s3.amazonaws.com/builds/grafana_${version}_amd64.deb",
     /(RedHat|Amazon)/ => 'https://grafanarel.s3.amazonaws.com/builds/grafana-2.0.0_beta3-1.x86_64.rpm',
     default           => $::grafana::archive_source
   },
-  $service_name     = $::grafana::params::service_name,
-  $version          = $::grafana::params::version
+  $service_name       = $::grafana::params::service_name,
+  $version            = $::grafana::params::version,
+  $manage_repository  = $::grafana::params::manage_repository,
+  $repository_version = $::grafana::params::repository_version,
 ) inherits grafana::params {
 
   # validate parameters here
