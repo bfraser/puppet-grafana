@@ -59,7 +59,7 @@
 #  }
 #
 class grafana (
-  $archive_source   = "https://grafanarel.s3.amazonaws.com/builds/grafana-${version}.x86_64.tar.gz",
+  $archive_source   = "https://grafanarel.s3.amazonaws.com/builds/grafana-${version}.linux-x64.tar.gz",
   $cfg_location     = $::grafana::params::cfg_location,
   $cfg              = $::grafana::params::cfg,
   $container_cfg    = $::grafana::params::container_cfg,
@@ -70,7 +70,7 @@ class grafana (
   $package_name     = $::grafana::params::package_name,
   $package_source   = $::osfamily ? {
     'Debian'          => "https://grafanarel.s3.amazonaws.com/builds/grafana_${version}_amd64.deb",
-    /(RedHat|Amazon)/ => 'https://grafanarel.s3.amazonaws.com/builds/grafana-2.0.0_beta3-1.x86_64.rpm',
+    /(RedHat|Amazon)/ => "https://grafanarel.s3.amazonaws.com/builds/grafana-${version}-1.x86_64.rpm",
     default           => $::grafana::archive_source
   },
   $service_name     = $::grafana::params::service_name,
