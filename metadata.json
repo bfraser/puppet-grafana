@@ -11,11 +11,7 @@
     "grafana",
     "graphite",
     "influxdb",
-    "monitoring",
-    "redhat",
-    "centos",
-    "ubuntu",
-    "debian"
+    "monitoring"
   ],
   "operatingsystem_support": [
     {
