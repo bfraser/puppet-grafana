@@ -28,10 +28,15 @@ class grafana::install {
           }
         }
         'RedHat': {
+          package { 'fontconfig':
+            ensure => present
+          }
+
           package { $::grafana::package_name:
             ensure   => present,
             provider => 'rpm',
-            source   => $::grafana::package_source
+            source   => $::grafana::package_source,
+            require  => Package['fontconfig']
           }
         }
         default: {
