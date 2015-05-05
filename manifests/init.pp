@@ -34,6 +34,7 @@
 # Set to 'archive' to install Grafana using the tar archive.
 # Set to 'docker' to install Grafana using the official Docker container.
 # Set to 'package' to install Grafana using .deb or .rpm packages.
+# Set to 'repo' to install Grafana using your preexisting OS repos.
 # Defaults to 'package'.
 #
 # [*package_name*]

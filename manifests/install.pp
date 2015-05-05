@@ -71,6 +71,11 @@ class grafana::install {
         require      => User['grafana']
       }
     }
+    'repo': {
+      package { $::grafana::package_name:
+        ensure   => present,
+      }
+    }
     default: {
       fail("Installation method ${::grafana::install_method} not supported")
     }
