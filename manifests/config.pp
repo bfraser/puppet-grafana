@@ -3,6 +3,20 @@
 # This class is called from grafana
 #
 class grafana::config {
+  file {
+    $::grafana::log_dir:
+      ensure => directory,
+      group  => 'grafana',
+      mode   => '0750',
+      owner  => 'grafana';
+
+    "${::grafana::log_dir}/grafana.log":
+      ensure  => file,
+      group   => 'grafana',
+      owner   => 'grafana',
+      require => File[$::grafana::log_dir];
+  }
+
   case $::grafana::install_method {
     'docker': {
       if $::grafana::container_cfg {

@@ -36,6 +36,10 @@
 # Set to 'package' to install Grafana using .deb or .rpm packages.
 # Defaults to 'package'.
 #
+# [*log_dir*]
+# Log directory to be used with any install method.
+# Defaults to '/var/log/grafana'.
+#
 # [*package_name*]
 # The name of the package managed with the 'package' install method.
 # Defaults to 'grafana'.
@@ -60,13 +64,14 @@
 #
 class grafana (
   $archive_source   = "https://grafanarel.s3.amazonaws.com/builds/grafana-${version}.linux-x64.tar.gz",
-  $cfg_location     = $::grafana::params::cfg_location,
   $cfg              = $::grafana::params::cfg,
+  $cfg_location     = $::grafana::params::cfg_location,
   $container_cfg    = $::grafana::params::container_cfg,
   $container_params = $::grafana::params::container_params,
   $data_dir         = $::grafana::params::data_dir,
   $install_dir      = $::grafana::params::install_dir,
   $install_method   = $::grafana::params::install_method,
+  $log_dir          = $::grafana::params::log_dir,
   $package_name     = $::grafana::params::package_name,
   $package_source   = $::osfamily ? {
     'Debian'          => "https://grafanarel.s3.amazonaws.com/builds/grafana_${version}_amd64.deb",

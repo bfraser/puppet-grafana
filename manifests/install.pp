@@ -19,7 +19,7 @@ class grafana::install {
             source      => $::grafana::package_source,
             destination => '/tmp/grafana.deb'
           }
-          
+
           package { $::grafana::package_name:
             ensure   => present,
             provider => 'dpkg',
@@ -45,8 +45,6 @@ class grafana::install {
       }
     }
     'archive': {
-      # create log directory /var/log/grafana (or parameterize)
-
       archive { 'grafana':
         ensure           => present,
         checksum         => false,
