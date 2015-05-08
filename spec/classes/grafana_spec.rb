@@ -18,6 +18,17 @@ describe 'grafana' do
 
         it { should contain_service('grafana-server').with_ensure('running').with_enable(true) }
         it { should contain_package('grafana').with_ensure('present') }
+
+        it { should contain_file('/var/log/grafana').with_ensure('directory') }
+      end
+
+      describe "grafana class with parameter log_dir on #{osfamily}" do
+        let(:params) {{ :log_dir => '/grafana' }}
+        let(:facts) {{
+          :osfamily => osfamily,
+        }}
+
+        it { should contain_file('/grafana').with_ensure('directory') }
       end
     end
   end
@@ -38,7 +49,7 @@ describe 'grafana' do
       let(:facts) {{
         :osfamily => 'Debian'
       }}
-      
+
       download_location = '/tmp/grafana.deb'
 
       describe 'use wget to fetch the package to a temporary location' do

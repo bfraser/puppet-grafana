@@ -4,8 +4,8 @@
 # It sets variables according to platform
 #
 class grafana::params {
-  $cfg_location     = '/etc/grafana/grafana.ini'
   $cfg              = {}
+  $cfg_location     = '/etc/grafana/grafana.ini'
   $container_cfg    = false
   $container_params = {}
   $data_dir         = '/var/lib/grafana'
@@ -13,6 +13,7 @@ class grafana::params {
   $docker_ports     = '3000:3000'
   $install_dir      = '/usr/share/grafana'
   $install_method   = 'package'
+  $log_dir          = '/var/log/grafana'
   $package_name     = 'grafana'
   $service_name     = 'grafana-server'
   $version          = '2.0.2'
