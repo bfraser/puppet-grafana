@@ -61,6 +61,10 @@ describe 'grafana' do
         :osfamily => 'RedHat'
       }}
 
+      describe 'install dependencies first' do
+        it { should contain_package('fontconfig').with_ensure('present').that_comes_before('Package[grafana]') }
+      end
+
       describe 'install the package' do
         it { should contain_package('grafana').with_provider('rpm') }
       end

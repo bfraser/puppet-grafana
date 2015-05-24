@@ -4,9 +4,10 @@ class grafana::repository::debian {
     location    => 'https://packagecloud.io/grafana/testing/debian/',
     release     => 'wheezy',
     repos       => 'main',
-    key         => 'D59097AB',
-    key_source  => 'https://packagecloud.io/gpg.key',
-    include_src => false,
+    key         => {
+      id     => '418A7F2FB0E1E6E7EABF6FE8C2E73424D59097AB',
+      source => 'https://packagecloud.io/gpg.key'
+    }
   }
 
 }

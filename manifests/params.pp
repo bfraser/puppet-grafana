@@ -15,7 +15,7 @@ class grafana::params {
   $install_method     = 'package'
   $package_name       = 'grafana'
   $service_name       = 'grafana-server'
-  $version            = '2.0.0-beta3'
+  $version            = '2.0.2'
   $manage_repository  = false
   $repository_version = 'present'
 }
