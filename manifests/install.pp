@@ -11,20 +11,28 @@ class grafana::install {
     'package': {
       case $::osfamily {
         'Debian': {
-          package { 'libfontconfig':
-            ensure => present
-          }
+          if $::grafana::manage_repository {
+            include grafana::repository
 
-          wget::fetch { 'grafana':
-            source      => $::grafana::package_source,
-            destination => '/tmp/grafana.deb'
-          }
-          
-          package { $::grafana::package_name:
-            ensure   => present,
-            provider => 'dpkg',
-            source   => '/tmp/grafana.deb',
-            require  => [Wget::Fetch['grafana'],Package['libfontconfig']]
+            package { $::grafana::package_name:
+              ensure   => $::grafana::repository_version,
+            }
+          } else {
+            package { 'libfontconfig':
+              ensure => present
+            }
+
+            wget::fetch { 'grafana':
+              source      => $::grafana::package_source,
+              destination => '/tmp/grafana.deb'
+            }
+
+            package { $::grafana::package_name:
+              ensure   => present,
+              provider => 'dpkg',
+              source   => '/tmp/grafana.deb',
+              require  => [Wget::Fetch['grafana'],Package['libfontconfig']]
+            }
           }
         }
         'RedHat': {

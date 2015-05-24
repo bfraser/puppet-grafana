@@ -73,8 +73,10 @@ class grafana (
     /(RedHat|Amazon)/ => "https://grafanarel.s3.amazonaws.com/builds/grafana-${version}-1.x86_64.rpm",
     default           => $::grafana::archive_source
   },
-  $service_name     = $::grafana::params::service_name,
-  $version          = $::grafana::params::version
+  $service_name       = $::grafana::params::service_name,
+  $version            = $::grafana::params::version,
+  $manage_repository  = $::grafana::params::manage_repository,
+  $repository_version = $::grafana::params::repository_version,
 ) inherits grafana::params {
 
   # validate parameters here
