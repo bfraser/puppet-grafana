@@ -5,10 +5,10 @@
 
 [<%=
   case key
-    when "auth_anonymouse" then 'auth.anonymouse'
-    when "auth_github"     then 'auth.github'
-    when "auth_google"     then 'auth.google'
-    else                        key
+    when "auth_anonymous" then "auth_anonymous"
+    when "auth_github"    then "auth.github"
+    when "auth_google"    then "auth.google"
+    else key
   end
 %>]
     <%- value.each_pair do |key, value| -%>
