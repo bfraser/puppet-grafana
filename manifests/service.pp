@@ -17,7 +17,7 @@ class grafana::service {
 
       create_resources(docker::run, $container, $defaults)
     }
-    'package': {
+    'package','repo': {
       service { $::grafana::service_name:
         ensure => running,
         enable => true

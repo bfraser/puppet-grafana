@@ -19,7 +19,7 @@ class grafana::install {
             source      => $::grafana::package_source,
             destination => '/tmp/grafana.deb'
           }
-          
+
           package { $::grafana::package_name:
             ensure   => present,
             provider => 'dpkg',
@@ -42,6 +42,41 @@ class grafana::install {
         default: {
           fail("${::operatingsystem} not supported")
         }
+      }
+    }
+    'repo': {
+      case $::osfamily {
+        'Debian': {
+          if !defined(Class['apt']) {
+            class { 'apt': }
+          }
+          apt::source { 'grafana':
+            location    => 'https://packagecloud.io/grafana/stable/debian',
+            release     => 'wheezy',
+            repos       => 'main',
+            key         => 'E732A79A',
+            key_source  => 'https://packagecloud.io/gpg.key',
+            include_src => false,
+          }
+        }
+        'RedHat': {
+          yumrepo { 'grafana':
+            descr    => 'grafana repo',
+            baseurl  => 'https://packagecloud.io/grafana/stable/el/6/$basearch',
+            gpgcheck => 1,
+            gpgkey   => 'https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana',
+            enabled  => 1,
+          }
+        }
+        default: {
+          fail("${::operatingsystem} not supported")
+        }
+      }
+      package { 'libfontconfig':
+        ensure => present
+      }
+      package { 'grafana':
+        ensure => present
       }
     }
     'archive': {
