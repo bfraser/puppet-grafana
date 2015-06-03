@@ -54,7 +54,7 @@ class grafana::install {
             location    => 'https://packagecloud.io/grafana/stable/debian',
             release     => 'wheezy',
             repos       => 'main',
-            key         => 'E732A79A',
+            key         => 'D59097AB',
             key_source  => 'https://packagecloud.io/gpg.key',
             include_src => false,
           }
