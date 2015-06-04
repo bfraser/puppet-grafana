@@ -4,5 +4,6 @@ fixtures:
      archive: "git://github.com/camptocamp/puppet-archive.git"
      docker: "git://github.com/garethr/garethr-docker.git"
      wget: "git://github.com/maestrodev/puppet-wget.git"
+     apt: https://github.com/puppetlabs/puppetlabs-apt.git
   symlinks:
     grafana: "#{source_dir}"

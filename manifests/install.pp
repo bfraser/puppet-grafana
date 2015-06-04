@@ -47,7 +47,7 @@ class grafana::install {
     'repo': {
       case $::osfamily {
         'Debian': {
-          if !defined(Class['apt']) {
+          if !defined( Class['apt'] ) {
             class { 'apt': }
           }
           apt::source { 'grafana':
