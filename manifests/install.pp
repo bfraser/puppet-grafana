@@ -11,7 +11,7 @@ class grafana::install {
     'package': {
       case $::osfamily {
         'Debian': {
-          package { 'libfontconfig':
+          package { 'libfontconfig1':
             ensure => present
           }
 
@@ -24,7 +24,7 @@ class grafana::install {
             ensure   => present,
             provider => 'dpkg',
             source   => '/tmp/grafana.deb',
-            require  => [Wget::Fetch['grafana'],Package['libfontconfig']]
+            require  => [Wget::Fetch['grafana'],Package['libfontconfig1']]
           }
         }
         'RedHat': {
@@ -72,7 +72,7 @@ class grafana::install {
           fail("${::operatingsystem} not supported")
         }
       }
-      package { 'libfontconfig':
+      package { 'libfontconfig1':
         ensure => present
       }
       package { 'grafana':
