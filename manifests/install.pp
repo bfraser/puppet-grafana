@@ -47,6 +47,10 @@ class grafana::install {
     'repo': {
       case $::osfamily {
         'Debian': {
+          package { 'libfontconfig1':
+            ensure => present
+          }
+
           if !defined( Class['apt'] ) {
             class { 'apt': }
           }
@@ -58,15 +62,18 @@ class grafana::install {
             key_source  => 'https://packagecloud.io/gpg.key',
             include_src => false,
           }
-          package { 'libfontconfig1':
-            ensure => present
-          }
+
+
           package { 'grafana':
             ensure  => present,
             require => Package['libfontconfig1']
           }
         }
         'RedHat': {
+          package { 'fontconfig':
+            ensure => present
+          }
+
           yumrepo { 'grafana':
             descr    => 'grafana repo',
             baseurl  => 'https://packagecloud.io/grafana/stable/el/6/$basearch',
@@ -74,9 +81,7 @@ class grafana::install {
             gpgkey   => 'https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana',
             enabled  => 1,
           }
-          package { 'fontconfig':
-            ensure => present
-          }
+
           package { 'grafana':
             ensure  => present,
             require => Package['fontconfig']
