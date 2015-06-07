@@ -58,6 +58,13 @@ class grafana::install {
             key_source  => 'https://packagecloud.io/gpg.key',
             include_src => false,
           }
+          package { 'libfontconfig1':
+            ensure => present
+          }
+          package { 'grafana':
+            ensure  => present,
+            require => Package['libfontconfig1']
+          }
         }
         'RedHat': {
           yumrepo { 'grafana':
@@ -67,16 +74,17 @@ class grafana::install {
             gpgkey   => 'https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana',
             enabled  => 1,
           }
+          package { 'fontconfig':
+            ensure => present
+          }
+          package { 'grafana':
+            ensure  => present,
+            require => Package['fontconfig']
+          }
         }
         default: {
           fail("${::operatingsystem} not supported")
         }
-      }
-      package { 'libfontconfig1':
-        ensure => present
-      }
-      package { 'grafana':
-        ensure => present
       }
     }
     'archive': {
