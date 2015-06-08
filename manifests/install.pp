@@ -51,18 +51,19 @@ class grafana::install {
             ensure => present
           }
 
-          if !defined( Class['apt'] ) {
-            class { 'apt': }
+          if ($manage_package_repo){
+            if !defined( Class['apt'] ) {
+              class { 'apt': }
+            }
+            apt::source { 'grafana':
+              location    => 'https://packagecloud.io/grafana/stable/debian',
+              release     => 'wheezy',
+              repos       => 'main',
+              key         => 'D59097AB',
+              key_source  => 'https://packagecloud.io/gpg.key',
+              include_src => false,
+            }
           }
-          apt::source { 'grafana':
-            location    => 'https://packagecloud.io/grafana/stable/debian',
-            release     => 'wheezy',
-            repos       => 'main',
-            key         => 'D59097AB',
-            key_source  => 'https://packagecloud.io/gpg.key',
-            include_src => false,
-          }
-
 
           package { 'grafana':
             ensure  => present,
@@ -74,12 +75,14 @@ class grafana::install {
             ensure => present
           }
 
-          yumrepo { 'grafana':
-            descr    => 'grafana repo',
-            baseurl  => 'https://packagecloud.io/grafana/stable/el/6/$basearch',
-            gpgcheck => 1,
-            gpgkey   => 'https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana',
-            enabled  => 1,
+          if ($manage_package_repo){
+            yumrepo { 'grafana':
+              descr    => 'grafana repo',
+              baseurl  => 'https://packagecloud.io/grafana/stable/el/6/$basearch',
+              gpgcheck => 1,
+              gpgkey   => 'https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana',
+              enabled  => 1,
+            }
           }
 
           package { 'grafana':

@@ -72,15 +72,20 @@ describe 'grafana' do
   end
 
   context 'repo install method' do
+    let(:params) {{
+      :install_method => 'repo',
+      :manage_package_repo => true
+    }}
+
     context 'debian' do
       let(:facts) {{
         :osfamily => 'Debian'
       }}
 
-      # describe 'install apt repo dependencies first' do
-      #   it { should contain_class('apt') }
-      #   it { should contain_apt__source('grafana').with(:release => 'wheezy', :repos => 'main', :location => 'https://packagecloud.io/grafana/stable/debian') }
-      #end
+      describe 'install apt repo dependencies first' do
+        it { should contain_class('apt') }
+        it { should contain_apt__source('grafana').with(:release => 'wheezy', :repos => 'main', :location => 'https://packagecloud.io/grafana/stable/debian') }
+      end
 
       describe 'install dependencies first' do
         it { should contain_package('libfontconfig1').with_ensure('present').that_comes_before('Package[grafana]') }
@@ -96,9 +101,9 @@ describe 'grafana' do
         :osfamily => 'RedHat'
       }}
 
-      # describe 'yum repo dependencies first' do
-      #  it { should contain_yumrepo('grafana').with(:baseurl => 'https://packagecloud.io/grafana/stable/el/6/$basearch', :gpgkey => 'https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana', :enabled => 1) }
-      # end
+      describe 'yum repo dependencies first' do
+        it { should contain_yumrepo('grafana').with(:baseurl => 'https://packagecloud.io/grafana/stable/el/6/$basearch', :gpgkey => 'https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana', :enabled => 1) }
+      end
 
       describe 'install dependencies first' do
         it { should contain_package('fontconfig').with_ensure('present').that_comes_before('Package[grafana]') }
