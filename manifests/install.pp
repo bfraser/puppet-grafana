@@ -51,7 +51,7 @@ class grafana::install {
             ensure => present
           }
 
-          if ($manage_package_repo){
+          if ( $::grafana::manage_package_repo ){
             if !defined( Class['apt'] ) {
               class { 'apt': }
             }
@@ -75,7 +75,7 @@ class grafana::install {
             ensure => present
           }
 
-          if ($manage_package_repo){
+          if ( $::grafana::manage_package_repo ){
             yumrepo { 'grafana':
               descr    => 'grafana repo',
               baseurl  => 'https://packagecloud.io/grafana/stable/el/6/$basearch',
