@@ -79,7 +79,8 @@ describe 'grafana' do
 
     context 'debian' do
       let(:facts) {{
-        :osfamily => 'Debian'
+        :osfamily => 'Debian',
+        :lsbdistid => 'Ubuntu'
       }}
 
       describe 'install apt repo dependencies first' do

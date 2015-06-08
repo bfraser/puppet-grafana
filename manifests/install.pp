@@ -56,12 +56,13 @@ class grafana::install {
               class { 'apt': }
             }
             apt::source { 'grafana':
-              location    => 'https://packagecloud.io/grafana/stable/debian',
-              release     => 'wheezy',
-              repos       => 'main',
-              key         => 'D59097AB',
-              key_source  => 'https://packagecloud.io/gpg.key',
-              include_src => false,
+              location => 'https://packagecloud.io/grafana/stable/debian',
+              release  => 'wheezy',
+              repos    => 'main',
+              key      =>  {
+                'id'     => 'D59097AB',
+                'source' => 'https://packagecloud.io/gpg.key'
+              },
             }
           }
 
