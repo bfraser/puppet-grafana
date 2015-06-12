@@ -63,6 +63,7 @@ class grafana::install {
                 'id'     => 'D59097AB',
                 'source' => 'https://packagecloud.io/gpg.key'
               },
+              before   => Package[$::grafana::package_name],
             }
           }
 
@@ -83,6 +84,7 @@ class grafana::install {
               gpgcheck => 1,
               gpgkey   => 'https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana',
               enabled  => 1,
+              before   => Package[$::grafana::package_name],
             }
           }
 
