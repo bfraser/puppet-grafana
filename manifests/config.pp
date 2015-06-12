@@ -14,7 +14,7 @@ class grafana::config {
         }
       }
     }
-    'package': {
+    'package','repo': {
       $cfg = $::grafana::cfg
 
       file {  $::grafana::cfg_location:

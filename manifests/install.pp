@@ -11,7 +11,7 @@ class grafana::install {
     'package': {
       case $::osfamily {
         'Debian': {
-          package { 'libfontconfig':
+          package { 'libfontconfig1':
             ensure => present
           }
 
@@ -19,12 +19,12 @@ class grafana::install {
             source      => $::grafana::package_source,
             destination => '/tmp/grafana.deb'
           }
-          
+
           package { $::grafana::package_name:
             ensure   => present,
             provider => 'dpkg',
             source   => '/tmp/grafana.deb',
-            require  => [Wget::Fetch['grafana'],Package['libfontconfig']]
+            require  => [Wget::Fetch['grafana'],Package['libfontconfig1']]
           }
         }
         'RedHat': {
@@ -37,6 +37,58 @@ class grafana::install {
             provider => 'rpm',
             source   => $::grafana::package_source,
             require  => Package['fontconfig']
+          }
+        }
+        default: {
+          fail("${::operatingsystem} not supported")
+        }
+      }
+    }
+    'repo': {
+      case $::osfamily {
+        'Debian': {
+          package { 'libfontconfig1':
+            ensure => present
+          }
+
+          if ( $::grafana::manage_package_repo ){
+            if !defined( Class['apt'] ) {
+              class { 'apt': }
+            }
+            apt::source { 'grafana':
+              location => 'https://packagecloud.io/grafana/stable/debian',
+              release  => 'wheezy',
+              repos    => 'main',
+              key      =>  {
+                'id'     => 'D59097AB',
+                'source' => 'https://packagecloud.io/gpg.key'
+              },
+            }
+          }
+
+          package { 'grafana':
+            ensure  => present,
+            require => Package['libfontconfig1']
+          }
+        }
+        'RedHat': {
+          package { 'fontconfig':
+            ensure => present
+          }
+
+          if ( $::grafana::manage_package_repo ){
+            yumrepo { 'grafana':
+              descr    => 'grafana repo',
+              baseurl  => 'https://packagecloud.io/grafana/stable/el/6/$basearch',
+              gpgcheck => 1,
+              gpgkey   => 'https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana',
+              enabled  => 1,
+            }
+          }
+
+          package { 'grafana':
+            ensure  => present,
+            require => Package['fontconfig']
           }
         }
         default: {
