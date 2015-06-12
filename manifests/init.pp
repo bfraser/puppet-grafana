@@ -38,7 +38,7 @@
 # Defaults to 'package'.
 #
 # [*manage_package_repo*]
-# If true this will setup the official grafana repositories on your host. Defaults to false.
+# If true this will setup the official grafana repositories on your host. Defaults to true.
 #
 # [*package_name*]
 # The name of the package managed with the 'package' install method.
