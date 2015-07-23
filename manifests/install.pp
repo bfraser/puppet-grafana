@@ -110,10 +110,12 @@ class grafana::install {
         url              => $::grafana::archive_source
       }
 
-      user { 'grafana':
-        ensure  => present,
-        home    => $::grafana::install_dir,
-        require => Archive['grafana']
+      if !defined(User['grafana']){
+        user { 'grafana':
+          ensure  => present,
+          home    => $::grafana::install_dir,
+          require => Archive['grafana']
+        }
       }
 
       file { $::grafana::install_dir:

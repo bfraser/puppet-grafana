@@ -152,6 +152,31 @@ describe 'grafana' do
       it { should contain_service('grafana-server').with_ensure('running').with_provider('base') }
       it { should contain_service('grafana-server').with_hasrestart(false).with_hasstatus(false) }
     end
+
+    context 'when user already defined' do
+      let(:pre_condition) {
+        'user{"grafana":
+          ensure => present,
+        }'
+      }
+      describe 'do NOT create grafana user' do
+        it { should_not contain_user('grafana').with_ensure('present').with_home(install_dir) }
+      end
+    end
+
+    context 'when service already defined' do
+      let(:pre_condition) {
+        'service{"grafana-server":
+          ensure     => running,
+          hasrestart => true,
+          hasstatus  => true,
+        }'
+      }
+      # let(:params) {{ :service_name => 'grafana-server'}}
+      describe 'do NOT run service' do
+        it { should_not contain_service('grafana-server').with_hasrestart(false).with_hasstatus(false) }
+      end
+    end
   end
 
   context 'invalid parameters' do
