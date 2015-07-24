@@ -215,6 +215,10 @@ The download location of a package to be used with the 'package' install method.
 
 The name of the service managed with the 'archive' and 'package' install methods. Defaults to 'grafana-server'.
 
+#####`service_ensure`
+
+The ensure parameter passed to the service. Defaults to 'running'.
+
 #####`version`
 
 The version of Grafana to install and manage. Defaults to the latest version of Grafana available at the time of module release.
