@@ -21,7 +21,7 @@ class grafana::install {
           }
 
           package { $::grafana::package_name:
-            ensure   => present,
+            ensure   => $::grafana::version,
             provider => 'dpkg',
             source   => '/tmp/grafana.deb',
             require  => [Wget::Fetch['grafana'],Package['libfontconfig1']]
@@ -33,7 +33,7 @@ class grafana::install {
           }
 
           package { $::grafana::package_name:
-            ensure   => present,
+            ensure   => $::grafana::version,
             provider => 'rpm',
             source   => $::grafana::package_source,
             require  => Package['fontconfig']
@@ -68,7 +68,7 @@ class grafana::install {
           }
 
           package { $::grafana::package_name:
-            ensure  => present,
+            ensure  => $::grafana::version,
             require => Package['libfontconfig1']
           }
         }
@@ -89,7 +89,7 @@ class grafana::install {
           }
 
           package { $::grafana::package_name:
-            ensure  => present,
+            ensure  => $::grafana::version,
             require => Package['fontconfig']
           }
         }
