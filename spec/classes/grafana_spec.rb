@@ -17,7 +17,7 @@ describe 'grafana' do
         it { should contain_class('grafana::service').that_subscribes_to('grafana::config') }
 
         it { should contain_service('grafana-server').with_ensure('running').with_enable(true) }
-        it { should contain_package('grafana').with_ensure('present') }
+        it { should contain_package('grafana').with_ensure('::grafana::version') }
       end
     end
   end
@@ -94,7 +94,7 @@ describe 'grafana' do
       end
 
       describe 'install the package' do
-        it { should contain_package('grafana').with_ensure('present') }
+        it { should contain_package('grafana').with_ensure('::grafana::version') }
       end
     end
 
@@ -113,7 +113,7 @@ describe 'grafana' do
       end
 
       describe 'install the package' do
-        it { should contain_package('grafana').with_ensure('present') }
+        it { should contain_package('grafana').with_ensure('::grafana::version') }
       end
     end
   end
