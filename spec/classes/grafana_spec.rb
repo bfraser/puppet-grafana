@@ -74,7 +74,8 @@ describe 'grafana' do
   context 'repo install method' do
     let(:params) {{
       :install_method => 'repo',
-      :manage_package_repo => true
+      :manage_package_repo => true,
+      :version => 'present'
     }}
 
     context 'debian' do

@@ -68,7 +68,7 @@ class grafana::install {
           }
 
           package { $::grafana::package_name:
-            ensure  => present,
+            ensure  => $::grafana::version,
             require => Package['libfontconfig1']
           }
         }
@@ -89,7 +89,7 @@ class grafana::install {
           }
 
           package { $::grafana::package_name:
-            ensure  => present,
+            ensure  => $::grafana::version,
             require => Package['fontconfig']
           }
         }
