@@ -16,5 +16,10 @@ class grafana::params {
   $manage_package_repo = true
   $package_name        = 'grafana'
   $service_name        = 'grafana-server'
-  $version             = '2.1.0'
+
+  case $::operatingsystem {
+    'RedHat','CentOS': { $version = '2.1.0-1' }
+    'Debian','Ubuntu': { $version = '2.1.0'}
+    default: { fail("Unsupported operating system: ${::operatingsystem}") }
+  }
 }
