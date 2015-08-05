@@ -148,7 +148,7 @@ The installation directory to be used with the 'archive' install method. Default
 
 Controls which method to use for installing Grafana. Valid options are: 'archive', 'docker', 'repo' and 'package'. The default is 'package'. If you wish to use the 'docker' installation method, you will need to include the 'docker' class in your node's manifest / profile. If you wish to use the 'repo' installation method, you can control whether the official Grafana repositories will be used. See `manage_package_repo` below for details.
 
-####`manage_package_repo`
+#####`manage_package_repo`
 
 Boolean. When using the 'repo' installation method, controls whether the official Grafana repositories are enabled on your host. If true, the official Grafana repositories will be enabled. If false, the module assumes you are managing your own package repository and will not set one up for you. Defaults to true.
 

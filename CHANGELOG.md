@@ -1,8 +1,29 @@
-# 2.0.0 (2015-04-04)
+# 2.1.0 (2015-08-05)
 
 **Enhancements**
-- Support for Grafana 2.0
-- Users of Grafana 1.x should stick to version 1.x of the Puppet module
+- Support for Grafana 2.1
+- [PR #34](https://github.com/bfraser/puppet-grafana/pull/34) Support for 'repo' install method to install packages from [packagecloud](https://packagecloud.io/grafana) repositories
+- Addition of boolean parameter ```manage_package_repo``` to control whether the module will manage the package repository when using the 'repo' install method. See README.md for details
+- [PR #39](https://github.com/bfraser/puppet-grafana/pull/39) Ability to ensure a specific package version is installed when using the 'repo' install method
+
+**Fixes**
+- [Issue #37](https://github.com/bfraser/puppet-grafana/issues/37) Archive install method: check if user and service are defined before attempting to define them
+
+**Behind The Scenes**
+- Proper ordering of resources
+- Use 40 character GPG key ID for packagecloud apt repository
+
+# 2.0.2 (2015-04-30)
+
+**Enhancements**
+- Support for Grafana 2.0. Users of Grafana 1.x should stick to version 1.x of the Puppet module
+- Support 'archive', 'docker' and 'package' install methods
+- Ability to supply a hash of parameters to the Docker container when using 'docker' install method
+- [PR #24](https://github.com/bfraser/puppet-grafana/pull/24) Ability to configure Grafana using configuration hash parameter ```cfg```
+
+**Behind The Scenes**
+- Update module operatingsystem support, tags, Puppet requirements
+- Tests for 'archive' and 'package' install methods
 
 # 1.0.1 (2015-02-27)
 
