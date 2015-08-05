@@ -121,6 +121,55 @@ Some minor notes:
  - Keys that contains dots (like auth.google) need to be quoted.
  - The order of the keys in this hash is the same as they will be written to the configuration file. So settings that do not fall under a section will have to come before any sections in the hash.
 
+####`ldap_cfg`
+
+#####TOML note
+This option **requires** the [toml](https://github.com/toml-lang/toml) gem. Either install the gem using puppet's native gem provider, [puppetserver_gem](https://forge.puppetlabs.com/puppetlabs/puppetserver_gem), [pe_gem](https://forge.puppetlabs.com/puppetlabs/pe_gem), [pe_puppetserver_gem](https://forge.puppetlabs.com/puppetlabs/pe_puppetserver_gem), or manually using one of the following:
+```
+  # apply or puppet-master
+  gem install toml
+  # PE apply
+  /opt/puppet/bin/gem install toml
+  # AIO or PE puppetserver
+  /opt/puppet/bin/puppetserver gem install toml
+```
+
+#####cfg note
+This option by itself is not sufficient to enable LDAP configuration as it must be enabled in the main configuration file. Enable it in cfg with:
+
+```
+'auth.ldap' => {
+  enabled     => 'true',
+  config_file => '/etc/grafana/ldap.toml',
+},
+```
+
+Manages the Grafana LDAP configuration file. This hash is directly translated into the corresponding TOML file, allowing for full flexibility in generating the configuration.
+
+See the [LDAP documentation](http://docs.grafana.org/v2.1/installation/ldap/) for more information.
+
+Example:
+
+```
+ldap_cfg => {
+  servers => [
+    { host => 'ldapserver1.domain1.com',
+      use_ssl => true,
+      search_filter => '(sAMAccountName=%s)',
+      search_base_dns => [ 'dc=domain1,dc=com' ],
+    },
+  ],
+  'servers.attributes' => {
+    name => 'givenName',
+    surname => 'sn',
+    username => 'sAMAccountName',
+    member_of => 'memberOf',
+    email => 'email',
+  }
+},
+```
+
+
 #####`container_cfg`
 
 Boolean to control whether a configuration file should be generated when using the 'docker' install method. If 'true', use the 'cfg' and 'cfg_location' parameters to control creation of the file. Defaults to false.
@@ -170,7 +219,7 @@ The version of Grafana to install and manage. Defaults to the latest version of 
 
 ##Advanced usage:
 
-The archive install method will create the user and a "command line" service by default. 
+The archive install method will create the user and a "command line" service by default.
 There are no extra parameters to manage user/service for archive. However, both check to see if they are defined before defining. This way you can creat your own user and service with your own specifications. (sort of overriding)
 The service can be a bit tricky, in this example below, the class sensu_install::grafana::service creates a startup script and a service{'grafana-server':}
 
@@ -184,16 +233,16 @@ Example:
     class { 'grafana':
       install_method  => 'archive',
     }
-    
+
     include sensu_install::grafana::service
-    
+
     # run your service after install/config but before grafana::service
     Class[::grafana::install]
     ->
     Class[sensu_install::grafana::service]
     ->
     Class[::grafana::service]
-    
+
 ```
 
 ##Limitations

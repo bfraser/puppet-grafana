@@ -66,6 +66,7 @@ class grafana (
   $archive_source      = "https://grafanarel.s3.amazonaws.com/builds/grafana-${version}.linux-x64.tar.gz",
   $cfg_location        = $::grafana::params::cfg_location,
   $cfg                 = $::grafana::params::cfg,
+  $ldap_cfg            = $::grafana::params::ldap_cfg,
   $container_cfg       = $::grafana::params::container_cfg,
   $container_params    = $::grafana::params::container_params,
   $data_dir            = $::grafana::params::data_dir,
