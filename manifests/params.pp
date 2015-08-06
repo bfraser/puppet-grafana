@@ -17,9 +17,22 @@ class grafana::params {
   $package_name        = 'grafana'
   $service_name        = 'grafana-server'
 
+  $grafana_version     = '2.1.0'
+  $rpm_iteration       = '1'
+  $archive_source = "https://grafanarel.s3.amazonaws.com/builds/grafana-${grafana_version}.linux-x64.tar.gz"
+
   case $::osfamily {
-    /(RedHat|Amazon)/: { $version = '2.1.0-1' }
-    'Debian': { $version = '2.1.0'}
-    default: { fail("Unsupported operating system: ${::operatingsystem}") }
+    /(RedHat|Amazon)/: {
+      $version        = "${grafana_version}-${rpm_iteration}"
+      $package_source = "https://grafanarel.s3.amazonaws.com/builds/grafana-${version}.x86_64.rpm"
+    }
+    'Debian': {
+      $version        = $grafana_version
+      $package_source = "https://grafanarel.s3.amazonaws.com/builds/grafana_${version}_amd64.deb"
+    }
+    default: {
+      $version        = $grafana_version
+      $package_source = $archive_source
+    }
   }
 }
