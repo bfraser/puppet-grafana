@@ -119,6 +119,31 @@ describe 'grafana' do
     end
   end
 
+  context 'repo install method without managing the package repo' do
+    let(:params) {{
+      :install_method => 'repo',
+      :manage_package_repo => false,
+      :version => 'present'
+    }}
+
+    context 'debian' do
+      let(:facts) {{
+        :osfamily => 'Debian',
+        :lsbdistid => 'Ubuntu'
+      }}
+
+      it { should compile.with_all_deps }
+
+      describe 'install dependencies first' do
+        it { should contain_package('libfontconfig1').with_ensure('present').that_comes_before('Package[grafana]') }
+      end
+
+      describe 'install the package' do
+        it { should contain_package('grafana').with_ensure('present') }
+      end
+    end
+  end
+
   context 'archive install method' do
     let(:params) {{
       :install_method => 'archive'
