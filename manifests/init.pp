@@ -75,7 +75,7 @@ class grafana (
   $package_name        = $::grafana::params::package_name,
   $package_source      = $::osfamily ? {
     'Debian'          => "https://grafanarel.s3.amazonaws.com/builds/grafana_${version}_amd64.deb",
-    /(RedHat|Amazon)/ => "https://grafanarel.s3.amazonaws.com/builds/grafana-${version}-1.x86_64.rpm",
+    /(RedHat|Amazon)/ => "https://grafanarel.s3.amazonaws.com/builds/grafana-${version}.x86_64.rpm",
     default           => $::grafana::archive_source
   },
   $service_name        = $::grafana::params::service_name,
