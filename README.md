@@ -153,18 +153,20 @@ Example:
 ```
 ldap_cfg => {
   servers => [
-    { host => 'ldapserver1.domain1.com',
-      use_ssl => true,
-      search_filter => '(sAMAccountName=%s)',
+    { host            => 'ldapserver1.domain1.com',
+      use_ssl         => true,
+      search_filter   => '(sAMAccountName=%s)',
       search_base_dns => [ 'dc=domain1,dc=com' ],
+      bind_dn         => 'user@domain1.com',
+      bind_password   => 'passwordhere',
     },
   ],
   'servers.attributes' => {
-    name => 'givenName',
-    surname => 'sn',
-    username => 'sAMAccountName',
+    name      => 'givenName',
+    surname   => 'sn',
+    username  => 'sAMAccountName',
     member_of => 'memberOf',
-    email => 'email',
+    email     => 'email',
   }
 },
 ```
