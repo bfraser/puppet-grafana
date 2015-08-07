@@ -1,16 +1,18 @@
-# 2.1.0 (2015-08-05)
+# 2.1.0 (2015-08-07)
 
 **Enhancements**
-- Support for Grafana 2.1
+- Support for [Grafana 2.1](http://grafana.org/blog/2015/08/04/Grafana-2-1-Released.html)
+- [Issue #40](https://github.com/bfraser/puppet-grafana/issues/40) Support for [LDAP integration](http://docs.grafana.org/v2.1/installation/ldap/)
 - [PR #34](https://github.com/bfraser/puppet-grafana/pull/34) Support for 'repo' install method to install packages from [packagecloud](https://packagecloud.io/grafana) repositories
 - Addition of boolean parameter ```manage_package_repo``` to control whether the module will manage the package repository when using the 'repo' install method. See README.md for details
 - [PR #39](https://github.com/bfraser/puppet-grafana/pull/39) Ability to ensure a specific package version is installed when using the 'repo' install method
 
 **Fixes**
-- [Issue #37](https://github.com/bfraser/puppet-grafana/issues/37) Archive install method: check if user and service are defined before attempting to define them
+- [Issue #37](https://github.com/bfraser/puppet-grafana/issues/37) Archive install method: check if user and service are already defined before attempting to define them
+- [Issue #42](https://github.com/bfraser/puppet-grafana/issues/42) Package versioning for RPM / yum systems
+- [Issue #45](https://github.com/bfraser/puppet-grafana/issues/45) Fix resource dependency issues when ```manage_package_repo``` is false
 
 **Behind The Scenes**
-- Proper ordering of resources
 - Use 40 character GPG key ID for packagecloud apt repository
 
 # 2.0.2 (2015-04-30)
