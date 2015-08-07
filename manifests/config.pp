@@ -34,4 +34,12 @@ class grafana::config {
       fail("Installation method ${::grafana::install_method} not supported")
     }
   }
+
+  if $::grafana::ldap_cfg {
+    $ldap_cfg = $::grafana::ldap_cfg
+    file { '/etc/grafana/ldap.toml':
+      ensure  => present,
+      content => inline_template("<%= require 'toml'; TOML::Generator.new(@ldap_cfg).body %>\n"),
+    }
+  }
 }

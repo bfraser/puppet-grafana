@@ -249,6 +249,27 @@ describe 'grafana' do
             'empty' => '',
           },
         },
+        :ldap_cfg => {
+          'servers' => [
+            { 'host' => 'server1',
+              'use_ssl' => true,
+              'search_filter' => '(sAMAccountName=%s)',
+              'search_base_dns' => [ 'dc=domain1,dc=com' ],
+            },
+            { 'host' => 'server2',
+              'use_ssl' => true,
+              'search_filter' => '(sAMAccountName=%s)',
+              'search_base_dns' => [ 'dc=domain2,dc=com' ],
+            },
+          ],
+          'servers.attributes' => {
+            'name' => 'givenName',
+            'surname' => 'sn',
+            'username' => 'sAMAccountName',
+            'member_of' => 'memberOf',
+            'email' => 'email',
+          }
+        },
       }}
 
       expected = "# This file is managed by Puppet, any changes will be overwritten\n\n"\
@@ -260,6 +281,28 @@ describe 'grafana' do
                  "empty = \n"
 
       it { should contain_file('/etc/grafana/grafana.ini').with_content(expected) }
+
+      ldap_expected = "\n[[servers]]\n"\
+                       "host = \"server1\"\n"\
+                       "search_base_dns = [\"dc=domain1,dc=com\"]\n"\
+                       "search_filter = \"(sAMAccountName=%s)\"\n"\
+                       "use_ssl = true\n"\
+                       "\n"\
+                      "[[servers]]\n"\
+                       "host = \"server2\"\n"\
+                       "search_base_dns = [\"dc=domain2,dc=com\"]\n"\
+                       "search_filter = \"(sAMAccountName=%s)\"\n"\
+                       "use_ssl = true\n"\
+                       "\n"\
+                       "[servers.attributes]\n"\
+                       "email = \"email\"\n"\
+                       "member_of = \"memberOf\"\n"\
+                       "name = \"givenName\"\n"\
+                       "surname = \"sn\"\n"\
+                       "username = \"sAMAccountName\"\n"\
+                       "\n"
+
+      it { should contain_file('/etc/grafana/ldap.toml').with_content(ldap_expected) }
     end
   end
 end
