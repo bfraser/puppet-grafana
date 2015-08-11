@@ -3,7 +3,14 @@
 <%- @cfg.each_pair do |key, value|
   if value.is_a?(Hash) -%>
 
-[<%= key %>]
+[<%=
+  case key
+    when "auth_anonymous" then "auth.anonymous"
+    when "auth_github"    then "auth.github"
+    when "auth_google"    then "auth.google"
+    else key
+  end
+%>]
     <%- value.each_pair do |key, value| -%>
 <%= key %> = <%= value %>
     <%- end -%>
