@@ -76,6 +76,7 @@ class grafana (
   $package_name        = $::grafana::params::package_name,
   $package_source      = $::grafana::params::package_source,
   $service_name        = $::grafana::params::service_name,
+  $service_ensure      = $::grafana::params::service_ensure,
   $version             = $::grafana::params::version
 ) inherits grafana::params {
 

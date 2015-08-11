@@ -19,7 +19,7 @@ class grafana::service {
     }
     'package','repo': {
       service { $::grafana::service_name:
-        ensure => running,
+        ensure => $::grafana::service_ensure,
         enable => true
       }
     }

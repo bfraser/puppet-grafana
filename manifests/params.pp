@@ -17,7 +17,7 @@ class grafana::params {
   $manage_package_repo = true
   $package_name        = 'grafana'
   $service_name        = 'grafana-server'
-
+  $service_ensure      = 'running'
   $grafana_version     = '2.1.0'
   $rpm_iteration       = '1'
   $archive_source = "https://grafanarel.s3.amazonaws.com/builds/grafana-${grafana_version}.linux-x64.tar.gz"
