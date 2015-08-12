@@ -237,6 +237,13 @@ describe 'grafana' do
     describe 'should not contain any configuration when cfg param is empty' do
       it { should contain_file('/etc/grafana/grafana.ini').with_content("# This file is managed by Puppet, any changes will be overwritten\n\n") }
     end
+    describe 'should have the correct ownership and permissions for config file' do
+      it { should contain_file('/etc/grafana/grafana.ini').with(
+          :owner => 'root',
+          :group => 'grafana',
+          :mode => '0440',
+      )}
+    end
 
     describe 'should correctly transform cfg param entries to Grafana configuration' do
       let(:params) {{
@@ -303,6 +310,13 @@ describe 'grafana' do
                        "\n"
 
       it { should contain_file('/etc/grafana/ldap.toml').with_content(ldap_expected) }
+      describe 'should have the correct ownership and permissions for ldap file' do
+        it { should contain_file('/etc/grafana/ldap.toml').with(
+            :owner => 'root',
+            :group => 'grafana',
+            :mode => '0440',
+        )}
+      end
     end
   end
 end
