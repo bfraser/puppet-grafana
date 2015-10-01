@@ -42,4 +42,8 @@ class grafana::config {
       content => inline_template("<%= require 'toml'; TOML::Generator.new(@ldap_cfg).body %>\n"),
     }
   }
+  
+  if $::grafana::manage_httpd {
+    include grafana::apache
+  }
 }

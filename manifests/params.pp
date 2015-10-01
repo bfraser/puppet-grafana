@@ -7,6 +7,7 @@ class grafana::params {
   $cfg_location        = '/etc/grafana/grafana.ini'
   $cfg                 = {}
   $ldap_cfg            = false
+  $manage_httpd        = false
   $container_cfg       = false
   $container_params    = {}
   $data_dir            = '/var/lib/grafana'
