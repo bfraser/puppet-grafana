@@ -120,6 +120,14 @@ Some minor notes:
  - Keys that contains dots (like auth.google) need to be quoted.
  - The order of the keys in this hash is the same as they will be written to the configuration file. So settings that do not fall under a section will have to come before any sections in the hash.
 
+Notes on MongoDb:
+The key's in MongoDb do not support dots.
+There for the following rule applies to configuration in hiera:
+
+- The dots in the keys, need to be replaced with a underscore.
+  Example: 'auth.google' is 'auth_google'
+
+
 #####`container_cfg`
 
 Boolean to control whether a configuration file should be generated when using the 'docker' install method. If 'true', use the 'cfg' and 'cfg_location' parameters to control creation of the file. Defaults to false.
