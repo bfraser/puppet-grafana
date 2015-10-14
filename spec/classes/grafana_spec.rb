@@ -275,10 +275,10 @@ describe 'grafana' do
       expected = "# This file is managed by Puppet, any changes will be overwritten\n\n"\
                  "app_mode = production\n\n"\
                  "[section]\n"\
-                 "string = production\n"\
-                 "number = 8080\n"\
                  "boolean = false\n"\
-                 "empty = \n"
+                 "empty = \n"\
+                 "number = 8080\n"\
+                 "string = production\n"
 
       it { should contain_file('/etc/grafana/grafana.ini').with_content(expected) }
 
