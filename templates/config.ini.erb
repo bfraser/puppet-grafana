@@ -1,13 +1,13 @@
 # This file is managed by Puppet, any changes will be overwritten
 
-<%- @cfg.each_pair do |key, value|
-  if value.is_a?(Hash) -%>
+<%- @cfg.keys.sort.each do |key|
+  if @cfg[key].is_a?(Hash) -%>
 
 [<%= key %>]
-    <%- value.each_pair do |key, value| -%>
-<%= key %> = <%= value %>
+    <%- @cfg[key].keys.sort.each do |valkey| -%>
+<%= valkey %> = <%= @cfg[key][valkey] %>
     <%- end -%>
   <%- else -%>
-<%= key %> = <%= value %>
+<%= key %> = <%= @cfg[key] %>
   <%- end
 end -%>
