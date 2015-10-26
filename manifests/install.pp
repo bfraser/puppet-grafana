@@ -90,7 +90,7 @@ class grafana::install {
           }
 
           package { $::grafana::package_name:
-            ensure  => $::grafana::version,
+            ensure  => "${::grafana::version}-${::grafana::rpm_iteration}",
             require => Package['fontconfig']
           }
         }

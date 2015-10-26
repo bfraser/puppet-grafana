@@ -74,8 +74,7 @@ describe 'grafana' do
   context 'repo install method' do
     let(:params) {{
       :install_method => 'repo',
-      :manage_package_repo => true,
-      :version => 'present'
+      :manage_package_repo => true
     }}
 
     context 'debian' do
@@ -95,7 +94,7 @@ describe 'grafana' do
       end
 
       describe 'install the package' do
-        it { should contain_package('grafana').with_ensure('present') }
+        it { should contain_package('grafana').with_ensure('2.1.0') }
       end
     end
 
@@ -114,7 +113,7 @@ describe 'grafana' do
       end
 
       describe 'install the package' do
-        it { should contain_package('grafana').with_ensure('present') }
+        it { should contain_package('grafana').with_ensure('2.1.0-1') }
       end
     end
   end
@@ -306,4 +305,3 @@ describe 'grafana' do
     end
   end
 end
-
