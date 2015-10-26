@@ -74,8 +74,7 @@ describe 'grafana' do
   context 'repo install method' do
     let(:params) {{
       :install_method => 'repo',
-      :manage_package_repo => true,
-      :version => 'present'
+      :manage_package_repo => true
     }}
 
     context 'debian' do
@@ -95,7 +94,7 @@ describe 'grafana' do
       end
 
       describe 'install the package' do
-        it { should contain_package('grafana').with_ensure('present') }
+        it { should contain_package('grafana').with_ensure('2.1.0') }
       end
     end
 
@@ -114,7 +113,7 @@ describe 'grafana' do
       end
 
       describe 'install the package' do
-        it { should contain_package('grafana').with_ensure('present') }
+        it { should contain_package('grafana').with_ensure('2.1.0-1') }
       end
     end
   end
@@ -275,10 +274,10 @@ describe 'grafana' do
       expected = "# This file is managed by Puppet, any changes will be overwritten\n\n"\
                  "app_mode = production\n\n"\
                  "[section]\n"\
-                 "string = production\n"\
-                 "number = 8080\n"\
                  "boolean = false\n"\
-                 "empty = \n"
+                 "empty = \n"\
+                 "number = 8080\n"\
+                 "string = production\n"
 
       it { should contain_file('/etc/grafana/grafana.ini').with_content(expected) }
 
