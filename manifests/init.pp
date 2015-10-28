@@ -82,6 +82,7 @@ class grafana (
   $rpm_iteration       = $::grafana::params::rpm_iteration,
   $service_name        = $::grafana::params::service_name,
   $version             = $::grafana::params::version,
+  $manage_httpd        = $::grafana::params::manage_httpd,
 ) inherits grafana::params {
 
   # validate parameters here
