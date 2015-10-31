@@ -16,25 +16,25 @@
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
-      "operatingsystmrelease": [ "6.0" ]
+      "operatingsystemrelease": [ "6.0" ]
     },
     {
       "operatingsystem": "CentOS",
-      "operatingsystmrelease": [ "6.0" ]
+      "operatingsystemrelease": [ "6.0" ]
     },
     {
       "operatingsystem": "Ubuntu",
-      "operatingsystmrelease": [ "14.04" ]
+      "operatingsystemrelease": [ "14.04" ]
     },
     {
       "operatingsystem": "Debian",
-      "operatingsystmrelease": [ "7.0" ]
+      "operatingsystemrelease": [ "7.0" ]
     }
   ],
   "requirements": [
     {
       "name": "pe",
-      "version_requirement": ">= 3.2"
+      "version_requirement": ">= 3.2.0"
     },
     {
       "name": "puppet",
