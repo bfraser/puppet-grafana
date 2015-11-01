@@ -113,7 +113,7 @@ describe 'grafana' do
       end
 
       describe 'install the package' do
-        it { should contain_package('grafana').with_ensure('2.1.0-1') }
+        it { should contain_package('grafana').with_ensure('2.1.0') }
       end
     end
   end
