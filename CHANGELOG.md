@@ -1,3 +1,17 @@
+# 2.5.0 (2015-10-31)
+
+**Enhancements**
+- Support for [Grafana 2.5](http://grafana.org/blog/2015/10/28/Grafana-2-5-Released.html). This is just a version bump to reflect that Grafana 2.5 is now installed by default
+- [PR #58](https://github.com/bfraser/puppet-grafana/pull/58) Sort ```cfg``` keys so ```config.ini``` content is not updated every Puppet run
+
+**Fixes**
+- [Issue #52](https://github.com/bfraser/puppet-grafana/issues/52) Version logic moved to ```init.pp``` so overriding the version of Grafana to install works as intended
+
+**Behind The Scenes**
+
+- [PR #59](https://github.com/bfraser/puppet-grafana/pull/59) More specific version requirements in ```metadata.json``` due to use of ```contain``` function
+- [PR #61](https://github.com/bfraser/puppet-grafana/pull/61) Fixed typos in ```metadata.json```
+
 # 2.1.0 (2015-08-07)
 
 **Enhancements**

@@ -1,6 +1,6 @@
 {
   "name": "bfraser-grafana",
-  "version": "2.1.0",
+  "version": "2.5.0",
   "author": "bfraser",
   "summary": "This module provides Grafana, a dashboard and graph editor for Graphite and InfluxDB.",
   "license": "Apache 2.0",
@@ -16,25 +16,25 @@
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
-      "operatingsystmrelease": [ "6.0" ]
+      "operatingsystemrelease": [ "6.0" ]
     },
     {
       "operatingsystem": "CentOS",
-      "operatingsystmrelease": [ "6.0" ]
+      "operatingsystemrelease": [ "6.0" ]
     },
     {
       "operatingsystem": "Ubuntu",
-      "operatingsystmrelease": [ "14.04" ]
+      "operatingsystemrelease": [ "14.04" ]
     },
     {
       "operatingsystem": "Debian",
-      "operatingsystmrelease": [ "7.0" ]
+      "operatingsystemrelease": [ "7.0" ]
     }
   ],
   "requirements": [
     {
       "name": "pe",
-      "version_requirement": ">= 3.2"
+      "version_requirement": ">= 3.2.0"
     },
     {
       "name": "puppet",

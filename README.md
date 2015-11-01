@@ -211,6 +211,10 @@ The name of the package managed with the 'package' install method. Defaults to '
 
 The download location of a package to be used with the 'package' install method. Defaults to the URL of the latest version of Grafana available at the time of module release.
 
+#####`rpm_iteration`
+
+Used when installing Grafana from package ('package' or 'repo' install methods) on Red Hat based systems. Defaults to '1'. It should not be necessary to change this in most cases.
+
 #####`service_name`
 
 The name of the service managed with the 'archive' and 'package' install methods. Defaults to 'grafana-server'.
@@ -222,7 +226,7 @@ The version of Grafana to install and manage. Defaults to the latest version of 
 ##Advanced usage:
 
 The archive install method will create the user and a "command line" service by default.
-There are no extra parameters to manage user/service for archive. However, both check to see if they are defined before defining. This way you can creat your own user and service with your own specifications. (sort of overriding)
+There are no extra parameters to manage user/service for archive. However, both check to see if they are defined before defining. This way you can create your own user and service with your own specifications. (sort of overriding)
 The service can be a bit tricky, in this example below, the class sensu_install::grafana::service creates a startup script and a service{'grafana-server':}
 
 Example:
