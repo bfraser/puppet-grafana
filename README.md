@@ -144,16 +144,25 @@ This option by itself is not sufficient to enable LDAP configuration as it must 
 },
 ```
 
+####Integer note
+Puppet may convert integers into strings while parsing the hash and converting into toml. This can be worked around by appending 0 to an integer.
+
+Example:
+```
+port => 636+0,
+```
+
 Manages the Grafana LDAP configuration file. This hash is directly translated into the corresponding TOML file, allowing for full flexibility in generating the configuration.
 
 See the [LDAP documentation](http://docs.grafana.org/v2.1/installation/ldap/) for more information.
 
-Example:
+####Example LDAP config
 
 ```
 ldap_cfg => {
   servers => [
     { host            => 'ldapserver1.domain1.com',
+      port            => 636+0,
       use_ssl         => true,
       search_filter   => '(sAMAccountName=%s)',
       search_base_dns => [ 'dc=domain1,dc=com' ],
