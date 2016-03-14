@@ -11,7 +11,7 @@ class grafana::service {
       }
 
       $defaults = {
-        image => $::grafana::params::docker_image,
+        image => "${::grafana::params::docker_image}:${::grafana::version}",
         ports => $::grafana::params::docker_ports
       }
 

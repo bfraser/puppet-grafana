@@ -9,7 +9,7 @@ class grafana::params {
   $container_cfg       = false
   $container_params    = {}
   $data_dir            = '/var/lib/grafana'
-  $docker_image        = 'grafana/grafana:latest'
+  $docker_image        = 'grafana/grafana'
   $docker_ports        = '3000:3000'
   $install_dir         = '/usr/share/grafana'
   $install_method      = 'package'
