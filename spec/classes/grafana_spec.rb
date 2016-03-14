@@ -9,8 +9,6 @@ describe 'grafana' do
           :osfamily => osfamily,
         }}
 
-        it { should compile.with_all_deps }
-
         it { should contain_class('grafana::params') }
         it { should contain_class('grafana::install').that_comes_before('grafana::config') }
         it { should contain_class('grafana::config') }
