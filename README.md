@@ -38,7 +38,7 @@ To install Grafana with the default parameters:
     class { 'grafana': }
 ```
 
-This assumes that you with to install Grafana using the 'package' method. To establish customized parameters:
+This assumes that you want to install Grafana using the 'package' method. To establish customized parameters:
 
 ```puppet
     class { 'grafana':
