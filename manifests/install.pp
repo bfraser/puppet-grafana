@@ -4,7 +4,7 @@ class grafana::install {
   case $::grafana::install_method {
     'docker': {
       docker::image { 'grafana/grafana':
-        image_tag => 'latest',
+        image_tag => $::grafana::version,
         require   => Class['docker']
       }
     }
