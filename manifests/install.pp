@@ -1,6 +1,10 @@
 # == Class grafana::install
 #
 class grafana::install {
+
+  $real_package_source = inline_template($::grafana::package_source)
+  $real_archive_source = inline_template($::grafana::archive_source)
+
   case $::grafana::install_method {
     'docker': {
       docker::image { 'grafana/grafana':
@@ -16,7 +20,7 @@ class grafana::install {
           }
 
           wget::fetch { 'grafana':
-            source      => $::grafana::package_source,
+            source      => $real_package_source,
             destination => '/tmp/grafana.deb'
           }
 
@@ -108,7 +112,7 @@ class grafana::install {
         root_dir         => 'public',
         strip_components => 1,
         target           => $::grafana::install_dir,
-        url              => $::grafana::archive_source
+        url              => $real_archive_source
       }
 
       if !defined(User['grafana']){

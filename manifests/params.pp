@@ -19,4 +19,11 @@ class grafana::params {
   $rpm_iteration       = '1'
   $service_name        = 'grafana-server'
   $version             = '2.5.0'
+  $archive_source      = "https://grafanarel.s3.amazonaws.com/builds/grafana-<%= scope.lookupvar('::grafana::version') %>.linux-x64.tar.gz"
+  $package_source      = $::osfamily ? {
+    /(RedHat|Amazon)/ => "https://grafanarel.s3.amazonaws.com/builds/grafana-<%= scope.lookupvar('::grafana::version') %>-<%= scope.lookupvar('::grafana::rpm_iteration') %>.x86_64.rpm",
+    'Debian'          => "https://grafanarel.s3.amazonaws.com/builds/grafana_<%= scope.lookupvar('::grafana::version') %>_amd64.deb",
+    default           => $archive_source,
+  }
+
 }
