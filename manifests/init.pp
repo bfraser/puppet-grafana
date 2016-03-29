@@ -37,6 +37,11 @@
 # Set to 'repo' to install Grafana using an apt or yum repository.
 # Defaults to 'package'.
 #
+# [*install_with_apt*]
+# Set to 'true' if you want to install the package via apt. The apt repository is NOT managed
+# by this module. You can use the puppetlabs-apt module for this task.
+# Defaults to false.
+#
 # [*manage_package_repo*]
 # If true this will setup the official grafana repositories on your host. Defaults to true.
 #
@@ -72,6 +77,7 @@ class grafana (
   $data_dir            = $::grafana::params::data_dir,
   $install_dir         = $::grafana::params::install_dir,
   $install_method      = $::grafana::params::install_method,
+  $install_with_apt    = $::grafana::params::install_with_apt,
   $manage_package_repo = $::grafana::params::manage_package_repo,
   $package_name        = $::grafana::params::package_name,
   $package_source      = $::osfamily ? {
@@ -88,6 +94,7 @@ class grafana (
   if !is_hash($cfg) {
     fail('cfg parameter must be a hash')
   }
+  validate_bool($install_with_apt)
 
   class { 'grafana::install': } ->
   class { 'grafana::config': } ~>
