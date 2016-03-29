@@ -13,6 +13,7 @@ class grafana::params {
   $docker_ports        = '3000:3000'
   $install_dir         = '/usr/share/grafana'
   $install_method      = 'package'
+  $install_with_apt    = false
   $ldap_cfg            = false
   $manage_package_repo = true
   $package_name        = 'grafana'

@@ -32,9 +32,27 @@ describe 'grafana' do
   end
 
   context 'package install method' do
-    context 'debian' do
+
+    context 'debian apt' do
       let(:facts) {{
         :osfamily => 'Debian'
+      }}
+      let(:params) {{
+        :install_with_apt => true
+      }}
+
+      describe 'install the package with apt' do
+        it { should contain_package('grafana').with_provider('apt') }
+        it { should contain_package('grafana').with('ensure' => 'present') }
+      end
+    end
+
+    context 'debian dpkg' do
+      let(:facts) {{
+        :osfamily => 'Debian'
+      }}
+      let(:params) {{
+        :install_with_apt => false
       }}
 
       download_location = '/tmp/grafana.deb'
