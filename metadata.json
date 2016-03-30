@@ -4,7 +4,7 @@
   "author": "bfraser",
   "summary": "This module provides Grafana, a dashboard and graph editor for Graphite and InfluxDB.",
   "license": "Apache 2.0",
-  "source": "git://github.com/bfraser/puppet-grafana.git",
+  "source": "https://github.com/bfraser/puppet-grafana.git",
   "project_page": "https://github.com/bfraser/puppet-grafana",
   "issues_url": "https://github.com/bfraser/puppet-grafana/issues",
   "tags": [
