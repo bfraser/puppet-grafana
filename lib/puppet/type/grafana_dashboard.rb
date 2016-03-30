@@ -72,4 +72,7 @@ Puppet::Type.newtype(:grafana_dashboard) do
     validate do
         fail('content is required when ensure is present') if self[:ensure] == :present and self[:content].nil?
     end
+    autorequire(:service) do
+      'grafana-server'
+    end
 end
