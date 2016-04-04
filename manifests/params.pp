@@ -19,4 +19,5 @@ class grafana::params {
   $rpm_iteration       = '1'
   $service_name        = 'grafana-server'
   $version             = '2.5.0'
+  $repo_name           = 'stable'
 }
