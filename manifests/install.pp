@@ -26,6 +26,12 @@ class grafana::install {
             source   => '/tmp/grafana.deb',
             require  => [Wget::Fetch['grafana'],Package['libfontconfig1']]
           }
+          # if using 'latest' keyword version, this will run all the time
+          if $grafana_version != $::grafana::version {
+            file { '/tmp/grafana.deb':
+              ensure   => absent
+            }
+          }
         }
         'RedHat': {
           package { 'fontconfig':
