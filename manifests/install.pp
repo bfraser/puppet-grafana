@@ -24,7 +24,8 @@ class grafana::install {
             ensure   => present,
             provider => 'dpkg',
             source   => '/tmp/grafana.deb',
-            require  => [Wget::Fetch['grafana'],Package['libfontconfig1']]
+            require  => [Wget::Fetch['grafana'],Package['libfontconfig1']],
+	    notify   => Service['grafana-server']
           }
           # if using 'latest' keyword version, this will run all the time
           if $grafana_version != $::grafana::version {
