@@ -34,7 +34,8 @@ class grafana::service {
           binary     => "su - grafana -c '${service_path} -config=${service_config} -homepath=${::grafana::install_dir} web &'",
           hasrestart => false,
           hasstatus  => false,
-          status     => "ps -ef | grep ${::grafana::service_name} | grep -v grep"
+          status     => "ps -ef | grep ${::grafana::service_name} | grep -v grep",
+          require => Package['grafana install'],
         }
       }
     }
