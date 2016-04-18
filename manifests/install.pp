@@ -15,24 +15,30 @@ class grafana::install {
             ensure => present
           }
 
-          wget::fetch { 'grafana':
-            source      => $::grafana::package_source,
-            destination => '/tmp/grafana.deb'
-          }
-
-          package { $::grafana::package_name:
-            ensure   => present,
-            provider => 'dpkg',
-            source   => '/tmp/grafana.deb',
-            require  => [Wget::Fetch['grafana'],Package['libfontconfig1']],
-	    notify   => Service['grafana-server']
-          }
           # if using 'latest' keyword version, this will run all the time
           if $grafana_version != $::grafana::version {
             file { '/tmp/grafana.deb':
               ensure   => absent
             }
+            package { $::grafana::package_name:
+              ensure   => absent,
+              provider => 'dpkg'
+            }
           }
+
+          wget::fetch { 'grafana':
+            source      => $::grafana::package_source,
+            destination => '/tmp/grafana.deb'
+          }
+
+          package { 'grafana-package':
+            ensure   => present,
+            provider => 'dpkg',
+            source   => '/tmp/grafana.deb',
+            require  => [Wget::Fetch['grafana'],Package['libfontconfig1']],
+	          notify   => Service[$::grafana::service_name]
+          }
+
         }
         'RedHat': {
           package { 'fontconfig':
