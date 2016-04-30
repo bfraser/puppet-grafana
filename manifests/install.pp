@@ -1,6 +1,24 @@
 # == Class grafana::install
 #
 class grafana::install {
+  if $::grafana::archive_source != undef {
+    $real_archive_source = $::grafana::archive_source
+  }
+  else {
+    $real_archive_source = "https://grafanarel.s3.amazonaws.com/builds/grafana-${::grafana::version}.linux-x64.tar.gz"
+  }
+
+  if $::grafana::package_source != undef {
+    $real_package_source = $::grafana::package_source
+  }
+  else {
+    $real_package_source = $::osfamily ? {
+      /(RedHat|Amazon)/ => "https://grafanarel.s3.amazonaws.com/builds/grafana-${::grafana::version}-${::grafana::rpm_iteration}.x86_64.rpm",
+      'Debian'          => "https://grafanarel.s3.amazonaws.com/builds/grafana_${::grafana::version}_amd64.deb",
+      default           => $real_archive_source,
+    }
+  }
+  
   case $::grafana::install_method {
     'docker': {
       docker::image { 'grafana/grafana':
@@ -16,7 +34,7 @@ class grafana::install {
           }
 
           wget::fetch { 'grafana':
-            source      => $::grafana::package_source,
+            source      => $real_package_source,
             destination => '/tmp/grafana.deb'
           }
 
@@ -35,7 +53,7 @@ class grafana::install {
           package { $::grafana::package_name:
             ensure   => present,
             provider => 'rpm',
-            source   => $::grafana::package_source,
+            source   => $real_package_source,
             require  => Package['fontconfig']
           }
         }
@@ -121,7 +139,7 @@ class grafana::install {
         extract         => true,
         extract_command => 'tar xfz %s --strip-components=1',
         extract_path    => $::grafana::install_dir,
-        source          => $::grafana::archive_source,
+        source          => $real_archive_source,
         user            => 'grafana',
         group           => 'grafana',
         cleanup         => true,
