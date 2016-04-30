@@ -19,8 +19,9 @@ class grafana::service {
     }
     'package','repo': {
       service { $::grafana::service_name:
-        ensure => running,
-        enable => true
+        ensure    => running,
+        enable    => true,
+        subscribe => Package[$::grafana::package_name]
       }
     }
     'archive': {
