@@ -63,6 +63,8 @@
 #  }
 #
 class grafana (
+  $version             = $::grafana::params::version,
+  $rpm_iteration       = $::grafana::params::rpm_iteration,
   $archive_source      = "https://grafanarel.s3.amazonaws.com/builds/grafana-${version}.linux-x64.tar.gz",
   $cfg_location        = $::grafana::params::cfg_location,
   $cfg                 = $::grafana::params::cfg,
@@ -79,9 +81,7 @@ class grafana (
     'Debian'          => "https://grafanarel.s3.amazonaws.com/builds/grafana_${version}_amd64.deb",
     default           => $archive_source,
   },
-  $rpm_iteration       = $::grafana::params::rpm_iteration,
-  $service_name        = $::grafana::params::service_name,
-  $version             = $::grafana::params::version,
+  $service_name        = $::grafana::params::service_name
 ) inherits grafana::params {
 
   # validate parameters here
