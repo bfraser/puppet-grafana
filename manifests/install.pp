@@ -102,31 +102,32 @@ class grafana::install {
     'archive': {
       # create log directory /var/log/grafana (or parameterize)
 
-      archive { 'grafana':
-        ensure           => present,
-        checksum         => false,
-        root_dir         => 'public',
-        strip_components => 1,
-        target           => $::grafana::install_dir,
-        url              => $::grafana::archive_source
-      }
-
       if !defined(User['grafana']){
         user { 'grafana':
-          ensure  => present,
-          home    => $::grafana::install_dir,
-          require => Archive['grafana']
+          ensure => present,
+          home   => $::grafana::install_dir
         }
       }
 
       file { $::grafana::install_dir:
-        ensure       => directory,
-        group        => 'grafana',
-        owner        => 'grafana',
-        recurse      => true,
-        recurselimit => 3,
-        require      => User['grafana']
+        ensure  => directory,
+        group   => 'grafana',
+        owner   => 'grafana',
+        require => User['grafana']
       }
+
+      archive { '/tmp/grafana.tar.gz':
+        ensure          => present,
+        extract         => true,
+        extract_command => 'tar xfz %s --strip-components=1',
+        extract_path    => $::grafana::install_dir,
+        source          => $::grafana::archive_source,
+        user            => 'grafana',
+        group           => 'grafana',
+        cleanup         => true,
+        require         => File[$::grafana::install_dir]
+      }
+
     }
     default: {
       fail("Installation method ${::grafana::install_method} not supported")
