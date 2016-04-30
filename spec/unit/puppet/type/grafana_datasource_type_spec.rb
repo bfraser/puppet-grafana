@@ -14,6 +14,9 @@
 require 'spec_helper'
 
 describe Puppet::Type.type(:grafana_datasource) do
+  let(:gdatasource) {
+    described_class.new :name => "foo", :grafana_url => "http://example.com", :url => 'http://influx.example.com'
+  }
   context "when setting parameters" do
 
     it "should fail if grafana_url isn't HTTP-based" do
@@ -29,10 +32,25 @@ describe Puppet::Type.type(:grafana_datasource) do
     end
 
     it "should accept valid parameters" do
-      resource = described_class.new :name => "foo", :grafana_url => "http://example.com", :url => 'http://influx.example.com'
-      expect(resource[:name]).to eq('foo')
-      expect(resource[:grafana_url]).to eq('http://example.com')
-      expect(resource[:url]).to eq('http://influx.example.com')
+      expect(gdatasource[:name]).to eq('foo')
+      expect(gdatasource[:grafana_url]).to eq('http://example.com')
+      expect(gdatasource[:url]).to eq('http://influx.example.com')
+    end
+    it "should autorequire the grafana-server for proper ordering" do
+      catalog = Puppet::Resource::Catalog.new
+      service = Puppet::Type.type(:service).new(:name => "grafana-server")
+      catalog.add_resource service
+      catalog.add_resource gdatasource
+
+      relationship = gdatasource.autorequire.find do |rel|
+        (rel.source.to_s == "Service[grafana-server]") and (rel.target.to_s == gdatasource.to_s)
+      end
+      expect(relationship).to be_a Puppet::Relationship
+    end
+    it "should not autorequire the service it is not managed" do
+      catalog = Puppet::Resource::Catalog.new
+      catalog.add_resource gdatasource
+      expect(gdatasource.autorequire).to be_empty
     end
   end
 end

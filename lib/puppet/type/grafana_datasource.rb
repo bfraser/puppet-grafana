@@ -88,4 +88,7 @@ Puppet::Type.newtype(:grafana_datasource) do
             end
         end
     end
+    autorequire(:service) do
+      'grafana-server'
+    end
 end
