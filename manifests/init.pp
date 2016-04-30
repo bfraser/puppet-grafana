@@ -56,6 +56,12 @@
 # The version of Grafana to install and manage.
 # Defaults to the latest version of Grafana available at the time of module release.
 #
+# [*repo_name*]
+# When using install_method = 'package, the repo to look for packages in.
+# Set to 'stable' to install only stable versions
+# Set to 'testing' to install beta versions
+# Defaults to stable.
+#
 # === Examples
 #
 #  class { '::grafana':
@@ -75,6 +81,7 @@ class grafana (
   $manage_package_repo = $::grafana::params::manage_package_repo,
   $package_name        = $::grafana::params::package_name,
   $package_source      = $::grafana::params::package_source,
+  $repo_name           = $::grafana::params::repo_name,
   $rpm_iteration       = $::grafana::params::rpm_iteration,
   $service_name        = $::grafana::params::service_name,
   $version             = $::grafana::params::version

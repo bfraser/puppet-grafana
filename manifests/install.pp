@@ -74,7 +74,7 @@ class grafana::install {
               class { 'apt': }
             }
             apt::source { 'grafana':
-              location => 'https://packagecloud.io/grafana/stable/debian',
+              location => "https://packagecloud.io/grafana/${::grafana::repo_name}/debian",
               release  => 'wheezy',
               repos    => 'main',
               key      =>  {
