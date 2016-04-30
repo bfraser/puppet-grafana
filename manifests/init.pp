@@ -57,7 +57,7 @@
 # Defaults to the latest version of Grafana available at the time of module release.
 #
 # [*repo_name*]
-# When using install_method = 'package, the repo to look for packages in.
+# When using 'repo' install_method, the repo to look for packages in.
 # Set to 'stable' to install only stable versions
 # Set to 'testing' to install beta versions
 # Defaults to stable.
