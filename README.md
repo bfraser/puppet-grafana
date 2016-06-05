@@ -260,6 +260,53 @@ Example:
 
 ```
 
+####Custom Types and Providers
+
+The module includes two custom types: `grafana_dashboard` and `grafana_datasource`
+
+#####`grafana_dashboard`
+
+In order to use the dashboard resource, add the following to your manifest:
+
+```puppet
+grafana_dashboard { 'example_dashboard':
+  grafana_url       => 'http://localhost:3000',
+  grafana_user      => 'admin',
+  grafana_password  => '5ecretPassw0rd',
+  content           => template('path/to/exported/file.json'),
+}
+```
+
+`content` must be valid JSON, and is parsed before imported.
+`grafana_user` and `grafana_password` are optional, and required when authentication is enabled in Grafana.
+
+#####`grafana_datasource`
+
+In order to use the datasource resource, add the following to your manifest:
+
+```puppet
+grafana_datasource { 'influxdb':
+  grafana_url       => 'http://localhost:3000',
+  grafana_user      => 'admin',
+  grafana_password  => '5ecretPassw0rd',
+  type              => 'influx',
+  url               => 'http://localhost:8086',
+  user              => 'admin',
+  password          => '1nFlux5ecret',
+  database          => 'graphite',
+  access_mode       => 'proxy',
+  is_default        => true,
+  json_data         => template('path/to/additional/config.json'),
+}
+```
+
+Available types are: influxdb, elasticsearch, graphite, kairosdb, opentsdb, prometheus
+
+Access mode determines how Grafana connects to the datasource, either `direct` from the browser, or `proxy` to send requests via grafana.
+
+Authentication is optional, as is `database`; additional `json_data` can be provided to allow custom configuration options.
+
+
 ##Limitations
 
 This module has been tested on Ubuntu 14.04, using each of the 'archive', docker' and 'package' installation methods. Other configurations should work with minimal, if any, additional effort.
