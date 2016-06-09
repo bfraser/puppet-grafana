@@ -40,7 +40,8 @@ class Puppet::Provider::Grafana < Puppet::Provider
     end
 
     # Return a Net::HTTP::Response object
-    def send_request(operation="GET", path="", data=nil, search_path={})
+    def send_request(operation="GET", path="", data=nil, search_path={},
+                     max_retries=5, retry_interval=1)
         request = nil
         encoded_search = ""
 
@@ -78,9 +79,24 @@ class Puppet::Provider::Grafana < Puppet::Provider
             request.basic_auth resource[:grafana_user], resource[:grafana_password]
         end
 
-        return Net::HTTP.start(self.grafana_host, self.grafana_port) do |http|
-            http.request(request)
+        retries = 0
+        http = Net::HTTP.new(self.grafana_host, self.grafana_port)
+        http.open_timeout = 5
+        http.read_timeout = 5
+        begin
+            res = http.start do |session|
+                session.request(request)
+            end
+        rescue Exception => e
+            retries += 1
+            if retries > max_retries then
+                raise(e)
+            end
+            notice("Got exception: '#{e}'! Retrying #{retries}/#{max_retries}.")
+            sleep(retry_interval)
+            retry
         end
+        return res
     end
 end
 
