@@ -6,7 +6,7 @@ describe 'grafana class' do
     # Using puppet_apply as a helper
     it 'should work idempotently with no errors' do
       pp = <<-EOS
-      class { 'grafana': }
+        class { 'grafana': }
       EOS
 
       # Run it twice and test for idempotency
@@ -18,7 +18,7 @@ describe 'grafana class' do
       it { should be_installed }
     end
 
-    describe service('grafana') do
+    describe service('grafana-server') do
       it { should be_enabled }
       it { should be_running }
     end
