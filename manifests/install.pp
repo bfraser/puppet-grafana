@@ -118,6 +118,14 @@ class grafana::install {
             require => Package['fontconfig'],
           }
         }
+        'Archlinux': {
+          if $::grafana::manage_package_repo {
+            fail('manage_package_repo is not supported on Archlinux')
+          }
+          package { $::grafana::package_name:
+            ensure  => $::grafana::version, # pacman provider doesn't have feature versionable
+          }
+        }
         default: {
           fail("${::operatingsystem} not supported")
         }
