@@ -18,7 +18,7 @@ class grafana::install {
       default           => $real_archive_source,
     }
   }
-  
+
   case $::grafana::install_method {
     'docker': {
       docker::image { 'grafana/grafana':
@@ -110,6 +110,14 @@ class grafana::install {
           package { $::grafana::package_name:
             ensure  => "${::grafana::version}-${::grafana::rpm_iteration}",
             require => Package['fontconfig']
+          }
+        }
+        'Archlinux': {
+          if $::grafana::manage_package_repo {
+            fail('manage_package_repo is not supported on Archlinux')
+          }
+          package { $::grafana::package_name:
+            ensure  => $::grafana::version, # pacman provider doesn't have feature versionable
           }
         }
         default: {
