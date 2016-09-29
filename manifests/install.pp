@@ -99,7 +99,7 @@ class grafana::install {
           if ( $::grafana::manage_package_repo ){
             yumrepo { 'grafana':
               descr    => 'grafana repo',
-              baseurl  => 'https://packagecloud.io/grafana/stable/el/6/$basearch',
+              baseurl  => 'https://packagecloud.io/grafana/stable/el/$::operatingsystemrelease/$basearch',
               gpgcheck => 1,
               gpgkey   => 'https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana',
               enabled  => 1,
