@@ -107,8 +107,14 @@ class grafana::install {
             }
           }
 
+          if $::grafana::version =~ /(installed|latest|present)/ {
+            $real_version = $::grafana::version
+          } else {
+            $real_version = "${::grafana::version}-${::grafana::rpm_iteration}"
+          }
+
           package { $::grafana::package_name:
-            ensure  => "${::grafana::version}-${::grafana::rpm_iteration}",
+            ensure  => $real_version,
             require => Package['fontconfig'],
           }
         }
