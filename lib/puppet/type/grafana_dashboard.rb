@@ -14,65 +14,66 @@
 require 'json'
 
 Puppet::Type.newtype(:grafana_dashboard) do
-    @doc = "Manage dashboards in Grafana"
+  @doc = 'Manage dashboards in Grafana'
 
-    ensurable
+  ensurable
 
-    newparam(:title, :namevar => true) do
-        desc "The title of the dashboard."
+  newparam(:title, namevar: true) do
+    desc 'The title of the dashboard.'
+  end
+
+  newproperty(:content) do
+    desc 'The JSON representation of the dashboard.'
+
+    validate do |value|
+      begin
+        JSON.parse(value)
+      rescue JSON::ParserError
+        raise ArgumentError, 'Invalid JSON string for content'
+      end
     end
 
-    newproperty(:content) do
-        desc "The JSON representation of the dashboard."
-
-        validate do |value|
-            begin
-                JSON.parse(value)
-            rescue JSON::ParserError
-                raise ArgumentError , "Invalid JSON string for content"
-            end
-        end
-
-        munge do |value|
-            JSON.parse(value)
-        end
-
-        def should_to_s(value)
-            if value.length > 12
-                "#{value.to_s.slice(0,12)}..."
-            else
-                value
-            end
-        end
-
-        def is_to_s(value)
-            should_to_s(value)
-        end
+    munge do |value|
+      JSON.parse(value)
     end
 
-    newparam(:grafana_url) do
-        desc "The URL of the Grafana server"
-        defaultto ""
-
-        validate do |value|
-            unless value =~ /^https?:\/\//
-                raise ArgumentError , "'%s' is not a valid URL" % value
-            end
-        end
+    def should_to_s(value)
+      if value.length > 12
+        "#{value.to_s.slice(0, 12)}..."
+      else
+        value
+      end
     end
 
-    newparam(:grafana_user) do
-        desc "The username for the Grafana server (optional)"
+    def to_s(value)
+      should_to_s(value)
     end
+  end
 
-    newparam(:grafana_password) do
-        desc "The password for the Grafana server (optional)"
-    end
+  newparam(:grafana_url) do
+    desc 'The URL of the Grafana server'
+    defaultto ''
 
-    validate do
-        fail('content is required when ensure is present') if self[:ensure] == :present and self[:content].nil?
+    validate do |value|
+      unless value =~ %r{^https?://}
+        raise ArgumentError, format('%s is not a valid URL', value)
+      end
     end
-    autorequire(:service) do
-      'grafana-server'
-    end
+  end
+
+  newparam(:grafana_user) do
+    desc 'The username for the Grafana server (optional)'
+  end
+
+  newparam(:grafana_password) do
+    desc 'The password for the Grafana server (optional)'
+  end
+
+  # rubocop:disable Style/SignalException
+  validate do
+    fail('content is required when ensure is present') if self[:ensure] == :present && self[:content].nil?
+  end
+  autorequire(:service) do
+    'grafana-server'
+  end
 end

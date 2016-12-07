@@ -18,43 +18,43 @@ class grafana::install {
       default           => $real_archive_source,
     }
   }
-  
+
   case $::grafana::install_method {
     'docker': {
       docker::image { 'grafana/grafana':
         image_tag => $::grafana::version,
-        require   => Class['docker']
+        require   => Class['docker'],
       }
     }
     'package': {
       case $::osfamily {
         'Debian': {
           package { 'libfontconfig1':
-            ensure => present
+            ensure => present,
           }
 
           wget::fetch { 'grafana':
             source      => $real_package_source,
-            destination => '/tmp/grafana.deb'
+            destination => '/tmp/grafana.deb',
           }
 
           package { $::grafana::package_name:
             ensure   => present,
             provider => 'dpkg',
             source   => '/tmp/grafana.deb',
-            require  => [Wget::Fetch['grafana'],Package['libfontconfig1']]
+            require  => [Wget::Fetch['grafana'],Package['libfontconfig1']],
           }
         }
         'RedHat': {
           package { 'fontconfig':
-            ensure => present
+            ensure => present,
           }
 
           package { $::grafana::package_name:
             ensure   => present,
             provider => 'rpm',
             source   => $real_package_source,
-            require  => Package['fontconfig']
+            require  => Package['fontconfig'],
           }
         }
         default: {
@@ -66,12 +66,12 @@ class grafana::install {
       case $::osfamily {
         'Debian': {
           package { 'libfontconfig1':
-            ensure => present
+            ensure => present,
           }
 
           if ( $::grafana::manage_package_repo ){
             if !defined( Class['apt'] ) {
-              class { 'apt': }
+              class { '::apt': }
             }
             apt::source { 'grafana':
               location => "https://packagecloud.io/grafana/${::grafana::repo_name}/debian",
@@ -79,7 +79,7 @@ class grafana::install {
               repos    => 'main',
               key      =>  {
                 'id'     => '418A7F2FB0E1E6E7EABF6FE8C2E73424D59097AB',
-                'source' => 'https://packagecloud.io/gpg.key'
+                'source' => 'https://packagecloud.io/gpg.key',
               },
               before   => Package[$::grafana::package_name],
             }
@@ -88,12 +88,12 @@ class grafana::install {
 
           package { $::grafana::package_name:
             ensure  => $::grafana::version,
-            require => Package['libfontconfig1']
+            require => Package['libfontconfig1'],
           }
         }
         'RedHat': {
           package { 'fontconfig':
-            ensure => present
+            ensure => present,
           }
 
           if ( $::grafana::manage_package_repo ){
@@ -107,9 +107,15 @@ class grafana::install {
             }
           }
 
+          if $::grafana::version =~ /(installed|latest|present)/ {
+            $real_version = $::grafana::version
+          } else {
+            $real_version = "${::grafana::version}-${::grafana::rpm_iteration}"
+          }
+
           package { $::grafana::package_name:
-            ensure  => "${::grafana::version}-${::grafana::rpm_iteration}",
-            require => Package['fontconfig']
+            ensure  => $real_version,
+            require => Package['fontconfig'],
           }
         }
         default: {
@@ -123,7 +129,7 @@ class grafana::install {
       if !defined(User['grafana']){
         user { 'grafana':
           ensure => present,
-          home   => $::grafana::install_dir
+          home   => $::grafana::install_dir,
         }
       }
 
@@ -131,7 +137,7 @@ class grafana::install {
         ensure  => directory,
         group   => 'grafana',
         owner   => 'grafana',
-        require => User['grafana']
+        require => User['grafana'],
       }
 
       archive { '/tmp/grafana.tar.gz':
@@ -143,7 +149,7 @@ class grafana::install {
         user            => 'grafana',
         group           => 'grafana',
         cleanup         => true,
-        require         => File[$::grafana::install_dir]
+        require         => File[$::grafana::install_dir],
       }
 
     }
