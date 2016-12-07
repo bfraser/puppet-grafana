@@ -44,7 +44,7 @@
   "dependencies": [
     {
       "name": "puppet/archive",
-      "version_requirement": ">= 0.5.1"
+      "version_requirement": ">= 0.5.1 <2.0.0"
     },
     {
       "name": "garethr/docker",
