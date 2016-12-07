@@ -1,7 +1,11 @@
 # grafana
 
-[![Puppet Forge](http://img.shields.io/puppetforge/v/bfraser/grafana.svg)](https://forge.puppetlabs.com/bfraser/grafana)
-[![Build Status](http://img.shields.io/travis/bfraser/puppet-grafana.svg)](http://travis-ci.org/bfraser/puppet-grafana)
+[![Build Status](https://travis-ci.org/voxpupuli/puppet-grafana.png?branch=master)](https://travis-ci.org/voxpupuli/puppet-grafana)
+[![Code Coverage](https://coveralls.io/repos/github/voxpupuli/puppet-grafana/badge.svg?branch=master)](https://coveralls.io/github/voxpupuli/puppet-grafana)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/grafana.svg)](https://forge.puppetlabs.com/puppet/grafana)
+[![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/grafana.svg)](https://forge.puppetlabs.com/puppet/grafana)
+[![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/grafana.svg)](https://forge.puppetlabs.com/puppet/grafana)
+[![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/grafana.svg)](https://forge.puppetlabs.com/puppet/grafana)
 
 #### Table of Contents
 
