@@ -10,23 +10,23 @@
   "dependencies": [
     {
       "name": "garethr/docker",
-      "version_requirement": ">= 3.5.0 <6.0.0"
+      "version_requirement": ">= 5.0.0 < 6.0.0"
     },
     {
       "name": "maestrodev/wget",
-      "version_requirement": ">= 1.6.0 <2.0.0"
+      "version_requirement": ">= 1.7.3 < 2.0.0"
     },
     {
       "name": "puppet/archive",
-      "version_requirement": ">= 0.5.1 <2.0.0"
+      "version_requirement": ">= 1.0.1 < 2.0.0"
     },
     {
       "name": "puppetlabs/apt",
-      "version_requirement": ">=2.0.0 <3.0.0"
+      "version_requirement": ">=2.1.0 < 3.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">=3.2.0 <5.0.0"
+      "version_requirement": ">=4.6.0 < 5.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -57,12 +57,8 @@
   ],
   "requirements": [
     {
-      "name": "pe",
-      "version_requirement": ">= 3.2.0"
-    },
-    {
       "name": "puppet",
-      "version_requirement": ">= 3.4.0"
+      "version_requirement": ">= 3.8.7 < 5.0.0"
     }
   ],
   "tags": [
