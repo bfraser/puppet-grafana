@@ -119,11 +119,11 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
     save_datasource
   end
 
-  def default?
+  def is_default
     datasource[:is_default]
   end
 
-  def default=(value)
+  def is_default=(value)
     resource[:is_default] = value
     save_datasource
   end
