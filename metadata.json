@@ -1,67 +1,70 @@
 {
-  "name": "bfraser-grafana",
+  "name": "puppet-grafana",
   "version": "2.5.0",
-  "author": "bfraser",
+  "author": "Vox Pupuli",
   "summary": "This module provides Grafana, a dashboard and graph editor for Graphite and InfluxDB.",
   "license": "Apache-2.0",
-  "source": "https://github.com/bfraser/puppet-grafana.git",
-  "project_page": "https://github.com/bfraser/puppet-grafana",
-  "issues_url": "https://github.com/bfraser/puppet-grafana/issues",
+  "source": "https://github.com/voxpupuli/puppet-grafana.git",
+  "project_page": "https://github.com/voxpupuli/puppet-grafana",
+  "issue_url": "https://github.com/voxpupuli/puppet-grafana/issues",
+  "dependencies": [
+    {
+      "name": "garethr/docker",
+      "version_requirement": ">= 5.0.0 < 6.0.0"
+    },
+    {
+      "name": "maestrodev/wget",
+      "version_requirement": ">= 1.7.3 < 2.0.0"
+    },
+    {
+      "name": "puppet/archive",
+      "version_requirement": ">= 1.0.1 < 2.0.0"
+    },
+    {
+      "name": "puppetlabs/apt",
+      "version_requirement": ">=2.1.0 < 3.0.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=4.6.0 < 5.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "14.04"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 3.8.7 < 5.0.0"
+    }
+  ],
   "tags": [
     "grafana",
     "graphite",
     "influxdb",
     "monitoring"
-  ],
-  "operatingsystem_support": [
-    {
-      "operatingsystem": "RedHat",
-      "operatingsystemrelease": [ "6.0" ]
-    },
-    {
-      "operatingsystem": "CentOS",
-      "operatingsystemrelease": [ "6.0" ]
-    },
-    {
-      "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": [ "14.04" ]
-    },
-    {
-      "operatingsystem": "Debian",
-      "operatingsystemrelease": [ "7.0" ]
-    }
-  ],
-  "requirements": [
-    {
-      "name": "pe",
-      "version_requirement": ">= 3.2.0"
-    },
-    {
-      "name": "puppet",
-      "version_requirement": ">= 3.4.0"
-    }
-  ],
-  "dependencies": [
-    {
-      "name": "puppet/archive",
-      "version_requirement": ">= 0.5.1"
-    },
-    {
-      "name": "garethr/docker",
-      "version_requirement": ">= 3.5.0 <6.0.0"
-    },
-    {
-      "name": "maestrodev/wget",
-      "version_requirement": ">= 1.6.0 <2.0.0"
-    },
-    {
-      "name": "puppetlabs-stdlib",
-      "version_requirement": ">=3.2.0 <5.0.0"
-    },
-    {
-      "name": "puppetlabs-apt",
-      "version_requirement": ">=2.0.0 <3.0.0"
-    }
-
   ]
 }
