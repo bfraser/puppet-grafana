@@ -154,7 +154,7 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
       response = send_request('POST', '/api/datasources', data)
     else
       data[:id] = datasource[:id]
-      response = send_request 'PUT', format('/api/datasources/%s', datasource[:id])
+      response = send_request 'PUT', format('/api/datasources/%s', datasource[:id]), data
     end
 
     if response.code != '200'
