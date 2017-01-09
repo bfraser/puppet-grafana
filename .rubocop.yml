@@ -430,8 +430,6 @@ Style/PerlBackrefs:
 
 Style/PredicateName:
   Enabled: True
-  Exclude:
-    - lib/puppet/provider/grafana_datasource/grafana.rb
 
 Style/RedundantException:
   Enabled: True
