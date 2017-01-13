@@ -31,7 +31,7 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
       datasources = JSON.parse(response.body)
 
       datasources.map { |x| x['id'] }.map do |id|
-        response = send_request format('GET, /api/datasources/%s', id)
+        response = send_request('GET', format('/api/datasources/%s', id))
         if response.code != '200'
           raise format('Fail to retrieve datasource %d (HTTP response: %s/%s)', id, response.code, response.body)
         end
@@ -154,7 +154,7 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
       response = send_request('POST', '/api/datasources', data)
     else
       data[:id] = datasource[:id]
-      response = send_request format('PUT, /api/datasources/%s', datasource[:id])
+      response = send_request('PUT', format('/api/datasources/%s', datasource[:id]))
     end
 
     if response.code != '200'
@@ -164,7 +164,7 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
   end
 
   def delete_datasource
-    response = send_request format('DELETE, /api/datasources/%s', datasource[:id])
+    response = send_request('DELETE', format('/api/datasources/%s', datasource[:id]))
 
     if response.code != '200'
       raise format('Failed to delete datasource %s (HTTP response: %s/%s', resource[:name], response.code, response.body)
