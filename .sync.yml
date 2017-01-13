@@ -1,0 +1,7 @@
+---
+.travis.yml:
+  secure: "qtLA1TPKaVgd9rvi0kkF2v0CP0QLls//lFHJ9IowTYNi5O+0dx7OxZCK3g4nkNWWbsujS464/YFJqVRWoXIeLIyFtfMKkaRAiuaukxOQqnzD+BsnpYYeo2zeZPCvMbB94+7G7JQ+jpuzlsHX6j+H6LQEj6+kXzd8NAj8rlygrL8XcFN3bA8XM/unCvqn2b2sduShExVl0mnNMIvZMHCbdrEzByXkz+FmyGYCay+feDIYbIbhzYLNnh6BcDkq24TxRmVOdEnUkPG6ZU0UJlNqBZB++zAIazR25NyX+b22/CFp6D6YJKkJvBNnywGUNNF21s4a6kPoEnUVBEO6yg5sDkKgp8nAvsmUnI8A1tfRFWKejxHZN3YqveY60xiNIUEHJU4MjEE6VVi9WpNW8CpJbfP/z3RtlU5n4ckSER7mb/ApxspUPJRzyMKjobDP12WU/bgXinzdNMu6PH9H56WkDpRNtIYnNhIAuirdfDr2Ok5z9/9yObUt/OQddM4wrOnMG7lyyUIzAO2OOJbIcOaZBedTKccpCu6k2mOkUHhMutf1D0bde5IGhrs7E54V2ZNxX5Dopv5eOrmVN2OxdcB9g8nmISxX6Tty/BNrTBvt7urthGjUJrjlnNE/K1595KmcWa6PGWUcYZyzdKeWqiA3+iWKSmnx1Ri0lsml5Z/a4QM="
+Gemfile:
+  optional:
+    ':test':
+      - gem: 'toml'
