@@ -9,7 +9,7 @@ class grafana::config {
         $cfg = $::grafana::cfg
 
         file {  $::grafana::cfg_location:
-          ensure  => present,
+          ensure  => file,
           content => template('grafana/config.ini.erb'),
         }
       }
@@ -18,7 +18,7 @@ class grafana::config {
       $cfg = $::grafana::cfg
 
       file {  $::grafana::cfg_location:
-        ensure  => present,
+        ensure  => file,
         content => template('grafana/config.ini.erb'),
       }
     }
@@ -26,7 +26,7 @@ class grafana::config {
       $cfg = $::grafana::cfg
 
       file { "${::grafana::install_dir}/conf/custom.ini":
-        ensure  => present,
+        ensure  => file,
         content => template('grafana/config.ini.erb'),
       }
     }
@@ -38,7 +38,7 @@ class grafana::config {
   if $::grafana::ldap_cfg {
     $ldap_cfg = $::grafana::ldap_cfg
     file { '/etc/grafana/ldap.toml':
-      ensure  => present,
+      ensure  => file,
       content => inline_template("<%= require 'toml'; TOML::Generator.new(@ldap_cfg).body %>\n"),
     }
   }
