@@ -1,3 +1,8 @@
+# Releasing v2.6.1 (2017-01-18)
+
+Just a notice: The next release will be a major one without Puppet 3 support!
+This is the last Release that supports it!
+
 # Releasing v2.6.0 (2017-01-18)
 
 **Enhancements**
