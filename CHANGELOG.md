@@ -1,3 +1,29 @@
+# Releasing v2.6.0 (2017-01-18)
+
+**Enhancements**
+
+* add two types & provider: `grafana_datasource` & `grafana_dashboard` these
+ type allow configuration of the datasource and the dashboard against the API
+* allow configuration of `repo_name` for all installation methods
+* be more conservative when installing from docker, while also allowing users to
+  override our `stable` choice
+
+**Fixes**
+
+* ensure correct ownership of downloaded artefact
+* fix use-before definition of `$version`: https://github.com/bfraser/puppet-grafana/issues/87
+
+**Behind The Scenes**
+
+* switch to voxpupuli/archive from camptocamp
+
+**Changes since forking from bfraser/puppet-grafana**
+
+* Add CONTRIBUTING.MD as well as our issues, spec etc… templates
+* update README and other files to point to forked repository
+* Rubocop and ruby-lint style-fixes!
+* test with puppet > 4.x
+
 # 2.5.0 (2015-10-31)
 
 **Enhancements**
