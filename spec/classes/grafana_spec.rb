@@ -70,7 +70,7 @@ describe 'grafana' do
           end
         when 'RedHat'
           describe 'yum repo dependencies first' do
-            it { is_expected.to contain_yumrepo('grafana').with(baseurl: 'https://packagecloud.io/grafana/stable/el/6/$basearch', gpgkey: 'https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana', enabled: 1) }
+            it { is_expected.to contain_yumrepo('grafana').with(baseurl: 'https://packagecloud.io/grafana/stable/el/' + facts[:operatingsystemmajrelease] + '/$basearch', gpgkey: 'https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana', enabled: 1) }
             it { is_expected.to contain_yumrepo('grafana').that_comes_before('Package[grafana]') }
           end
 
