@@ -72,7 +72,7 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
   end
 
   def content
-    @dashboard
+    @dashboard.reject { |k, _| k =~ %r{^id|version|title$} }
   end
 
   def content=(value)

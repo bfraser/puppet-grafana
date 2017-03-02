@@ -34,7 +34,8 @@ Puppet::Type.newtype(:grafana_dashboard) do
     end
 
     munge do |value|
-      JSON.parse(value)
+      new_value = JSON.parse(value).reject { |k, _| k =~ %r{^id|version|title$} }
+      new_value.sort.to_h
     end
 
     def should_to_s(value)
