@@ -68,7 +68,7 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
   end
 
   def slug
-    resource[:title].downcase.gsub(%r{[^\w\- ]}, '').gsub(%r{ +}, '-')
+    resource[:title].downcase.gsub(%r{[ \+]+}, '-').gsub(%r{[^\w\- ]}, '')
   end
 
   def content

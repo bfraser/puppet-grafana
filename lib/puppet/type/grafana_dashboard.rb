@@ -44,10 +44,6 @@ Puppet::Type.newtype(:grafana_dashboard) do
         value
       end
     end
-
-    def to_s(value)
-      should_to_s(value)
-    end
   end
 
   newparam(:grafana_url) do
