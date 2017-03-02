@@ -41,7 +41,7 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
   def find_dashboard
     return unless dashboards.find { |x| x['title'] == resource[:title] }
 
-    response = send_request format('GET, /api/dashboards/db/%s', slug)
+    response = send_request('GET', format('/api/dashboards/db/%s', slug))
     if response.code != '200'
       raise format('Fail to retrieve dashboard %s (HTTP response: %s/%s)', resource[:title], response.code, response.body)
     end
@@ -84,7 +84,7 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
   end
 
   def destroy
-    response = send_request format('DELETE, /api/dashboards/db/%s', slug)
+    response = send_request('DELETE', format('/api/dashboards/db/%s', slug))
 
     return unless response.code != '200'
     raise Puppet::Error, format('Failed to delete dashboard %s (HTTP response: %s/%s', resource[:title], response.code, response.body)
