@@ -127,6 +127,10 @@ describe 'grafana' do
           describe 'install the package' do
             it { is_expected.to contain_package('grafana').with_ensure('present') }
           end
+        when 'Archlinux'
+          describe 'install the package' do
+            it { is_expected.to contain_package('grafana').with_ensure('present') }
+          end
         end
       end
 
