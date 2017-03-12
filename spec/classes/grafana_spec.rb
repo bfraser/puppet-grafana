@@ -26,6 +26,7 @@ describe 'grafana' do
       end
       context 'with default values' do
         it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_class('grafana') }
         it { is_expected.to contain_anchor('grafana::begin') }
         it { is_expected.to contain_class('grafana::params') }
         it { is_expected.to contain_class('grafana::install') }
@@ -124,6 +125,10 @@ describe 'grafana' do
             it { is_expected.to contain_package('fontconfig').with_ensure('present').that_comes_before('Package[grafana]') }
           end
 
+          describe 'install the package' do
+            it { is_expected.to contain_package('grafana').with_ensure('present') }
+          end
+        when 'Archlinux'
           describe 'install the package' do
             it { is_expected.to contain_package('grafana').with_ensure('present') }
           end
