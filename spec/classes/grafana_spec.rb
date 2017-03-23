@@ -75,7 +75,7 @@ describe 'grafana' do
         when 'Debian'
           describe 'install apt repo dependencies first' do
             it { is_expected.to contain_class('apt') }
-            it { is_expected.to contain_apt__source('grafana').with(release: 'wheezy', repos: 'main', location: 'https://packagecloud.io/grafana/stable/debian') }
+            it { is_expected.to contain_apt__source('grafana').with(release: facts[:lsbdistcodename], repos: 'main', location: 'https://packagecloud.io/grafana/stable/debian') }
             it { is_expected.to contain_apt__source('grafana').that_comes_before('Package[grafana]') }
           end
 
