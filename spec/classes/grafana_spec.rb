@@ -36,6 +36,12 @@ describe 'grafana' do
       end
 
       context 'with parameter install_method is set to package' do
+        let(:params) do
+          {
+            install_method: 'package'
+          }
+        end
+
         case facts[:osfamily]
         when 'Debian'
           download_location = '/tmp/grafana.deb'

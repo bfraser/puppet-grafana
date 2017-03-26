@@ -25,6 +25,12 @@ class grafana::params {
       $cfg_location        = '/etc/grafana.ini'
       $service_name        = 'grafana'
     }
+    'Debian', 'RedHat': {
+      $manage_package_repo = true
+      $install_method      = 'repo'
+      $cfg_location        = '/etc/grafana/grafana.ini'
+      $service_name        = 'grafana-server'
+    }
     default: {
       $manage_package_repo = true
       $install_method      = 'package'
