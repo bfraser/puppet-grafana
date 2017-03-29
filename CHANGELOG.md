@@ -1,3 +1,27 @@
+# Releasing v3.0.0 (2017-03-29)
+
+**Implemented enhancements:**
+
+- Implement package\_ensure param for Arch Linux [\#34](https://github.com/voxpupuli/puppet-grafana/pull/34) ([bastelfreak](https://github.com/bastelfreak))
+
+**Fixed bugs:**
+
+- FIX configuration file ownership [\#30](https://github.com/voxpupuli/puppet-grafana/pull/30) ([cassianoleal](https://github.com/cassianoleal))
+
+**Closed issues:**
+
+- Configured Grafana Debian repo should contain current distribution [\#27](https://github.com/voxpupuli/puppet-grafana/issues/27)
+- Error while creating dashboard [\#25](https://github.com/voxpupuli/puppet-grafana/issues/25)
+
+**Merged pull requests:**
+
+- Debian and RedHat based operating systems should use the repository by default [\#36](https://github.com/voxpupuli/puppet-grafana/pull/36) ([dhoppe](https://github.com/dhoppe))
+- Add support for Arch Linux [\#32](https://github.com/voxpupuli/puppet-grafana/pull/32) ([bastelfreak](https://github.com/bastelfreak))
+- Fix grafana\_dashboards [\#31](https://github.com/voxpupuli/puppet-grafana/pull/31) ([cassianoleal](https://github.com/cassianoleal))
+- Supoort jessie for install method repo [\#28](https://github.com/voxpupuli/puppet-grafana/pull/28) ([roock](https://github.com/roock))
+- Use operatinsystemmajrelease fact in repo url [\#24](https://github.com/voxpupuli/puppet-grafana/pull/24) ([mirekys](https://github.com/mirekys))
+- The puppet 4-only release will start at 3.0.0 [\#21](https://github.com/voxpupuli/puppet-grafana/pull/21) ([rnelson0](https://github.com/rnelson0))
+
 # Releasing v2.6.1 (2017-01-18)
 
 Just a notice: The next release will be a major one without Puppet 3 support!
