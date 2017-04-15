@@ -17,6 +17,7 @@ describe Puppet::Type.type(:grafana_datasource) do
   let(:gdatasource) do
     described_class.new name: 'foo', grafana_url: 'http://example.com', url: 'http://influx.example.com'
   end
+
   context 'when setting parameters' do
     it "fails if grafana_url isn't HTTP-based" do
       expect do

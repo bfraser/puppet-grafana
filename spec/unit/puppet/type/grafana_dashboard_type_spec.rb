@@ -17,6 +17,7 @@ describe Puppet::Type.type(:grafana_dashboard) do
   let(:gdashboard) do
     described_class.new name: 'foo', grafana_url: 'http://example.com/', content: '{}', ensure: :present
   end
+
   context 'when setting parameters' do
     it "fails if grafana_url isn't HTTP-based" do
       expect do
