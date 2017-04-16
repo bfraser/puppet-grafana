@@ -24,6 +24,7 @@ describe 'grafana' do
           '/etc/grafana/grafana.ini'
         end
       end
+
       context 'with default values' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('grafana') }
@@ -183,6 +184,7 @@ describe 'grafana' do
               ensure => present,
             }'
           end
+
           describe 'do NOT create grafana user' do
             it { is_expected.not_to contain_user('grafana').with_ensure('present').with_home(install_dir) }
           end
@@ -196,6 +198,7 @@ describe 'grafana' do
               hasstatus  => true,
             }'
           end
+
           # let(:params) {{ :service_name => 'grafana-server'}}
           describe 'do NOT run service' do
             it { is_expected.not_to contain_service('grafana-server').with_hasrestart(false).with_hasstatus(false) }
