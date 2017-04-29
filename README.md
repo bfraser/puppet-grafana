@@ -362,7 +362,7 @@ grafana_datasource { 'influxdb':
 }
 ```
 
-Available types are: influxdb, elasticsearch, graphite, kairosdb, opentsdb, prometheus
+Available default types are: influxdb, elasticsearch, graphite, kairosdb, opentsdb, prometheus
 
 Access mode determines how Grafana connects to the datasource, either `direct`
 from the browser, or `proxy` to send requests via grafana.
@@ -370,6 +370,15 @@ from the browser, or `proxy` to send requests via grafana.
 Authentication is optional, as is `database`; additional `json_data` can be
 provided to allow custom configuration options.
 
+##### `grafana::plugin`
+
+There exists a custom defined resource which wraps grafana-cli to install
+plugins. Deinstallation isn't supported right now, also docker support
+completely missing. Example usage:
+
+```puppet
+grafana::plugin{'grafana-simple-json-datasource':}
+```
 ## Limitations
 
 This module has been tested on Ubuntu 14.04, using each of the 'archive', 'docker'
