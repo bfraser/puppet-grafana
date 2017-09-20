@@ -68,7 +68,7 @@ class Puppet::Provider::Grafana < Puppet::Provider
     end
 
     request.content_type = 'application/json'
-    if resource[:grafana_user] && resource[:grafana_user]
+    if resource[:grafana_user] && resource[:grafana_password]
       request.basic_auth resource[:grafana_user], resource[:grafana_password]
     end
 
