@@ -12,6 +12,7 @@
 1. [Overview](#overview)
 1. [Module Description](#module-description)
 1. [Setup](#setup)
+    * [Requirements](#requirements)
     * [Beginning with Grafana](#beginning-with-grafana)
 1. [Usage](#usage)
     * [Classes and Defined Types](#classes-and-defined-types)
@@ -39,6 +40,15 @@ This module will:
 * Allow you to override the version of Grafana to be installed, and / or the
   package source
 * Perform basic configuration of Grafana
+
+### Requirements
+
+* If using an operating system of the Debian-based family, and the "repo"
+`install_method`, you will need to ensure that
+[puppetlabs-apt](https://forge.puppet.com/puppetlabs/apt) version 4.x is
+installed.
+* If using Docker, you will need the
+[garethr/docker](https://forge.puppet.com/garethr/docker) module version 5.x
 
 ### Beginning with Grafana
 
