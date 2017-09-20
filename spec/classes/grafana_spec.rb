@@ -69,6 +69,21 @@ describe 'grafana' do
         end
       end
 
+      context 'with some plugins passed in' do
+        let(:params) do
+          {
+            plugins:
+            {
+              'grafana-wizzle' => { 'ensure' => 'present' },
+              'grafana-woozle' => { 'ensure' => 'absent' }
+            }
+          }
+        end
+
+        it { is_expected.to contain_grafana_plugin('grafana-wizzle').with(ensure: 'present') }
+        it { is_expected.to contain_grafana_plugin('grafana-woozle').with(ensure: 'absent').that_notifies('Class[grafana::service]') }
+      end
+
       context 'with parameter install_method is set to repo' do
         let(:params) do
           {
