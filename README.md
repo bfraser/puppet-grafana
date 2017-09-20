@@ -379,6 +379,22 @@ completely missing. Example usage:
 ```puppet
 grafana::plugin{'grafana-simple-json-datasource':}
 ```
+
+##### `grafana::user`
+
+Creates and manages a global grafana user via the API.
+
+```puppet
+grafana_user { 'username':
+  grafana_url       => 'http://localhost:3000',
+  grafana_user      => 'admin',
+  grafana_password  => '5ecretPassw0rd',
+  full_name         => 'John Doe',
+  password          => 'Us3r5ecret',
+  email             => 'john@example.com',
+}
+```
+
 ## Limitations
 
 This module has been tested on Ubuntu 14.04, using each of the 'archive', 'docker'
