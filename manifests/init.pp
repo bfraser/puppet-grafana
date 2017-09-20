@@ -62,6 +62,10 @@
 # Set to 'testing' to install beta versions
 # Defaults to stable.
 #
+# [*plugins*]
+# A hash of plugins to be passed to `create_resources`, wraps around the
+# `grafana_plugin` resource.
+#
 # === Examples
 #
 #  class { '::grafana':
@@ -84,7 +88,8 @@ class grafana (
   $repo_name           = $::grafana::params::repo_name,
   $rpm_iteration       = $::grafana::params::rpm_iteration,
   $service_name        = $::grafana::params::service_name,
-  $version             = $::grafana::params::version
+  $version             = $::grafana::params::version,
+  $plugins             = {}
 ) inherits grafana::params {
 
   # validate parameters here
@@ -99,4 +104,9 @@ class grafana (
   Class['grafana::install']
   -> Class['grafana::config']
   ~> Class['grafana::service']
+
+  create_resources(grafana_plugin, $plugins)
+
+  Grafana_Plugin <| |> ~> Class['grafana::service']
+
 }

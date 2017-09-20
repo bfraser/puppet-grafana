@@ -272,6 +272,11 @@ Grafana repositories are enabled on your host. If true, the official Grafana
 repositories will be enabled. If false, the module assumes you are managing your
 own package repository and will not set one up for you. Defaults to true.
 
+##### `plugins`
+
+Hash. This is a passthrough to call `create_resources()` on the
+`grafana_plugin` resource type.
+
 ##### `package_name`
 
 The name of the package managed with the 'package' install method. Defaults to
@@ -333,7 +338,7 @@ Example:
 
 #### Custom Types and Providers
 
-The module includes two custom types: `grafana_dashboard` and `grafana_datasource`
+The module includes several custom types:
 
 ##### `grafana_dashboard`
 
@@ -380,14 +385,15 @@ from the browser, or `proxy` to send requests via grafana.
 Authentication is optional, as is `database`; additional `json_data` can be
 provided to allow custom configuration options.
 
-##### `grafana::plugin`
+##### `grafana_plugin`
 
-There exists a custom defined resource which wraps grafana-cli to install
-plugins. Deinstallation isn't supported right now, also docker support
-completely missing. Example usage:
+An example is provided for convenience; for more details, please view the
+puppet strings docs.
 
 ```puppet
-grafana::plugin{'grafana-simple-json-datasource':}
+grafana_plugin { 'grafana-simple-json-datasource':
+  ensure => present,
+}
 ```
 
 ##### `grafana::user`
