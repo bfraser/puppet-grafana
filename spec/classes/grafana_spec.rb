@@ -28,12 +28,10 @@ describe 'grafana' do
       context 'with default values' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('grafana') }
-        it { is_expected.to contain_anchor('grafana::begin') }
         it { is_expected.to contain_class('grafana::params') }
-        it { is_expected.to contain_class('grafana::install') }
-        it { is_expected.to contain_class('grafana::config') }
+        it { is_expected.to contain_class('grafana::install').that_comes_before('Class[grafana::config]') }
+        it { is_expected.to contain_class('grafana::config').that_notifies('Class[grafana::service]') }
         it { is_expected.to contain_class('grafana::service') }
-        it { is_expected.to contain_anchor('grafana::end') }
       end
 
       context 'with parameter install_method is set to package' do
