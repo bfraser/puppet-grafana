@@ -4,7 +4,6 @@
 # It sets variables according to platform
 #
 class grafana::params {
-  $archive_source      = undef
   $cfg                 = {}
   $container_cfg       = false
   $container_params    = {}
@@ -12,9 +11,7 @@ class grafana::params {
   $docker_image        = 'grafana/grafana'
   $docker_ports        = '3000:3000'
   $install_dir         = '/usr/share/grafana'
-  $ldap_cfg            = false
   $package_name        = 'grafana'
-  $package_source      = undef
   $rpm_iteration       = '1'
   $repo_name           = 'stable'
   $version             = '4.5.1'

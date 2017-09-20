@@ -221,16 +221,6 @@ describe 'grafana' do
 
       context 'invalid parameters' do
         context 'cfg' do
-          describe 'should raise an error when cfg parameter is not a hash' do
-            let(:params) do
-              {
-                cfg: []
-              }
-            end
-
-            it { expect { is_expected.to contain_package('grafana') }.to raise_error(Puppet::Error, %r{cfg parameter must be a hash}) }
-          end
-
           describe 'should not raise an error when cfg parameter is a hash' do
             let(:params) do
               {
