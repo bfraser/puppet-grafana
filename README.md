@@ -417,6 +417,20 @@ This module has been tested on Ubuntu 14.04, using each of the 'archive', 'docke
 and 'package' installation methods. Other configurations should work with minimal,
 if any, additional effort.
 
+## Development
+
+This module is a fork of
+[bfraser/grafana](https://github.com/bfraser/puppet-grafana) maintained by [Vox
+Pupuli](https://voxpupuli.org/). Vox Pupuli welcomes new contributions to this
+module, especially those that include documentation and rspec tests. We are
+happy to provide guidance if necessary.
+
+Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for more details.
+
+### Authors
+* Bill Fraser <fraser@pythian.com>
+* Vox Pupuli Team
+
 ## Copyright and License
 
 Copyright (C) 2015 Bill Fraser
