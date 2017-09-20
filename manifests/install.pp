@@ -34,16 +34,15 @@ class grafana::install {
             ensure => present,
           }
 
-          wget::fetch { 'grafana':
-            source      => $real_package_source,
-            destination => '/tmp/grafana.deb',
+          archive { '/tmp/grafana.deb':
+            source  => $real_package_source,
           }
 
           package { $::grafana::package_name:
             ensure   => present,
             provider => 'dpkg',
             source   => '/tmp/grafana.deb',
-            require  => [Wget::Fetch['grafana'],Package['libfontconfig1']],
+            require  => [Archive['/tmp/grafana.deb'],Package['libfontconfig1']],
           }
         }
         'RedHat': {
