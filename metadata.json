@@ -9,20 +9,12 @@
   "issue_url": "https://github.com/voxpupuli/puppet-grafana/issues",
   "dependencies": [
     {
-      "name": "garethr/docker",
-      "version_requirement": ">= 5.0.0 < 6.0.0"
-    },
-    {
       "name": "maestrodev/wget",
       "version_requirement": ">= 1.7.3 < 2.0.0"
     },
     {
       "name": "puppet/archive",
       "version_requirement": ">= 1.0.1 < 2.0.0"
-    },
-    {
-      "name": "puppetlabs/apt",
-      "version_requirement": ">=2.1.0 < 5.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
@@ -39,19 +31,22 @@
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "14.04"
+        "14.04",
+        "16.04"
       ]
     },
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
+        "6",
         "6"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "6"
+        "6",
+        "7"
       ]
     },
     {
@@ -61,7 +56,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.6.1 < 5.0.0"
+      "version_requirement": ">= 4.7.1 < 6.0.0"
     }
   ],
   "tags": [

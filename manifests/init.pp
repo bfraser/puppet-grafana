@@ -92,9 +92,11 @@ class grafana (
     fail('cfg parameter must be a hash')
   }
 
-  anchor { 'grafana::begin': }
-  -> class { '::grafana::install': }
-  -> class { '::grafana::config': }
-  ~> class { '::grafana::service': }
-  -> anchor { 'grafana::end': }
+  contain grafana::install
+  contain grafana::config
+  contain grafana::service
+
+  Class['grafana::install']
+  -> Class['grafana::config']
+  ~> Class['grafana::service']
 }

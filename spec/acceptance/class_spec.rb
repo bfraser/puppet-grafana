@@ -17,7 +17,7 @@ describe 'grafana class' do
       it { is_expected.to be_installed }
     end
 
-    describe service('grafana') do
+    describe service('grafana-server') do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
     end

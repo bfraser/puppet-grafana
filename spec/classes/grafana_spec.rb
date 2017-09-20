@@ -28,12 +28,10 @@ describe 'grafana' do
       context 'with default values' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('grafana') }
-        it { is_expected.to contain_anchor('grafana::begin') }
         it { is_expected.to contain_class('grafana::params') }
-        it { is_expected.to contain_class('grafana::install') }
-        it { is_expected.to contain_class('grafana::config') }
+        it { is_expected.to contain_class('grafana::install').that_comes_before('Class[grafana::config]') }
+        it { is_expected.to contain_class('grafana::config').that_notifies('Class[grafana::service]') }
         it { is_expected.to contain_class('grafana::service') }
-        it { is_expected.to contain_anchor('grafana::end') }
       end
 
       context 'with parameter install_method is set to package' do
@@ -91,7 +89,7 @@ describe 'grafana' do
           end
 
           describe 'install the package' do
-            it { is_expected.to contain_package('grafana').with_ensure('2.5.0') }
+            it { is_expected.to contain_package('grafana').with_ensure('4.5.1') }
           end
         when 'RedHat'
           describe 'yum repo dependencies first' do
@@ -104,7 +102,7 @@ describe 'grafana' do
           end
 
           describe 'install the package' do
-            it { is_expected.to contain_package('grafana').with_ensure('2.5.0-1') }
+            it { is_expected.to contain_package('grafana').with_ensure('4.5.1-1') }
           end
         end
       end
@@ -151,7 +149,7 @@ describe 'grafana' do
 
         install_dir    = '/usr/share/grafana'
         service_config = '/usr/share/grafana/conf/custom.ini'
-        archive_source = 'https://grafanarel.s3.amazonaws.com/builds/grafana-2.5.0.linux-x64.tar.gz'
+        archive_source = 'https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.5.1.linux-x64.tar.gz'
 
         describe 'extract archive to install_dir' do
           it { is_expected.to contain_archive('/tmp/grafana.tar.gz').with_ensure('present') }
