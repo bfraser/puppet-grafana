@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.0.1](https://github.com/voxpupuli/puppet-grafana/tree/v4.0.1) (2017-09-21)
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v4.0.0...v4.0.1)
+
+**Fixed bugs:**
+
+- Module doesn't work on Ubuntu Xenial [\#56](https://github.com/voxpupuli/puppet-grafana/issues/56)
+
 ## [v4.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v4.0.0) (2017-09-20)
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v3.0.0...v4.0.0)
 
@@ -33,6 +40,7 @@ These should not affect the functionality of the module.
 - Update README.md [\#67](https://github.com/voxpupuli/puppet-grafana/pull/67) ([wyardley](https://github.com/wyardley))
 - Get rid of the dependency on 'wget' module in favor of puppet-archive [\#65](https://github.com/voxpupuli/puppet-grafana/pull/65) ([wyardley](https://github.com/wyardley))
 - Remove licenses from the top of files [\#64](https://github.com/voxpupuli/puppet-grafana/pull/64) ([wyardley](https://github.com/wyardley))
+- Release 4.0.0 [\#62](https://github.com/voxpupuli/puppet-grafana/pull/62) ([bastelfreak](https://github.com/bastelfreak))
 - Always use jessie apt repo when osfamily is Debian. [\#41](https://github.com/voxpupuli/puppet-grafana/pull/41) ([furhouse](https://github.com/furhouse))
 
 ## [v3.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v3.0.0) (2017-03-29)
