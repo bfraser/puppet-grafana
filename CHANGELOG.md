@@ -4,12 +4,28 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v4.0.1](https://github.com/voxpupuli/puppet-grafana/tree/v4.0.1) (2017-09-21)
+## [v4.0.2](https://github.com/voxpupuli/puppet-grafana/tree/v4.0.2) (2017-10-12)
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v4.0.1...v4.0.2)
+
+**Implemented enhancements:**
+
+- bump archive upper boundary to work with latest versions [\#73](https://github.com/voxpupuli/puppet-grafana/pull/73) ([bastelfreak](https://github.com/bastelfreak))
+- add debian 8 and 9 support [\#72](https://github.com/voxpupuli/puppet-grafana/pull/72) ([bastelfreak](https://github.com/bastelfreak))
+
+**Merged pull requests:**
+
+- fix typo in metadata \(redhat 6 twice vs 6/7\) [\#69](https://github.com/voxpupuli/puppet-grafana/pull/69) ([wyardley](https://github.com/wyardley))
+
+## [v4.0.1](https://github.com/voxpupuli/puppet-grafana/tree/v4.0.1) (2017-09-22)
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v4.0.0...v4.0.1)
 
 **Fixed bugs:**
 
 - Module doesn't work on Ubuntu Xenial [\#56](https://github.com/voxpupuli/puppet-grafana/issues/56)
+
+**Merged pull requests:**
+
+- Release 4.0.1 [\#68](https://github.com/voxpupuli/puppet-grafana/pull/68) ([wyardley](https://github.com/wyardley))
 
 ## [v4.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v4.0.0) (2017-09-20)
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v3.0.0...v4.0.0)
