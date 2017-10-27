@@ -30,12 +30,6 @@ Puppet::Type.newtype(:grafana_datasource) do
 
   newproperty(:url) do
     desc 'The URL of the datasource'
-
-    validate do |value|
-      unless value =~ %r{^https?://}
-        raise ArgumentError, format('%s is not a valid URL', value)
-      end
-    end
   end
 
   newproperty(:type) do
