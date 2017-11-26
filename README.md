@@ -357,6 +357,25 @@ grafana_dashboard { 'example_dashboard':
 `grafana_user` and `grafana_password` are optional, and required when
 authentication is enabled in Grafana.
 
+Example:
+Make sure the `grafana-server` service is up and running before creating the `grafana_dashboard` definition. One option is to use the `http_conn_validator` from the [healthcheck](https://forge.puppet.com/puppet/healthcheck) module
+
+```puppet
+http_conn_validator { 'grafana-conn-validator' :
+  host     => 'localhost',
+  port     => '3000',
+  use_ssl  => false,
+  test_url => '/public/img/grafana_icon.svg',
+  require  => Class['grafana'],
+}
+-> grafana_dashboard { 'example_dashboard':
+  grafana_url       => 'http://localhost:3000',
+  grafana_user      => 'admin',
+  grafana_password  => '5ecretPassw0rd',
+  content           => template('path/to/exported/file.json'),
+}
+```
+
 ##### `grafana_datasource`
 
 In order to use the datasource resource, add the following to your manifest:
@@ -384,6 +403,32 @@ from the browser, or `proxy` to send requests via grafana.
 
 Authentication is optional, as is `database`; additional `json_data` can be
 provided to allow custom configuration options.
+
+Example:
+Make sure the `grafana-server` service is up and running before creating the `grafana_datasource` definition. One option is to use the `http_conn_validator` from the [healthcheck](https://forge.puppet.com/puppet/healthcheck) module
+
+```puppet
+http_conn_validator { 'grafana-conn-validator' :
+  host     => 'localhost',
+  port     => '3000',
+  use_ssl  => false,
+  test_url => '/public/img/grafana_icon.svg',
+  require  => Class['grafana'],
+}
+-> grafana_datasource { 'influxdb':
+  grafana_url       => 'http://localhost:3000',
+  grafana_user      => 'admin',
+  grafana_password  => '5ecretPassw0rd',
+  type              => 'influxdb',
+  url               => 'http://localhost:8086',
+  user              => 'admin',
+  password          => '1nFlux5ecret',
+  database          => 'graphite',
+  access_mode       => 'proxy',
+  is_default        => true,
+  json_data         => template('path/to/additional/config.json'),
+}
+```
 
 ##### `grafana_plugin`
 
