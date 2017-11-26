@@ -367,8 +367,8 @@ http_conn_validator { 'grafana-conn-validator' :
   use_ssl  => false,
   test_url => '/public/img/grafana_icon.svg',
   require  => Class['grafana'],
-} ->
-grafana_dashboard { 'example_dashboard':
+}
+-> grafana_dashboard { 'example_dashboard':
   grafana_url       => 'http://localhost:3000',
   grafana_user      => 'admin',
   grafana_password  => '5ecretPassw0rd',
@@ -414,8 +414,8 @@ http_conn_validator { 'grafana-conn-validator' :
   use_ssl  => false,
   test_url => '/public/img/grafana_icon.svg',
   require  => Class['grafana'],
-} ->
-grafana_datasource { 'influxdb':
+}
+-> grafana_datasource { 'influxdb':
   grafana_url       => 'http://localhost:3000',
   grafana_user      => 'admin',
   grafana_password  => '5ecretPassw0rd',
