@@ -340,7 +340,25 @@ Example:
 
 The module includes several custom types:
 
-##### `grafana_dashboard`
+#### `grafana_organization`
+
+In order to use the organization resource, add the following to your manifest:
+
+```puppet
+grafana_organization { 'example_org':
+  grafana_url      => 'http://localhost:3000',
+  grafana_user     => 'admin',
+  grafana_password => '5ecretPassw0rd',
+}
+```
+
+`grafana_url`, `grafana_user`, and `grafana_password` are required to create organizations via the API. 
+
+`name` is optional if the name will differ from example_org above.
+
+`address` is an optional parameter that requires a hash. Address settings are `{"address1":"","address2":"","city":"","zipCode":"","state":"","country":""}`
+  
+#### `grafana_dashboard`
 
 In order to use the dashboard resource, add the following to your manifest:
 
@@ -386,6 +404,7 @@ grafana_datasource { 'influxdb':
   grafana_user      => 'admin',
   grafana_password  => '5ecretPassw0rd',
   type              => 'influxdb',
+  org_name          => 'NewOrg',
   url               => 'http://localhost:8086',
   user              => 'admin',
   password          => '1nFlux5ecret',
@@ -396,10 +415,14 @@ grafana_datasource { 'influxdb':
 }
 ```
 
-Available default types are: influxdb, elasticsearch, graphite, kairosdb, opentsdb, prometheus
+Available types are: influxdb, elasticsearch, graphite, cloudwatch, mysql, opentsdb, and prometheus
+
+`org_name` is used to set which organization a datasource will be created on. If this parameter is not set, it will default to organization ID 1 (Main Org. by default). If the default org is deleted, organizations will need to be specified. 
 
 Access mode determines how Grafana connects to the datasource, either `direct`
 from the browser, or `proxy` to send requests via grafana.
+
+Setting `basic_auth` to `true` will allow use of the `basic_auth_user` and `basic_auth_password` params.
 
 Authentication is optional, as is `database`; additional `json_data` can be
 provided to allow custom configuration options.
@@ -429,6 +452,96 @@ http_conn_validator { 'grafana-conn-validator' :
   json_data         => template('path/to/additional/config.json'),
 }
 ```
+
+Note that the `database` is dynamic, setting things other than "database" for separate types. Ex: for Elasticsearch it will set the Index Name.
+
+**`jsonData` Settings**
+
+Note that there are separate options for json_data based on the type of datasource you create.
+
+##### **Elasticsearch**
+
+`esVersion` - Required, either 2 or 5, set as a bare number.
+
+`timeField` - Required. By default this is @timestamp, but without setting it in jsonData, the datasource won't work without refreshing it in the GUI.
+
+`timeInterval` - Optional. A lower limit for the auto group by time interval. Recommended to be set to write frequency, for example "1m" if your data is written every minute.
+
+Example:
+```puppet
+json_data => {"esVersion":5,"timeField":"@timestamp","timeInterval":"1m"}
+```
+
+##### **CloudWatch**
+
+`authType` - Required. Options are `Access & Secret Key`, `Credentials File`, or `ARN`.
+  
+-"keys" = Access & Secret Key
+
+-"credentials" = Credentials File
+
+-"arn" = ARN
+ 
+*When setting authType to `credentials`, the `database` param will set the Credentials Profile Name.*
+
+*When setting authType to `arn`, another jsonData value of `assumeRoleARN` is available, which is not required for other authType settings*     
+
+`customMetricsNamespaces` - Optional. Namespaces of Custom Metrics, separated by commas within double quotes.
+
+`defaultRegion` - Required. Options are "ap-northeast-(1 or 2)", "ap-southeast-(1 or 2)", "ap-south-1", "ca-central-1", "cn-north-1", "eu-central-1", "eu-west-(1 or 2)", "sa-east-(1 or 2)", "us-east-(1 or 2)", "us-gov-west-1", "us-west-(1 or 2)".
+
+`timeField`
+
+Example: 
+```puppet
+{"authType":"arn","assumeRoleARN":"arn:aws:iam:*","customMetricsNamespaces":"Namespace1,Namespace2","defaultRegion":"us-east-1","timeField":"@timestamp"}
+```
+     
+##### **Graphite**
+
+`graphiteVersion` - Required. Available versions are `0.9` or `1.0`.
+
+`tlsAuth` - Set to `true` or `false`
+
+`tlsAuthWithCACert` - Set to `true` or `false`
+
+Example:
+```puppet
+{"graphiteVersion":"0.9","tlsAuth":true,"tlsAuthWithCACert":false}
+```
+
+##### **OpenTSDB**
+
+`tsdbResolution` - Required. Options are `1` or `2`.
+
+  `1` = second
+
+  `2` = millisecond
+
+`tsdbVersion` - Required. Options are `1`, `2`, or `3`.
+
+  `1` &nbsp;&nbsp; = &nbsp;&nbsp; <=2.1
+
+  `2` &nbsp;&nbsp; = &nbsp;&nbsp; ==2.2
+
+  `3` &nbsp;&nbsp; = &nbsp;&nbsp; ==2.3
+
+Example:
+```puppet
+{"tsdbResolution:1,"tsdbVersion":3}
+```
+
+##### **InfluxDB**
+
+N/A
+
+##### **MySQL**
+
+N/A
+
+##### **Prometheus**
+
+N/A
 
 ##### `grafana_plugin`
 
