@@ -15,7 +15,23 @@ require 'spec_helper'
 
 describe Puppet::Type.type(:grafana_datasource) do
   let(:gdatasource) do
-    described_class.new name: 'foo', grafana_url: 'http://example.com', url: 'http://influx.example.com'
+    described_class.new(
+      name: 'foo',
+      grafana_url: 'http://example.com',
+      url: 'http://es.example.com',
+      type: 'elasticsearch',
+      organization: 'test_org',
+      access_mode: 'proxy',
+      is_default: true,
+      basic_auth: true,
+      basic_auth_user: 'user',
+      basic_auth_password: 'password',
+      with_credentials: true,
+      database: 'test_db',
+      user: 'db_user',
+      password: 'db_password',
+      json_data: { esVersion: 5, timeField: '@timestamp', timeInterval: '1m' }
+    )
   end
 
   context 'when setting parameters' do
@@ -25,18 +41,37 @@ describe Puppet::Type.type(:grafana_datasource) do
       end.to raise_error(Puppet::Error, %r{not a valid URL})
     end
 
+    it "fails if url isn't HTTP-based" do
+      expect do
+        described_class.new name: 'foo', url: 'example.com', content: '{}', ensure: :present
+      end.to raise_error(Puppet::Error, %r{not a valid URL})
+    end
+
     it "fails if json_data isn't valid" do
       expect do
         described_class.new name: 'foo', grafana_url: 'http://example.com', json_data: 'invalid', ensure: :present
       end.to raise_error(Puppet::Error, %r{json_data should be a Hash})
     end
-
     # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(gdatasource[:name]).to eq('foo')
       expect(gdatasource[:grafana_url]).to eq('http://example.com')
-      expect(gdatasource[:url]).to eq('http://influx.example.com')
+      expect(gdatasource[:url]).to eq('http://es.example.com')
+      expect(gdatasource[:type]).to eq(:elasticsearch)
+      expect(gdatasource[:organization]).to eq('test_org')
+      expect(gdatasource[:access_mode]).to eq(:proxy)
+      expect(gdatasource[:is_default]).to eq(:true)
+      expect(gdatasource[:basic_auth]).to eq(:true)
+      expect(gdatasource[:basic_auth_user]).to eq('user')
+      expect(gdatasource[:basic_auth_password]).to eq('password')
+      expect(gdatasource[:with_credentials]).to eq(:true)
+      expect(gdatasource[:database]).to eq('test_db')
+      expect(gdatasource[:user]).to eq('db_user')
+      expect(gdatasource[:password]).to eq('db_password')
+      expect(gdatasource[:json_data]).to eq(esVersion: 5, timeField: '@timestamp', timeInterval: '1m')
     end
+    # rubocop:enable RSpec/MultipleExpectations
+
     it 'autorequires the grafana-server for proper ordering' do
       catalog = Puppet::Resource::Catalog.new
       service = Puppet::Type.type(:service).new(name: 'grafana-server')
@@ -48,6 +83,7 @@ describe Puppet::Type.type(:grafana_datasource) do
       end
       expect(relationship).to be_a Puppet::Relationship
     end
+
     it 'does not autorequire the service it is not managed' do
       catalog = Puppet::Resource::Catalog.new
       catalog.add_resource gdatasource
