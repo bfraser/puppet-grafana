@@ -15,7 +15,7 @@ require 'spec_helper'
 
 describe Puppet::Type.type(:grafana_datasource) do
   let(:gdatasource) do
-    described_class.new( 
+    described_class.new(
       name: 'foo',
       grafana_url: 'http://example.com',
       url: 'http://es.example.com',
@@ -30,7 +30,7 @@ describe Puppet::Type.type(:grafana_datasource) do
       database: 'test_db',
       user: 'db_user',
       password: 'db_password',
-      json_data: {:esVersion=>5,:timeField=>"@timestamp",:timeInterval=>"1m"}
+      json_data: { esVersion: 5, timeField: '@timestamp', timeInterval: '1m' }
     )
   end
 
