@@ -15,7 +15,23 @@ require 'spec_helper'
 
 describe Puppet::Type.type(:grafana_datasource) do
   let(:gdatasource) do
-    described_class.new name: 'foo', grafana_url: 'http://example.com', url: 'http://es.example.com', type: 'elasticsearch', organization: 'test_org', access_mode: 'proxy', is_default: true, basic_auth: true, basic_auth_user: 'user', basic_auth_password: 'password', with_credentials: true, database: 'test_db', user: 'db_user', password: 'db_password', json_data: '{"esVersion":5,"timeField":"@timestamp","timeInterval":"1m"}'
+    described_class.new( 
+      name: 'foo',
+      grafana_url: 'http://example.com',
+      url: 'http://es.example.com',
+      type: 'elasticsearch',
+      organization: 'test_org',
+      access_mode: 'proxy',
+      is_default: true,
+      basic_auth: true,
+      basic_auth_user: 'user',
+      basic_auth_password: 'password',
+      with_credentials: true,
+      database: 'test_db',
+      user: 'db_user',
+      password: 'db_password',
+      json_data: {:esVersion=>5,:timeField=>"@timestamp",:timeInterval=>"1m"}
+    )
   end
 
   context 'when setting parameters' do
@@ -36,7 +52,6 @@ describe Puppet::Type.type(:grafana_datasource) do
         described_class.new name: 'foo', grafana_url: 'http://example.com', json_data: 'invalid', ensure: :present
       end.to raise_error(Puppet::Error, %r{json_data should be a Hash})
     end
-
     # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(gdatasource[:name]).to eq('foo')
@@ -53,7 +68,7 @@ describe Puppet::Type.type(:grafana_datasource) do
       expect(gdatasource[:database]).to eq('test_db')
       expect(gdatasource[:user]).to eq('db_user')
       expect(gdatasource[:password]).to eq('db_password')
-      expect(gdatasource[:json_data]).to eq('{"esVersion":5,"timeField":"@timestamp","timeInterval":"1m"}')
+      expect(gdatasource[:json_data]).to eq(esVersion: 5, timeField: '@timestamp', timeInterval: '1m')
     end
     # rubocop:enable RSpec/MultipleExpectations
 

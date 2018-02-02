@@ -2,7 +2,13 @@ require 'spec_helper'
 
 describe Puppet::Type.type(:grafana_organization) do
   let(:gorganization) do
-    described_class.new name: 'foo', grafana_url: 'http://example.com', grafana_user: 'admin', grafana_password: 'admin', address: '{"address1":"test address1","address2":"test address2","city":"CityName","state":"NewState","zipcode":"12345","country":"USA"}'
+    described_class.new(
+      name: 'foo',
+      grafana_url: 'http://example.com',
+      grafana_user: 'admin',
+      grafana_password: 'admin',
+      address: { address1: 'test address1', address2: 'test address2', city: 'CityName', state: 'NewState', zipcode: '12345', country: 'USA' }
+    )
   end
 
   context 'when setting parameters' do
@@ -17,14 +23,14 @@ describe Puppet::Type.type(:grafana_organization) do
         described_class.new name: 'foo', grafana_url: 'example.com', content: '{}', ensure: :present
       end.to raise_error(Puppet::Error, %r{not a valid URL})
     end
-
+    
     # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(gorganization[:name]).to eq('foo')
       expect(gorganization[:grafana_user]).to eq('admin')
       expect(gorganization[:grafana_password]).to eq('admin')
       expect(gorganization[:grafana_url]).to eq('http://example.com')
-      expect(gorganization[:address]).to eq('{"address1":"test address1","address2":"test address2","city":"CityName","state":"NewState","zipcode":"12345","country":"USA"}')
+      expect(gorganization[:address]).to eq(address1: 'test address1', address2: 'test address2', city: 'CityName', state: 'NewState', zipcode: '12345', country: 'USA')
     end
     # rubocop:enable RSpec/MultipleExpectations
 
