@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.1.1](https://github.com/voxpupuli/puppet-grafana/tree/v4.1.1) (2018-02-21)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v4.1.0...v4.1.1)
+
+**Fixed bugs:**
+
+- grafana\_datasource provider with\_credentials\(\) returns is\_default value [\#89](https://github.com/voxpupuli/puppet-grafana/issues/89)
+- fix datasource provider error [\#90](https://github.com/voxpupuli/puppet-grafana/pull/90) ([brandonrdn](https://github.com/brandonrdn))
+
+**Merged pull requests:**
+
+- release 4.1.0 [\#88](https://github.com/voxpupuli/puppet-grafana/pull/88) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v4.1.0](https://github.com/voxpupuli/puppet-grafana/tree/v4.1.0) (2018-02-03)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v4.0.3...v4.1.0)
