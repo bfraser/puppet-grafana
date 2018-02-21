@@ -188,7 +188,7 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
   end
 
   def with_credentials
-    datasource[:is_default]
+    datasource[:with_credentials]
   end
 
   def with_credentials=(value)
