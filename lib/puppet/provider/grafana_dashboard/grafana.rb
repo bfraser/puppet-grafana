@@ -12,6 +12,44 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
 
   defaultfor kernel: 'Linux'
 
+  def organization
+    resource[:organization]
+  end
+
+  def fetch_organizations
+    response = send_request('GET', format('%s/orgs', resource[:grafana_api_path]))
+    if response.code != '200'
+      raise format('Fail to retrieve organizations (HTTP response: %s/%s)', response.code, response.body)
+    end
+
+    begin
+      fetch_organizations = JSON.parse(response.body)
+
+      fetch_organizations.map { |x| x['id'] }.map do |id|
+        response = send_request('GET', format('%s/orgs/%s', resource[:grafana_api_path], id))
+        if response.code != '200'
+          raise format('Failed to retrieve organization %d (HTTP response: %s/%s)', id, response.code, response.body)
+        end
+
+        fetch_organization = JSON.parse(response.body)
+
+        {
+          id: fetch_organization['id'],
+          name: fetch_organization['name']
+        }
+      end
+    rescue JSON::ParserError
+      raise format('Failed to parse response: %s', response.body)
+    end
+  end
+
+  def fetch_organization
+    unless @fetch_organization
+      @fetch_organization = fetch_organizations.find { |x| x[:name] == resource[:organization] }
+    end
+    @organization
+  end
+
   # Return the list of dashboards
   def dashboards
     response = send_request('GET', format('%s/search', resource[:grafana_api_path]), nil, q: '', starred: false)
@@ -44,6 +82,19 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
   end
 
   def save_dashboard(dashboard)
+    if fetch_organization.nil?
+      response = send_request('POST', format('%s/user/using/1', resource[:grafana_api_path]))
+      if response.code != '200'
+        raise format('Failed to switch to org 1 (HTTP response: %s/%s)', response.code, response.body)
+      end
+    else
+      organization_id = fetch_organization[:id]
+      response = send_request 'POST', format('%s/user/using/%s', resource[:grafana_api_path], organization_id)
+      if response.code != '200'
+        raise format('Failed to switch to org %s (HTTP response: %s/%s)', organization_id, response.code, response.body)
+      end
+    end
+
     data = {
       dashboard: dashboard.merge('title' => resource[:title],
                                  'id' => @dashboard ? @dashboard['id'] : nil,

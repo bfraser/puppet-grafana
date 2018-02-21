@@ -382,13 +382,14 @@ grafana_dashboard { 'example_dashboard':
   grafana_user      => 'admin',
   grafana_password  => '5ecretPassw0rd',
   grafana_api_path  => '/grafana/api'
+  organization      => 'NewOrg',
   content           => template('path/to/exported/file.json'),
 }
 ```
 
 `content` must be valid JSON, and is parsed before imported.
 `grafana_user` and `grafana_password` are optional, and required when
-authentication is enabled in Grafana. `grafana_api_path` is optional, and only used when using sub-paths for the API.
+authentication is enabled in Grafana. `grafana_api_path` is optional, and only used when using sub-paths for the API. `organization` is optional, and used when creating a dashboard for a specific organization.
 
 Example:
 Make sure the `grafana-server` service is up and running before creating the `grafana_dashboard` definition. One option is to use the `http_conn_validator` from the [healthcheck](https://forge.puppet.com/puppet/healthcheck) module
@@ -420,7 +421,7 @@ grafana_datasource { 'influxdb':
   grafana_password  => '5ecretPassw0rd',
   grafana_api_path  => '/grafana/api'
   type              => 'influxdb',
-  org_name          => 'NewOrg',
+  organization      => 'NewOrg',
   url               => 'http://localhost:8086',
   user              => 'admin',
   password          => '1nFlux5ecret',
@@ -433,7 +434,7 @@ grafana_datasource { 'influxdb':
 
 Available types are: influxdb, elasticsearch, graphite, cloudwatch, mysql, opentsdb, and prometheus
 
-`org_name` is used to set which organization a datasource will be created on. If this parameter is not set, it will default to organization ID 1 (Main Org. by default). If the default org is deleted, organizations will need to be specified. 
+`organization` is used to set which organization a datasource will be created on. If this parameter is not set, it will default to organization ID 1 (Main Org. by default). If the default org is deleted, organizations will need to be specified. 
 
 Access mode determines how Grafana connects to the datasource, either `direct`
 from the browser, or `proxy` to send requests via grafana.
