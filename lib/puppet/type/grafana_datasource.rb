@@ -54,9 +54,9 @@ Puppet::Type.newtype(:grafana_datasource) do
     newvalues(:influxdb, :elasticsearch, :graphite, :kairosdb, :opentsdb, :prometheus)
   end
 
-  newproperty(:organization) do
+  newparam(:organization) do
     desc 'The organization name to create the datasource on'
-    defaultto '1'
+    defaultto 1
   end
 
   newproperty(:user) do

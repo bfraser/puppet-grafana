@@ -66,9 +66,9 @@ Puppet::Type.newtype(:grafana_dashboard) do
     end
   end
 
-  newproperty(:organization) do
+  newparam(:organization) do
     desc 'The organization name to create the datasource on'
-    defaultto '1'
+    defaultto 1
   end
 
   # rubocop:disable Style/SignalException
