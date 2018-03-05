@@ -80,7 +80,7 @@ Puppet::Type.type(:grafana_organization).provide(:grafana, parent: Puppet::Provi
   end
 
   def delete_organization
-    response = send_request('DELETE', format('%s/orgs/%s', resource[:grafana_api_path], organization[:id]))
+    response = send_request 'DELETE', format('%s/orgs/%s', resource[:grafana_api_path], organization[:id])
 
     if response.code != '200'
       raise format('Failed to delete organization %s (HTTP response: %s/%s)', resource[:name], response.code, response.body)
