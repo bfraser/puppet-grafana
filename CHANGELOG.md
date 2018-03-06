@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.2.0](https://github.com/voxpupuli/puppet-grafana/tree/v4.2.0) (2018-03-06)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v4.1.1...v4.2.0)
+
+**Implemented enhancements:**
+
+- Create organization  [\#71](https://github.com/voxpupuli/puppet-grafana/issues/71)
+- Expand organization property for dashboards [\#94](https://github.com/voxpupuli/puppet-grafana/pull/94) ([brandonrdn](https://github.com/brandonrdn))
+- Add grafana\_api\_path to allow for API sub-paths [\#93](https://github.com/voxpupuli/puppet-grafana/pull/93) ([brandonrdn](https://github.com/brandonrdn))
+
 ## [v4.1.1](https://github.com/voxpupuli/puppet-grafana/tree/v4.1.1) (2018-02-21)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v4.1.0...v4.1.1)
@@ -15,6 +25,7 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
+- release 4.1.1 [\#92](https://github.com/voxpupuli/puppet-grafana/pull/92) ([bastelfreak](https://github.com/bastelfreak))
 - release 4.1.0 [\#88](https://github.com/voxpupuli/puppet-grafana/pull/88) ([bastelfreak](https://github.com/bastelfreak))
 
 ## [v4.1.0](https://github.com/voxpupuli/puppet-grafana/tree/v4.1.0) (2018-02-03)
@@ -114,9 +125,12 @@ These should not affect the functionality of the module.
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v2.6.3...v3.0.0)
 
-**Fixed bugs:**
+**Implemented enhancements:**
 
 - implement package\_ensure param for archlinux [\#34](https://github.com/voxpupuli/puppet-grafana/pull/34) ([bastelfreak](https://github.com/bastelfreak))
+
+**Fixed bugs:**
+
 - FIX configuration file ownership [\#30](https://github.com/voxpupuli/puppet-grafana/pull/30) ([cassianoleal](https://github.com/cassianoleal))
 
 **Closed issues:**
