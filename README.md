@@ -381,7 +381,7 @@ grafana_dashboard { 'example_dashboard':
   grafana_url       => 'http://localhost:3000',
   grafana_user      => 'admin',
   grafana_password  => '5ecretPassw0rd',
-  grafana_api_path  => '/grafana/api'
+  grafana_api_path  => '/grafana/api',
   organization      => 'NewOrg',
   content           => template('path/to/exported/file.json'),
 }
@@ -419,7 +419,7 @@ grafana_datasource { 'influxdb':
   grafana_url       => 'http://localhost:3000',
   grafana_user      => 'admin',
   grafana_password  => '5ecretPassw0rd',
-  grafana_api_path  => '/grafana/api'
+  grafana_api_path  => '/grafana/api',
   type              => 'influxdb',
   organization      => 'NewOrg',
   url               => 'http://localhost:8086',
@@ -577,7 +577,7 @@ Creates and manages a global grafana user via the API.
 ```puppet
 grafana_user { 'username':
   grafana_url       => 'http://localhost:3000',
-  grafana_api_path  => '/grafana/api'
+  grafana_api_path  => '/grafana/api',
   grafana_user      => 'admin',
   grafana_password  => '5ecretPassw0rd',
   full_name         => 'John Doe',
