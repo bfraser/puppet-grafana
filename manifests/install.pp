@@ -28,7 +28,7 @@ class grafana::install {
       }
     }
     'package': {
-      case $::osfamily {
+      case $facts['os']['family'] {
         'Debian': {
           package { 'libfontconfig1':
             ensure => present,
@@ -58,12 +58,12 @@ class grafana::install {
           }
         }
         default: {
-          fail("${::operatingsystem} not supported")
+          fail("${facts['os']['family']} not supported")
         }
       }
     }
     'repo': {
-      case $::osfamily {
+      case $facts['os']['family'] {
         'Debian': {
           package { 'libfontconfig1':
             ensure => present,
