@@ -115,6 +115,16 @@ Puppet::Type.newtype(:grafana_datasource) do
     end
   end
 
+  newproperty(:secure_json_data) do
+    desc 'Additional secure JSON data to configure the datasource (optional)'
+
+    validate do |value|
+      unless value.nil? || value.is_a?(Hash)
+        raise ArgumentError, 'secure_json_data should be a Hash!'
+      end
+    end
+  end
+
   autorequire(:service) do
     'grafana-server'
   end

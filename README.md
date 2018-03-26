@@ -366,12 +366,12 @@ grafana_organization { 'example_org':
 }
 ```
 
-`grafana_url`, `grafana_user`, and `grafana_password` are required to create organizations via the API. 
+`grafana_url`, `grafana_user`, and `grafana_password` are required to create organizations via the API.
 
 `name` is optional if the name will differ from example_org above.
 
 `address` is an optional parameter that requires a hash. Address settings are `{"address1":"","address2":"","city":"","zipCode":"","state":"","country":""}`
-  
+
 #### `grafana_dashboard`
 
 In order to use the dashboard resource, add the following to your manifest:
@@ -416,32 +416,33 @@ In order to use the datasource resource, add the following to your manifest:
 
 ```puppet
 grafana_datasource { 'influxdb':
-  grafana_url       => 'http://localhost:3000',
-  grafana_user      => 'admin',
-  grafana_password  => '5ecretPassw0rd',
-  grafana_api_path  => '/grafana/api',
-  type              => 'influxdb',
-  organization      => 'NewOrg',
-  url               => 'http://localhost:8086',
-  user              => 'admin',
-  password          => '1nFlux5ecret',
-  database          => 'graphite',
-  access_mode       => 'proxy',
-  is_default        => true,
-  json_data         => template('path/to/additional/config.json'),
+  grafana_url      => 'http://localhost:3000',
+  grafana_user     => 'admin',
+  grafana_password => '5ecretPassw0rd',
+  grafana_api_path => '/grafana/api',
+  type             => 'influxdb',
+  organization     => 'NewOrg',
+  url              => 'http://localhost:8086',
+  user             => 'admin',
+  password         => '1nFlux5ecret',
+  database         => 'graphite',
+  access_mode      => 'proxy',
+  is_default       => true,
+  json_data        => template('path/to/additional/config.json'),
+  secure_json_data => template('path/to/additional/secure/config.json')
 }
 ```
 
-Available types are: influxdb, elasticsearch, graphite, cloudwatch, mysql, opentsdb, and prometheus
+Available types are: influxdb, elasticsearch, graphite, cloudwatch, mysql, opentsdb, postgres and prometheus
 
-`organization` is used to set which organization a datasource will be created on. If this parameter is not set, it will default to organization ID 1 (Main Org. by default). If the default org is deleted, organizations will need to be specified. 
+`organization` is used to set which organization a datasource will be created on. If this parameter is not set, it will default to organization ID 1 (Main Org. by default). If the default org is deleted, organizations will need to be specified.
 
 Access mode determines how Grafana connects to the datasource, either `direct`
 from the browser, or `proxy` to send requests via grafana.
 
 Setting `basic_auth` to `true` will allow use of the `basic_auth_user` and `basic_auth_password` params.
 
-Authentication is optional, as are `database` and `grafana_api_path`; additional `json_data` can be provided to allow custom configuration options.
+Authentication is optional, as are `database` and `grafana_api_path`; additional `json_data` and `secure_json_data` can be provided to allow custom configuration options.
 
 Example:
 Make sure the `grafana-server` service is up and running before creating the `grafana_datasource` definition. One option is to use the `http_conn_validator` from the [healthcheck](https://forge.puppet.com/puppet/healthcheck) module
@@ -473,7 +474,7 @@ Note that the `database` is dynamic, setting things other than "database" for se
 
 **`jsonData` Settings**
 
-Note that there are separate options for json_data based on the type of datasource you create.
+Note that there are separate options for json_data / secure_json_data based on the type of datasource you create.
 
 ##### **Elasticsearch**
 
@@ -491,16 +492,16 @@ json_data => {"esVersion":5,"timeField":"@timestamp","timeInterval":"1m"}
 ##### **CloudWatch**
 
 `authType` - Required. Options are `Access & Secret Key`, `Credentials File`, or `ARN`.
-  
+
 -"keys" = Access & Secret Key
 
 -"credentials" = Credentials File
 
 -"arn" = ARN
- 
+
 *When setting authType to `credentials`, the `database` param will set the Credentials Profile Name.*
 
-*When setting authType to `arn`, another jsonData value of `assumeRoleARN` is available, which is not required for other authType settings*     
+*When setting authType to `arn`, another jsonData value of `assumeRoleARN` is available, which is not required for other authType settings*
 
 `customMetricsNamespaces` - Optional. Namespaces of Custom Metrics, separated by commas within double quotes.
 
@@ -508,11 +509,11 @@ json_data => {"esVersion":5,"timeField":"@timestamp","timeInterval":"1m"}
 
 `timeField`
 
-Example: 
+Example:
 ```puppet
 {"authType":"arn","assumeRoleARN":"arn:aws:iam:*","customMetricsNamespaces":"Namespace1,Namespace2","defaultRegion":"us-east-1","timeField":"@timestamp"}
 ```
-     
+
 ##### **Graphite**
 
 `graphiteVersion` - Required. Available versions are `0.9` or `1.0`.
