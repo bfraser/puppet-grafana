@@ -42,12 +42,6 @@ describe Puppet::Type.type(:grafana_datasource) do
       end.to raise_error(Puppet::Error, %r{not a valid URL})
     end
 
-    it "fails if url isn't HTTP-based" do
-      expect do
-        described_class.new name: 'foo', url: 'example.com', content: '{}', ensure: :present
-      end.to raise_error(Puppet::Error, %r{not a valid URL})
-    end
-
     it "fails if json_data isn't valid" do
       expect do
         described_class.new name: 'foo', grafana_url: 'http://example.com', json_data: 'invalid', ensure: :present
