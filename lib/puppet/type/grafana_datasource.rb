@@ -51,7 +51,7 @@ Puppet::Type.newtype(:grafana_datasource) do
 
   newproperty(:type) do
     desc 'The datasource type'
-    newvalues(:influxdb, :elasticsearch, :graphite, :kairosdb, :opentsdb, :prometheus)
+    newvalues(:influxdb, :elasticsearch, :graphite, :kairosdb, :opentsdb, :prometheus, :postgres)
   end
 
   newparam(:organization) do
