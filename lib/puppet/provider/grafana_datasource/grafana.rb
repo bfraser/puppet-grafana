@@ -85,7 +85,8 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
           basic_auth: datasource['basicAuth'] ? :true : :false,
           basic_auth_user: datasource['basicAuthUser'],
           basic_auth_password: datasource['basicAuthPassword'],
-          json_data: datasource['jsonData']
+          json_data: datasource['jsonData'],
+          secure_json_data: datasource['secureJsonData']
         }
       end
     rescue JSON::ParserError
@@ -212,6 +213,15 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
     save_datasource
   end
 
+  def secure_json_data
+    datasource[:secure_json_data]
+  end
+
+  def secure_json_data=(value)
+    resource[:secure_json_data] = value
+    save_datasource
+  end
+
   def save_datasource
     # change organizations
     response = send_request 'POST', format('%s/user/using/%s', resource[:grafana_api_path], fetch_organization[:id])
@@ -232,7 +242,8 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
       basicAuthUser: resource[:basic_auth_user],
       basicAuthPassword: resource[:basic_auth_password],
       withCredentials: (resource[:with_credentials] == :true),
-      jsonData: resource[:json_data]
+      jsonData: resource[:json_data],
+      secureJsonData: resource[:secure_json_data]
     }
 
     if datasource.nil?

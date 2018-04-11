@@ -40,18 +40,12 @@ Puppet::Type.newtype(:grafana_datasource) do
   end
 
   newproperty(:url) do
-    desc 'The URL of the datasource'
-
-    validate do |value|
-      unless value =~ %r{^https?://}
-        raise ArgumentError, format('%s is not a valid URL', value)
-      end
-    end
+    desc 'The URL/Endpoint of the datasource'
   end
 
   newproperty(:type) do
     desc 'The datasource type'
-    newvalues(:influxdb, :elasticsearch, :graphite, :kairosdb, :opentsdb, :prometheus)
+    newvalues(:influxdb, :elasticsearch, :graphite, :kairosdb, :opentsdb, :prometheus, :postgres)
   end
 
   newparam(:organization) do
@@ -111,6 +105,16 @@ Puppet::Type.newtype(:grafana_datasource) do
     validate do |value|
       unless value.nil? || value.is_a?(Hash)
         raise ArgumentError, 'json_data should be a Hash!'
+      end
+    end
+  end
+
+  newproperty(:secure_json_data) do
+    desc 'Additional secure JSON data to configure the datasource (optional)'
+
+    validate do |value|
+      unless value.nil? || value.is_a?(Hash)
+        raise ArgumentError, 'secure_json_data should be a Hash!'
       end
     end
   end
