@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.4.0](https://github.com/voxpupuli/puppet-grafana/tree/v4.4.0) (2018-06-21)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v4.3.0...v4.4.0)
+
+**Implemented enhancements:**
+
+- Manage sysconfig files [\#115](https://github.com/voxpupuli/puppet-grafana/pull/115) ([ZeroPointEnergy](https://github.com/ZeroPointEnergy))
+
+**Merged pull requests:**
+
+- bump archive upper version boundary to \<4.0.0 [\#116](https://github.com/voxpupuli/puppet-grafana/pull/116) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v4.3.0](https://github.com/voxpupuli/puppet-grafana/tree/v4.3.0) (2018-06-18)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v4.2.0...v4.3.0)
