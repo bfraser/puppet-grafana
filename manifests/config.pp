@@ -25,6 +25,18 @@ class grafana::config {
         owner   => 'grafana',
         group   => 'grafana',
       }
+
+      $sysconfig = $::grafana::sysconfig
+      $sysconfig_location = $::grafana::sysconfig_location
+
+      if $sysconfig_location and $sysconfig {
+        $changes = $sysconfig.map |$key, $value| { "set ${key} ${value}" }
+
+        augeas{'sysconfig/grafana-server':
+          context => "/files${$sysconfig_location}",
+          changes => $changes,
+        }
+      }
     }
     'archive': {
       $cfg = $::grafana::cfg

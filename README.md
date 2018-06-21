@@ -304,6 +304,25 @@ Defaults to 'grafana-server'.
 The version of Grafana to install and manage. Defaults to the latest version of
 Grafana available at the time of module release.
 
+##### `sysconfig_location`
+
+The RPM and DEB packages bring with them the default environment files for the
+services. The default location of this file for Debian is /etc/default/grafana-server
+and for RedHat /etc/sysconfig/grafana-server.
+
+##### `sysconfig`
+
+A hash of environment variables for the service. This only has an effect for installations
+with RPM and DEB packages (if install_method is set to 'package' or 'repo').
+
+Example:
+
+```puppet
+sysconfig => {
+  'http_proxy' => 'http://proxy.example.com',
+}
+```
+
 ### Advanced usage
 
 The archive install method will create the user and a "command line" service by
