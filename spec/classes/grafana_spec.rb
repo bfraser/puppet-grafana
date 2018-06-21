@@ -309,6 +309,28 @@ describe 'grafana' do
           it { is_expected.to contain_file('/etc/grafana/ldap.toml').with_content(ldap_expected) }
         end
       end
+
+      context 'sysconfig environment variables' do
+        let(:params) do
+          {
+            install_method: 'repo',
+            sysconfig: { http_proxy: 'http://proxy.example.com/' }
+          }
+        end
+
+        case facts[:osfamily]
+        when 'Debian'
+          describe 'Add the environment variable to the config file' do
+            it { is_expected.to contain_augeas('sysconfig/grafana-server').with_context('/files/etc/default/grafana-server') }
+            it { is_expected.to contain_augeas('sysconfig/grafana-server').with_changes(['set http_proxy http://proxy.example.com/']) }
+          end
+        when 'RedHat'
+          describe 'Add the environment variable to the config file' do
+            it { is_expected.to contain_augeas('sysconfig/grafana-server').with_context('/files/etc/sysconfig/grafana-server') }
+            it { is_expected.to contain_augeas('sysconfig/grafana-server').with_changes(['set http_proxy http://proxy.example.com/']) }
+          end
+        end
+      end
     end
   end
 end

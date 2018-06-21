@@ -66,6 +66,16 @@
 # A hash of plugins to be passed to `create_resources`, wraps around the
 # `grafana_plugin` resource.
 #
+# [*sysconfig_location*]
+# Location of the sysconfig file for the environment of the grafana-server service.
+# This is only used when the install_method is 'package' or 'repo'.
+#
+# [*sysconfig*]
+# A hash of environment variables for the grafana-server service
+#
+# Example:
+#   sysconfig => { 'http_proxy' => 'http://proxy.example.com/' }
+#
 # === Examples
 #
 #  class { '::grafana':
@@ -89,7 +99,9 @@ class grafana (
   String $rpm_iteration                = $::grafana::params::rpm_iteration,
   String $service_name                 = $::grafana::params::service_name,
   String $version                      = $::grafana::params::version,
-  Hash $plugins                        = {}
+  Hash $plugins                        = {},
+  Optional[String] $sysconfig_location = $::grafana::params::sysconfig_location,
+  Optional[Hash] $sysconfig            = undef,
 ) inherits grafana::params {
 
   contain grafana::install

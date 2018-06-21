@@ -21,18 +21,28 @@ class grafana::params {
       $install_method      = 'repo'
       $cfg_location        = '/etc/grafana.ini'
       $service_name        = 'grafana'
+      $sysconfig_location  = undef
     }
-    'Debian', 'RedHat': {
+    'Debian': {
       $manage_package_repo = true
       $install_method      = 'repo'
       $cfg_location        = '/etc/grafana/grafana.ini'
       $service_name        = 'grafana-server'
+      $sysconfig_location  = '/etc/default/grafana-server'
+    }
+    'RedHat': {
+      $manage_package_repo = true
+      $install_method      = 'repo'
+      $cfg_location        = '/etc/grafana/grafana.ini'
+      $service_name        = 'grafana-server'
+      $sysconfig_location  = '/etc/sysconfig/grafana-server'
     }
     default: {
       $manage_package_repo = true
       $install_method      = 'package'
       $cfg_location        = '/etc/grafana/grafana.ini'
       $service_name        = 'grafana-server'
+      $sysconfig_location  = undef
     }
   }
 }
