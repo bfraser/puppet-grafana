@@ -100,6 +100,8 @@ class grafana (
   String $service_name                 = $::grafana::params::service_name,
   String $version                      = $::grafana::params::version,
   Hash $plugins                        = {},
+  Hash $provisioning_dashboards        = {},
+  Hash $provisioning_datasources       = {},
   Optional[String] $sysconfig_location = $::grafana::params::sysconfig_location,
   Optional[Hash] $sysconfig            = undef,
 ) inherits grafana::params {

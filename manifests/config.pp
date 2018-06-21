@@ -7,6 +7,7 @@ class grafana::config {
     'docker': {
       if $::grafana::container_cfg {
         $cfg = $::grafana::cfg
+        $myprovision = false
 
         file {  $::grafana::cfg_location:
           ensure  => file,
@@ -18,6 +19,7 @@ class grafana::config {
     }
     'package','repo': {
       $cfg = $::grafana::cfg
+      $myprovision = true
 
       file {  $::grafana::cfg_location:
         ensure  => file,
@@ -47,6 +49,7 @@ class grafana::config {
     }
     'archive': {
       $cfg = $::grafana::cfg
+      $myprovision = true
 
       file { "${::grafana::install_dir}/conf/custom.ini":
         ensure  => file,
@@ -75,5 +78,58 @@ class grafana::config {
       owner   => 'grafana',
       group   => 'grafana',
     }
+  }
+
+  # If grafana version is > 5.0.0, and the install method is package,
+  # repo, or archive, then use the provisioning feature. Dashboards
+  # and datasources are placed in
+  # /etc/grafana/provisioning/[dashboards|datasources].
+  # --dashboards--
+  if ((versioncmp($::grafana::version, '5.0.0') >= 0) and ($myprovision)) {
+    $pdashboards = $::grafana::provisioning_dashboards
+    if (length($pdashboards) >= 1 ) {
+      $dashboardpaths = flatten(deep_find_and_remove('options', $pdashboards))
+      # template uses:
+      #   - pdashboards
+      file { '/etc/grafana/provisioning/dashboards/puppetprovisioned.yaml':
+        ensure  => file,
+        owner   => 'grafana',
+        group   => 'grafana',
+        mode    => '0640',
+        content => template('grafana/pdashboards.yaml.erb'),
+        notify  => Service[$::grafana::service_name],
+      }
+      # Loop over all providers, extract the paths and create
+      # directories for each path of dashboards.
+      $dashboardpaths.each | Integer $index, Hash $options | {
+        if has_key($options, 'path') {
+          file { $options['path'] :
+            ensure  => directory,
+            owner   => 'grafana',
+            group   => 'grafana',
+            mode    => '0750',
+            recurse => true,
+            purge   => true,
+            source  => $options['puppetsource'],
+          }
+        }
+      }
+    }
+
+    # --datasources--
+    $pdatasources = $::grafana::provisioning_datasources
+    if (length($pdatasources) >= 1) {
+      # template uses:
+      #   - pdatasources
+      file { '/etc/grafana/provisioning/datasources/puppetprovisioned.yaml':
+        ensure  => file,
+        owner   => 'grafana',
+        group   => 'grafana',
+        mode    => '0640',
+        content => template('grafana/pdatasources.yaml.erb'),
+        notify  => Service[$::grafana::service_name],
+      }
+    }
+
   }
 }
