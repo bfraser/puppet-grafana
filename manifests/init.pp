@@ -113,7 +113,7 @@ class grafana (
   ~> Class['grafana::service']
 
   create_resources(grafana_plugin, $plugins)
-
-  Grafana_Plugin <| |> ~> Class['grafana::service']
-
+  # Dependency added for Grafana_plugins to ensure it runs at the
+  # correct time.
+  Class['grafana::config'] -> Grafana_Plugin <| |> ~> Class['grafana::service']
 }

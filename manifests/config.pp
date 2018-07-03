@@ -37,6 +37,13 @@ class grafana::config {
           changes => $changes,
         }
       }
+
+      file { "${::grafana::data_dir}/plugins":
+        ensure => directory,
+        owner  => 'grafana',
+        group  => 'grafana',
+        mode   => '0750',
+      }
     }
     'archive': {
       $cfg = $::grafana::cfg
@@ -46,6 +53,13 @@ class grafana::config {
         content => template('grafana/config.ini.erb'),
         owner   => 'grafana',
         group   => 'grafana',
+      }
+
+      file { "${::grafana::data_dir}/plugins":
+        ensure => directory,
+        owner  => 'grafana',
+        group  => 'grafana',
+        mode   => '0750',
       }
     }
     default: {
