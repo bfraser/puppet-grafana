@@ -39,10 +39,10 @@ class grafana::config {
       }
 
       file { "${::grafana::data_dir}/plugins":
-        ensure  => directory,
-        owner   => 'grafana',
-        group   => 'grafana',
-        mode    => '0750',
+        ensure => directory,
+        owner  => 'grafana',
+        group  => 'grafana',
+        mode   => '0750',
       }
     }
     'archive': {
@@ -56,10 +56,10 @@ class grafana::config {
       }
 
       file { "${::grafana::data_dir}/plugins":
-        ensure  => directory,
-        owner   => 'grafana',
-        group   => 'grafana',
-        mode    => '0750',
+        ensure => directory,
+        owner  => 'grafana',
+        group  => 'grafana',
+        mode   => '0750',
       }
     }
     default: {
