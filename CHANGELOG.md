@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.4.1](https://github.com/voxpupuli/puppet-grafana/tree/v4.4.1) (2018-07-04)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v4.4.0...v4.4.1)
+
+**Fixed bugs:**
+
+- Fix dependency in provisioning plugins [\#118](https://github.com/voxpupuli/puppet-grafana/pull/118) ([drshawnkwang](https://github.com/drshawnkwang))
+
+**Closed issues:**
+
+- grafana plugin install/check breaks catalog run when grafana-server service is not running [\#79](https://github.com/voxpupuli/puppet-grafana/issues/79)
+
 ## [v4.4.0](https://github.com/voxpupuli/puppet-grafana/tree/v4.4.0) (2018-06-21)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v4.3.0...v4.4.0)
