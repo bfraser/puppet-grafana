@@ -88,7 +88,7 @@ class grafana::config {
   if ((versioncmp($::grafana::version, '5.0.0') >= 0) and ($myprovision)) {
     $pdashboards = $::grafana::provisioning_dashboards
     if (length($pdashboards) >= 1 ) {
-      $dashboardpaths = flatten(deep_find_and_remove('options', $pdashboards))
+      $dashboardpaths = flatten(grafana::deep_find_and_remove('options', $pdashboards))
       # template uses:
       #   - pdashboards
       file { '/etc/grafana/provisioning/dashboards/puppetprovisioned.yaml':
@@ -104,12 +104,12 @@ class grafana::config {
       $dashboardpaths.each | Integer $index, Hash $options | {
         if has_key($options, 'path') {
           # get sub paths of 'path' and create subdirs if necessary
-          $subpaths = get_sub_paths($options['path'])
+          $subpaths = grafana::get_sub_paths($options['path'])
           # @todo - consider a boolean parameter for users to choose whether or not subpaths are created.
           if ($::grafana::create_subdirs_provisioning and (length($subpaths) >= 1)) {
             file { $subpaths :
               ensure => directory,
-              before => File["${options['path']}"],
+              before => File[$options['path']],
             }
           }
 

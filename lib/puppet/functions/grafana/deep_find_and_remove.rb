@@ -14,7 +14,7 @@
 # will be deleted from the structure. Thus the output of this function
 # may be used in yaml format for grafana's provisioning
 # configuration file for dashboards.
-Puppet::Functions.create_function(:'deep_find_and_remove') do
+Puppet::Functions.create_function(:'grafana::deep_find_and_remove') do
   dispatch :deep_find_and_remove do
     param 'String', :key
     param 'Hash', :object
@@ -22,17 +22,16 @@ Puppet::Functions.create_function(:'deep_find_and_remove') do
     return_type 'Array'
   end
 
-  def deep_find_and_remove(key, object, removekey='puppetsource')
-    foundpaths = Array.new
+  def deep_find_and_remove(key, object, removekey = 'puppetsource')
+    foundpaths = []
     if object.respond_to?(:key?) && object.key?(key)
       foundpaths << object[key].dup
       object[key].delete(removekey)
     end
     if object.is_a? Enumerable
-      foundpaths << object.collect { |*a| deep_find_and_remove(key, a.last) }
+      foundpaths << object.map { |*a| deep_find_and_remove(key, a.last) }
     end
     foundpaths.flatten.compact
-    return foundpaths
+    foundpaths
   end
-
 end

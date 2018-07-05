@@ -16,28 +16,25 @@
 #
 # input = '/first/second/'
 # output = [ '/first' ]
-Puppet::Functions.create_function(:'get_sub_paths') do
+Puppet::Functions.create_function(:'grafana::get_sub_paths') do
   dispatch :get_sub_paths do
     param 'String', :inputpath
     return_type 'Array'
   end
 
   def get_sub_paths(inputpath)
-    ip = inputpath.gsub(/\/+/,"/")
-    allsubs = Array.new
+    ip = inputpath.gsub(%r{/+}, '/')
+    allsubs = []
     parts = ip.split('/')
     parts.each_with_index do |value, index|
-      if (index==0) or (index==(parts.length-1))
-        next
-      end
+      next if (index.zero?) || (index == (parts.length - 1))
 
-      if index==1
+      if index == 1
         allsubs << '/' + value
       else
-        allsubs << allsubs[index-2] + '/' + value
+        allsubs << allsubs[index - 2] + '/' + value
       end
     end
-    return allsubs
+    allsubs
   end
-
 end
