@@ -15,6 +15,7 @@ class grafana::params {
   $rpm_iteration       = '1'
   $repo_name           = 'stable'
   $version             = '4.5.1'
+  $create_subdirs_provisioning = false
   case $facts['os']['family'] {
     'Archlinux': {
       $manage_package_repo = false

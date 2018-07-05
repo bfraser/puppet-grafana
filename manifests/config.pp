@@ -103,6 +103,16 @@ class grafana::config {
       # directories for each path of dashboards.
       $dashboardpaths.each | Integer $index, Hash $options | {
         if has_key($options, 'path') {
+          # get sub paths of 'path' and create subdirs if necessary
+          $subpaths = get_sub_paths($options['path'])
+          # @todo - consider a boolean parameter for users to choose whether or not subpaths are created.
+          if ($::grafana::create_subdirs_provisioning and (length($subpaths) >= 1)) {
+            file { $subpaths :
+              ensure => directory,
+              before => File["${options['path']}"],
+            }
+          }
+
           file { $options['path'] :
             ensure  => directory,
             owner   => 'grafana',

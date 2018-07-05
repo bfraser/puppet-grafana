@@ -116,6 +116,7 @@ class grafana (
   Hash $plugins                        = {},
   Hash $provisioning_dashboards        = {},
   Hash $provisioning_datasources       = {},
+  Boolean $create_subdirs_provisioning = $::grafana::params::create_subdirs_provisioning,
   Optional[String] $sysconfig_location = $::grafana::params::sysconfig_location,
   Optional[Hash] $sysconfig            = undef,
 ) inherits grafana::params {
