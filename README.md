@@ -690,7 +690,7 @@ class { 'grafana':
     apiVersion => 1,
 	providers  => [
 	  {
-	    name            => 'default'
+	    name            => 'default',
 		orgId           => 1,
 		fiolder         => '',
 		type            => 'file',
