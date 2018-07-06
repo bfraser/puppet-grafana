@@ -85,8 +85,8 @@ class grafana::config {
   # and datasources are placed in
   # /etc/grafana/provisioning/[dashboards|datasources].
   # --dashboards--
-  if ((versioncmp($::grafana::version, '5.0.0') >= 0) and ($myprovision)) {
-    $pdashboards = $::grafana::provisioning_dashboards
+  if ((versioncmp($grafana::version, '5.0.0') >= 0) and ($myprovision)) {
+    $pdashboards = $grafana::provisioning_dashboards
     if (length($pdashboards) >= 1 ) {
       $dashboardpaths = flatten(grafana::deep_find_and_remove('options', $pdashboards))
       # template uses:
@@ -96,8 +96,8 @@ class grafana::config {
         owner   => 'grafana',
         group   => 'grafana',
         mode    => '0640',
-        content => template('grafana/pdashboards.yaml.erb'),
-        notify  => Service[$::grafana::service_name],
+        content => epp('grafana/pdashboards.yaml.epp'),
+        notify  => Service[$grafana::service_name],
       }
       # Loop over all providers, extract the paths and create
       # directories for each path of dashboards.
@@ -105,8 +105,7 @@ class grafana::config {
         if has_key($options, 'path') {
           # get sub paths of 'path' and create subdirs if necessary
           $subpaths = grafana::get_sub_paths($options['path'])
-          # @todo - consider a boolean parameter for users to choose whether or not subpaths are created.
-          if ($::grafana::create_subdirs_provisioning and (length($subpaths) >= 1)) {
+          if ($grafana::create_subdirs_provisioning and (length($subpaths) >= 1)) {
             file { $subpaths :
               ensure => directory,
               before => File[$options['path']],
@@ -127,7 +126,7 @@ class grafana::config {
     }
 
     # --datasources--
-    $pdatasources = $::grafana::provisioning_datasources
+    $pdatasources = $grafana::provisioning_datasources
     if (length($pdatasources) >= 1) {
       # template uses:
       #   - pdatasources
@@ -136,8 +135,8 @@ class grafana::config {
         owner   => 'grafana',
         group   => 'grafana',
         mode    => '0640',
-        content => template('grafana/pdatasources.yaml.erb'),
-        notify  => Service[$::grafana::service_name],
+        content => epp('grafana/pdatasources.yaml.epp'),
+        notify  => Service[$grafana::service_name],
       }
     }
 
