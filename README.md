@@ -288,6 +288,33 @@ The download location of a package to be used with the 'package' install method.
 Defaults to the URL of the latest version of Grafana available at the time of
 module release.
 
+##### `provisioning_datasources`
+
+A Hash which is converted to YAML for grafana to provision data
+sources. See [provisioning
+grafana](http://docs.grafana.org/administration/provisioning/) for
+details and example config file. Requires grafana > v5.0.0.
+
+This is very useful with Hiera as you can provide a yaml
+hash/dictionary which will effectively 'passthrough' to grafana. See
+**Advanced Usage** for examples.
+
+##### `provisioning_dashboards`
+
+A Hash which is converted to YAML for grafana to provision
+dashboards. See [provisioning
+grafana](http://docs.grafana.org/administration/provisioning/) for
+details and example config file.  Requires grafana > v5.0.0.
+
+This is very useful with Hiera as you can provide a yaml
+hash/dictionary which will effectively 'passthrough' to grafana. See
+**Advanced Usage** for examples.
+
+N.B. A option named `puppetsource` may be given in the `options` hash
+which is not part of grafana's syntax. This option will be extracted
+from the hash, and used to "source" a directory of dashboards. See
+**Advanced Usage** for details.
+
 ##### `rpm_iteration`
 
 Used when installing Grafana from package ('package' or 'repo' install methods)
@@ -606,6 +633,120 @@ grafana_user { 'username':
 }
 ```
 `grafana_api_path` is only required if using sub-paths for the API
+
+#### Provisioning Grafana
+
+[Grafana documentation on
+provisioning](http://docs.grafana.org/administration/provisioning/).
+
+This module will provision grafana by placing yaml files into
+`/etc/grafana/provisioning/datasources` and
+`/etc/grafana/provisioning/dashboards`.
+
+##### Example datasource
+
+A puppet hash example for Prometheus. The module will place the hash
+as a yaml file into `/etc/gafana/provisioning/datasources/puppetprovisioned.yaml`.
+
+```puppet
+class { 'grafana':
+  provisioning_datasources => {
+    apiVersion  => 1,
+    datasources => [
+      {
+	    name      => 'Prometheus',
+		type      => 'prometheus',
+		access    => 'proxy',
+		url       => 'http://localhost:9090/prometheus',
+		isDefault => true,
+	  },
+    ],
+  }
+}
+```
+
+Here is the same configuration example as a hiera hash.
+
+```yaml
+grafana::provisioning_datasources:
+  apiVersion: 1
+  datasources:
+    - name: 'Prometheus'
+      type: 'prometheus'
+      access: 'proxy'
+      url: 'http://localhost:9090/prometheus'
+      isDefault: true
+```
+
+##### Example dashboard
+
+An example puppet hash for provisioning dashboards. The module will
+place the hash as a yaml file into
+`/etc/grafana/provisioning/dashboards/puppetprovisioned.yaml`. More details follow the examples.
+
+```puppet
+class { 'grafana':
+  provisioning_dashboards => {
+    apiVersion => 1,
+	providers  => [
+	  {
+	    name            => 'default',
+		orgId           => 1,
+		fiolder         => '',
+		type            => 'file',
+		disableDeletion => true,
+		options         => {
+		  path          => '/var/lib/grafana/dashboards',
+		  puppetsource  => 'puppet:///modules/my_custom_module/dashboards',
+		},
+	  },
+    ],
+  }
+}
+```
+
+Here is the same configuraiton example as a hiera hash.
+
+```yaml
+grafana::provisioning_dashboards:
+  apiVersion: 1
+  providers:
+    - name: 'default'
+      orgId: 1
+      folder: ''
+      type: file
+      disableDeletion: true
+      options:
+        path: '/var/lib/grafana/dashboards'
+        puppetsource: 'puppet:///modules/my_custom_module/dashboards'
+```
+
+In both examples above a non-grafana option named `puppetsource` has
+been used. When this module finds that the provisioning_dashboards hash
+contains keys `path` and `puppetsource` in the `options` subhash, it
+will do the following.
+* It will create the path found in `options['path']`. Note: puppet
+  will only create the final directory of the path unless the
+  parameter `create_subdirs_provisioning` is set to true: this defaults
+  to false.
+* It will use `puppetsource` as the file resource's 'source' for the
+  directory.
+* It removes the `puppetsource` key from the `options` subhash, so the
+  subsequent yaml file for gafana does not contain this key. (The
+  `path` key will remain.)
+
+This feature allows you to define a custom module, and place any
+dashboards you want provisioned in the its `files/` directory. In the
+example above you would put dashboards into
+`my_custom_module/files/dashboards` and puppet-grafana will create
+`/var/lib/grafana/dashboards` and provision it with the contents of
+`my_custom_module/files/dashboards`.
+
+Puppet's file resource may also be given a `file://` URI which may
+point to a locally available directory on the filesystem, typically
+the filesystem of the puppetserver/master. Thus you may specify a
+local directory with grafana dashboards you wish to provision into
+grafana.
 
 ## Limitations
 

@@ -66,6 +66,20 @@
 # A hash of plugins to be passed to `create_resources`, wraps around the
 # `grafana_plugin` resource.
 #
+# [*provisioning_dashboards*]
+# Hash of dashboards to provision into grafana. grafana > v5.0.0
+# required. Hash will be converted into YAML and used by grafana to
+# provision dashboards.
+#
+# [*provisioning_datasources*]
+# Hash of datasources to provision into grafana, grafana > v5.0.0
+# required. Hash will be converted into YAML and used by granfana to
+# configure datasources.
+#
+# [*create_subdirs_provisioning*]
+# Boolean, defaults to false. If true puppet will create any
+# subdirectories in the given path when provisioning dashboards.
+#
 # [*sysconfig_location*]
 # Location of the sysconfig file for the environment of the grafana-server service.
 # This is only used when the install_method is 'package' or 'repo'.
@@ -100,6 +114,9 @@ class grafana (
   String $service_name                 = $::grafana::params::service_name,
   String $version                      = $::grafana::params::version,
   Hash $plugins                        = {},
+  Hash $provisioning_dashboards        = {},
+  Hash $provisioning_datasources       = {},
+  Boolean $create_subdirs_provisioning = $::grafana::params::create_subdirs_provisioning,
   Optional[String] $sysconfig_location = $::grafana::params::sysconfig_location,
   Optional[Hash] $sysconfig            = undef,
 ) inherits grafana::params {
