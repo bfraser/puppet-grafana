@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.5.0](https://github.com/voxpupuli/puppet-grafana/tree/v4.5.0) (2018-07-15)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v4.4.1...v4.5.0)
+
+**Implemented enhancements:**
+
+- Use provisioning backend for dashboards, providers [\#103](https://github.com/voxpupuli/puppet-grafana/issues/103)
+- Feature: Add grafana provisioning to this module. [\#120](https://github.com/voxpupuli/puppet-grafana/pull/120) ([drshawnkwang](https://github.com/drshawnkwang))
+
 ## [v4.4.1](https://github.com/voxpupuli/puppet-grafana/tree/v4.4.1) (2018-07-04)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v4.4.0...v4.4.1)
