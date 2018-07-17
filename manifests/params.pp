@@ -14,10 +14,10 @@ class grafana::params {
   $package_name                  = 'grafana'
   $rpm_iteration                 = '1'
   $repo_name                     = 'stable'
-  $version                       = '4.5.1'
   $create_subdirs_provisioning   = false
   $provisioning_dashboards_file  = '/etc/grafana/provisioning/dashboards/puppetprovisioned.yaml'
   $provisioning_datasources_file = '/etc/grafana/provisioning/datasources/puppetprovisioned.yaml'
+
   case $facts['os']['family'] {
     'Archlinux': {
       $manage_package_repo = false

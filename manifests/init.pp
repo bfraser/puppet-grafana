@@ -54,7 +54,7 @@
 #
 # [*version*]
 # The version of Grafana to install and manage.
-# Defaults to the latest version of Grafana available at the time of module release.
+# Defaults to 'installed'
 #
 # [*repo_name*]
 # When using 'repo' install_method, the repo to look for packages in.
@@ -122,7 +122,7 @@ class grafana (
   Enum['stable', 'testing'] $repo_name  = $::grafana::params::repo_name,
   String $rpm_iteration                 = $::grafana::params::rpm_iteration,
   String $service_name                  = $::grafana::params::service_name,
-  String $version                       = $::grafana::params::version,
+  String $version                       = 'installed',
   Hash $plugins                         = {},
   Hash $provisioning_dashboards         = {},
   Hash $provisioning_datasources        = {},
