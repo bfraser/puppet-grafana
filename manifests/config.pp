@@ -83,7 +83,7 @@ class grafana::config {
   # If grafana version is > 5.0.0, and the install method is package,
   # repo, or archive, then use the provisioning feature. Dashboards
   # and datasources are placed in
-  # /etc/grafana/provisioning/[dashboards|datasources].
+  # /etc/grafana/provisioning/[dashboards|datasources] by default.
   # --dashboards--
   if ((versioncmp($grafana::version, '5.0.0') >= 0) and ($myprovision)) {
     $pdashboards = $grafana::provisioning_dashboards
@@ -91,7 +91,7 @@ class grafana::config {
       $dashboardpaths = flatten(grafana::deep_find_and_remove('options', $pdashboards))
       # template uses:
       #   - pdashboards
-      file { '/etc/grafana/provisioning/dashboards/puppetprovisioned.yaml':
+      file { $grafana::provisioning_dashboards_file:
         ensure  => file,
         owner   => 'grafana',
         group   => 'grafana',
@@ -130,7 +130,7 @@ class grafana::config {
     if (length($pdatasources) >= 1) {
       # template uses:
       #   - pdatasources
-      file { '/etc/grafana/provisioning/datasources/puppetprovisioned.yaml':
+      file { $grafana::provisioning_datasources_file:
         ensure  => file,
         owner   => 'grafana',
         group   => 'grafana',
