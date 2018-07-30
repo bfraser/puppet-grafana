@@ -76,6 +76,16 @@
 # required. Hash will be converted into YAML and used by granfana to
 # configure datasources.
 #
+# [*provisioning_dashboards_file*]
+# String with the fully qualified path to place the provisioning file
+# for dashboards, only used if provisioning_dashboards is specified.
+# Defaults to '/etc/grafana/provisioning/dashboards/puppetprovisioned.yaml'
+#
+# [*provisioning_datasources_file*]
+# String with the fully qualified path to place the provisioning file
+# for datasources, only used if provisioning_datasources is specified.
+# Default to '/etc/grafana/provisioning/datasources/puppetprovisioned.yaml'
+#
 # [*create_subdirs_provisioning*]
 # Boolean, defaults to false. If true puppet will create any
 # subdirectories in the given path when provisioning dashboards.
@@ -97,28 +107,30 @@
 #  }
 #
 class grafana (
-  Optional[String] $archive_source     = undef,
-  String $cfg_location                 = $::grafana::params::cfg_location,
-  Hash $cfg                            = $::grafana::params::cfg,
-  Optional[Hash] $ldap_cfg             = undef,
-  Boolean $container_cfg               = $::grafana::params::container_cfg,
-  Hash $container_params               = $::grafana::params::container_params,
-  String $data_dir                     = $::grafana::params::data_dir,
-  String $install_dir                  = $::grafana::params::install_dir,
-  String $install_method               = $::grafana::params::install_method,
-  Boolean $manage_package_repo         = $::grafana::params::manage_package_repo,
-  String $package_name                 = $::grafana::params::package_name,
-  Optional[String] $package_source     = undef,
-  Enum['stable', 'testing'] $repo_name = $::grafana::params::repo_name,
-  String $rpm_iteration                = $::grafana::params::rpm_iteration,
-  String $service_name                 = $::grafana::params::service_name,
-  String $version                      = $::grafana::params::version,
-  Hash $plugins                        = {},
-  Hash $provisioning_dashboards        = {},
-  Hash $provisioning_datasources       = {},
-  Boolean $create_subdirs_provisioning = $::grafana::params::create_subdirs_provisioning,
-  Optional[String] $sysconfig_location = $::grafana::params::sysconfig_location,
-  Optional[Hash] $sysconfig            = undef,
+  Optional[String] $archive_source      = undef,
+  String $cfg_location                  = $::grafana::params::cfg_location,
+  Hash $cfg                             = $::grafana::params::cfg,
+  Optional[Hash] $ldap_cfg              = undef,
+  Boolean $container_cfg                = $::grafana::params::container_cfg,
+  Hash $container_params                = $::grafana::params::container_params,
+  String $data_dir                      = $::grafana::params::data_dir,
+  String $install_dir                   = $::grafana::params::install_dir,
+  String $install_method                = $::grafana::params::install_method,
+  Boolean $manage_package_repo          = $::grafana::params::manage_package_repo,
+  String $package_name                  = $::grafana::params::package_name,
+  Optional[String] $package_source      = undef,
+  Enum['stable', 'testing'] $repo_name  = $::grafana::params::repo_name,
+  String $rpm_iteration                 = $::grafana::params::rpm_iteration,
+  String $service_name                  = $::grafana::params::service_name,
+  String $version                       = $::grafana::params::version,
+  Hash $plugins                         = {},
+  Hash $provisioning_dashboards         = {},
+  Hash $provisioning_datasources        = {},
+  String $provisioning_dashboards_file  = $::grafana::params::provisioning_dashboards_file,
+  String $provisioning_datasources_file = $::grafana::params::provisioning_datasources_file,
+  Boolean $create_subdirs_provisioning  = $::grafana::params::create_subdirs_provisioning,
+  Optional[String] $sysconfig_location  = $::grafana::params::sysconfig_location,
+  Optional[Hash] $sysconfig             = undef,
 ) inherits grafana::params {
 
   contain grafana::install
