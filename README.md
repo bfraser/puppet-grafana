@@ -631,6 +631,15 @@ grafana_plugin { 'grafana-simple-json-datasource':
 }
 ```
 
+It is possible to specify a custom plugin repository to install a plugin. This will use the --repo option for plugin installation with grafana_cli. 
+
+```puppet
+grafana_plugin { 'grafana-simple-json-datasource':
+  ensure    => present,
+  repo => 'https://nexus.company.com/grafana/plugins',
+}
+```
+
 ##### `grafana::user`
 
 Creates and manages a global grafana user via the API.

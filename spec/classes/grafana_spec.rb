@@ -79,13 +79,18 @@ describe 'grafana' do
             plugins:
             {
               'grafana-wizzle' => { 'ensure' => 'present' },
-              'grafana-woozle' => { 'ensure' => 'absent' }
+              'grafana-woozle' => { 'ensure' => 'absent' },
+              'grafana-plugin' => { 'ensure' => 'present', 'repo' => 'https://nexus.company.com/grafana/plugins' }
             }
           }
         end
 
         it { is_expected.to contain_grafana_plugin('grafana-wizzle').with(ensure: 'present') }
         it { is_expected.to contain_grafana_plugin('grafana-woozle').with(ensure: 'absent').that_notifies('Class[grafana::service]') }
+
+        describe 'install plugin with pluginurl' do
+          it { is_expected.to contain_grafana_plugin('grafana-plugin').with(ensure: 'present', repo: 'https://nexus.company.com/grafana/plugins') }
+        end
       end
 
       context 'with parameter install_method is set to repo' do
