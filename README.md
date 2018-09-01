@@ -342,8 +342,7 @@ Defaults to 'grafana-server'.
 
 ##### `version`
 
-The version of Grafana to install and manage. Defaults to the latest version of
-Grafana available at the time of module release.
+The version of Grafana to install and manage. Defaults to 'installed'
 
 ##### `sysconfig_location`
 

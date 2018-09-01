@@ -1,6 +1,9 @@
 require 'spec_helper_acceptance'
 
 describe 'grafana class' do
+  # Create dummy module directorty
+  shell('mkdir -p /etc/puppetlabs/code/environments/production/modules/my_custom_module/files/dashboards')
+
   context 'default parameters' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
@@ -35,7 +38,7 @@ describe 'grafana class' do
             type      => 'prometheus',
             access    => 'proxy',
             url       => 'http://localhost:9090/prometheus',
-            isDefault => true,
+            isDefault => false,
             },
           ],
         },
@@ -76,7 +79,7 @@ describe 'grafana class' do
             type      => 'prometheus',
             access    => 'proxy',
             url       => 'http://localhost:9090/prometheus',
-            isDefault => true,
+            isDefault => false,
             },
           ],
         },
@@ -96,8 +99,8 @@ describe 'grafana class' do
             },
           ],
         },
-        provisioning_dashboards_file  => '/opt/grafana/conf/provisioning/dashboards/dashboard.yaml',
-        provisioning_datasources_file => '/opt/grafana/conf/provisioning/datasources/datasources.yaml'
+        provisioning_dashboards_file  => '/etc/grafana/provisioning/dashboards/dashboard.yaml',
+        provisioning_datasources_file => '/etc/grafana/provisioning/datasources/datasources.yaml'
       }
       EOS
 

@@ -37,7 +37,8 @@ describe 'grafana' do
       context 'with parameter install_method is set to package' do
         let(:params) do
           {
-            install_method: 'package'
+            install_method: 'package',
+            version: '4.5.1'
           }
         end
 
@@ -113,7 +114,7 @@ describe 'grafana' do
           end
 
           describe 'install the package' do
-            it { is_expected.to contain_package('grafana').with_ensure('4.5.1') }
+            it { is_expected.to contain_package('grafana').with_ensure('installed') }
           end
         when 'RedHat'
           describe 'yum repo dependencies first' do
@@ -126,7 +127,7 @@ describe 'grafana' do
           end
 
           describe 'install the package' do
-            it { is_expected.to contain_package('grafana').with_ensure('4.5.1-1') }
+            it { is_expected.to contain_package('grafana').with_ensure('installed') }
           end
         end
       end
@@ -167,7 +168,8 @@ describe 'grafana' do
       context 'with parameter install_method is set to archive' do
         let(:params) do
           {
-            install_method: 'archive'
+            install_method: 'archive',
+            version: '4.5.1'
           }
         end
 
