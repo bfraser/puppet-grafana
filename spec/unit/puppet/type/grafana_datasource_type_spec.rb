@@ -58,7 +58,7 @@ describe Puppet::Type.type(:grafana_datasource) do
       expect(gdatasource[:name]).to eq('foo')
       expect(gdatasource[:grafana_url]).to eq('http://example.com')
       expect(gdatasource[:url]).to eq('http://es.example.com')
-      expect(gdatasource[:type]).to eq(:elasticsearch)
+      expect(gdatasource[:type]).to eq('elasticsearch')
       expect(gdatasource[:organization]).to eq('test_org')
       expect(gdatasource[:access_mode]).to eq(:proxy)
       expect(gdatasource[:is_default]).to eq(:true)
