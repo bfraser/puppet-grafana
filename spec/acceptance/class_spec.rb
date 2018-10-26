@@ -48,7 +48,7 @@ describe 'grafana class' do
             {
               name            => 'default',
               orgId           => 1,
-              fiolder         => '',
+              folder         => '',
               type            => 'file',
               disableDeletion => true,
               options         => {
@@ -89,7 +89,7 @@ describe 'grafana class' do
             {
               name            => 'default',
               orgId           => 1,
-              fiolder         => '',
+              folder         => '',
               type            => 'file',
               disableDeletion => true,
               options         => {
