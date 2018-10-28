@@ -58,7 +58,7 @@ class grafana::config {
         group   => 'grafana',
       }
 
-      file { "${::grafana::data_dir}/plugins":
+      file { [$::grafana::data_dir, "${::grafana::data_dir}/plugins"]:
         ensure => directory,
         owner  => 'grafana',
         group  => 'grafana',
