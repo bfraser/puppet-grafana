@@ -376,8 +376,8 @@ Example:
 
 ```puppet
     user { 'grafana':
-      ensure   => present,
-      uid      => '1234',
+      ensure => present,
+      uid    => '1234',
     }
     ->
     class { 'grafana':
@@ -630,7 +630,7 @@ grafana_plugin { 'grafana-simple-json-datasource':
 }
 ```
 
-It is possible to specify a custom plugin repository to install a plugin. This will use the --repo option for plugin installation with grafana_cli. 
+It is possible to specify a custom plugin repository to install a plugin. This will use the --repo option for plugin installation with grafana_cli.
 
 ```puppet
 grafana_plugin { 'grafana-simple-json-datasource':
@@ -770,12 +770,12 @@ class { 'grafana':
     apiVersion  => 1,
     datasources => [
       {
-	    name      => 'Prometheus',
-		type      => 'prometheus',
-		access    => 'proxy',
-		url       => 'http://localhost:9090/prometheus',
-		isDefault => true,
-	  },
+        name      => 'Prometheus',
+        type      => 'prometheus',
+        access    => 'proxy',
+        url       => 'http://localhost:9090/prometheus',
+        isDefault => true,
+      },
     ],
   }
 }
@@ -804,18 +804,18 @@ place the hash as a yaml file into
 class { 'grafana':
   provisioning_dashboards => {
     apiVersion => 1,
-	providers  => [
-	  {
-	    name            => 'default',
-		orgId           => 1,
-		fiolder         => '',
-		type            => 'file',
-		disableDeletion => true,
-		options         => {
-		  path          => '/var/lib/grafana/dashboards',
-		  puppetsource  => 'puppet:///modules/my_custom_module/dashboards',
-		},
-	  },
+    providers  => [
+      {
+        name            => 'default',
+        orgId           => 1,
+        folder          => '',
+        type            => 'file',
+        disableDeletion => true,
+        options         => {
+          path         => '/var/lib/grafana/dashboards',
+          puppetsource => 'puppet:///modules/my_custom_module/dashboards',
+        },
+      },
     ],
   }
 }
