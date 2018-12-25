@@ -656,6 +656,100 @@ grafana_user { 'username':
 ```
 `grafana_api_path` is only required if using sub-paths for the API
 
+##### `grafana::notification`
+
+Creates and manages a global alert notification channel via the API.
+
+```puppet
+grafana_notification { 'channelname':
+  grafana_url       => 'http://localhost:3000',
+  grafana_api_path  => '/grafana/api',
+  grafana_user      => 'admin',
+  grafana_password  => '5ecretPassw0rd',
+
+  name              => 'channelname',
+  type              => 'email',
+  is_default        => false,
+  send_reminder     => false,  
+  frequency         => '20m',
+  settings          => {
+              addresses    => "alerts@example.com; it@example.com"   
+  }
+}
+```
+`grafana_api_path` is only required if using sub-paths for the API 
+
+Notification types and related settingsi (cf doc Grafana : https://github.com/grafana/grafana/blob/master/docs/sources/alerting/notifications.md ) :
+   - email:
+       - addresses: "example.com"
+   - hipchat:
+       - apikey       : "0a0a0a0a0a0a0a0a0a0a0a"
+       - autoResolve  : true
+       - httpMethod   : "POST"
+       - uploadImage  : true
+       - url          : "https://grafana.hipchat.com"
+   - kafka:
+       - autoResolve   : true
+       - httpMethod    : "POST"
+       - kafkaRestProxy: "http://localhost:8082"
+       - kafkaTopic    : "topic1"
+       - uploadImage   : true
+   - LINE:
+       - autoResolve: true
+       - httpMethod : "POST"
+       - token      : "token"
+       - uploadImage: true
+   - teams (Microsoft Teams):
+       - autoResolve : true
+       - httpMethod  : "POST" 
+       - uploadImage :true
+       - url         : "http://example.com"
+   - pagerduty:
+       - autoResolve    : true
+       - httpMethod     : POST
+       - integrationKey :"0a0a0a0a0a"
+       - uploadImage    : true
+   - prometheus-alertmanager:
+       - autoResolve : true
+       - httpMethod  : "POST"
+       - uploadImage : true
+       - url         : "http://localhost:9093"
+   - sensu:
+       - autoResolve : true
+       - handler     : "default",
+       - httpMethod  : "POST"
+       - uploadImage : true
+       - url         : "http://sensu-api.local:4567/results"
+   - slack:
+       - autoResolve : true
+       - httpMethod  : "POST"
+       - uploadImage : true 
+       - url         : "http://slack.com/"
+       - token       : "0a0a0a0a0a0a0a0a0a0a0a"
+   - threema:
+       - api_secret  : "0a0a0a0a0a0a0a0a0a0a0a"
+       - autoResolve : true
+       - gateway_id  : "*3MAGWID"
+       - httpMethod  : "POST"
+       - recipient_id: "YOUR3MID"
+       - uploadImage : true
+   - discord:
+       - autoResolve : true,
+       - httpMethod  : "POST"
+       - uploadImage : true
+       - url         : "https://example.com"
+   - webhook:
+       - autoResolve : true
+       - httpMethod  : "POST"
+       - uploadImage : false
+       - url         : "http://localhost:8080"
+   - telegram:
+       - autoResolve : true
+       - bottoken    : "0a0a0a0a0a0a"
+       - chatid      : "789789789"
+       - httpMethod  : "POST"
+       - uploadImage : true 
+
 #### Provisioning Grafana
 
 [Grafana documentation on
