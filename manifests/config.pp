@@ -102,7 +102,7 @@ class grafana::config {
       # Loop over all providers, extract the paths and create
       # directories for each path of dashboards.
       $dashboardpaths.each | Integer $index, Hash $options | {
-        if has_key($options, 'path') {
+        if ('path' in $options) {
           # get sub paths of 'path' and create subdirs if necessary
           $subpaths = grafana::get_sub_paths($options['path'])
           if ($grafana::create_subdirs_provisioning and (length($subpaths) >= 1)) {
