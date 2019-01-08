@@ -105,7 +105,7 @@ describe 'grafana' do
         when 'Debian'
           describe 'install apt repo dependencies first' do
             it { is_expected.to contain_class('apt') }
-            it { is_expected.to contain_apt__source('grafana').with(release: 'stretch', repos: 'main', location: 'https://packagecloud.io/grafana/stable/debian') }
+            it { is_expected.to contain_apt__source('grafana').with(release: 'stable', repos: 'main', location: 'https://packages.grafana.com/oss/deb') }
             it { is_expected.to contain_apt__source('grafana').that_comes_before('Package[grafana]') }
           end
 
@@ -118,7 +118,7 @@ describe 'grafana' do
           end
         when 'RedHat'
           describe 'yum repo dependencies first' do
-            it { is_expected.to contain_yumrepo('grafana').with(baseurl: 'https://packagecloud.io/grafana/stable/el/' + facts[:operatingsystemmajrelease] + '/$basearch', gpgkey: 'https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana', enabled: 1) }
+            it { is_expected.to contain_yumrepo('grafana').with(baseurl: 'https://packages.grafana.com/oss/rpm', gpgkey: 'https://packages.grafana.com/gpg.key', enabled: 1) }
             it { is_expected.to contain_yumrepo('grafana').that_comes_before('Package[grafana]') }
           end
 
