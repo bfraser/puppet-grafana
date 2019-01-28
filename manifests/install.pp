@@ -76,7 +76,7 @@ class grafana::install {
             apt::source { 'grafana':
               location     => 'https://packages.grafana.com/oss/deb',
               release      => $grafana::repo_name,
-              architecture => 'amd64,arm64,armhf'
+              architecture => 'amd64,arm64,armhf',
               repos        => 'main',
               key          =>  {
                 'id'     => '4E40DDF6D76E284A4A6780E48C8C34C524098CB6',
