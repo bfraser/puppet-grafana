@@ -74,14 +74,15 @@ class grafana::install {
               class { '::apt': }
             }
             apt::source { 'grafana':
-              location => 'https://packages.grafana.com/oss/deb',
-              release  => $grafana::repo_name,
-              repos    => 'main',
-              key      =>  {
+              location     => 'https://packages.grafana.com/oss/deb',
+              release      => $grafana::repo_name,
+              architecture => 'amd64,arm64,armhf'
+              repos        => 'main',
+              key          =>  {
                 'id'     => '4E40DDF6D76E284A4A6780E48C8C34C524098CB6',
                 'source' => 'https://packages.grafana.com/gpg.key',
               },
-              before   => Package[$::grafana::package_name],
+              before       => Package[$::grafana::package_name],
             }
             Class['apt::update'] -> Package[$::grafana::package_name]
           }
