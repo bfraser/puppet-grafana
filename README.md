@@ -671,14 +671,14 @@ grafana_notification { 'channelname':
   name              => 'channelname',
   type              => 'email',
   is_default        => false,
-  send_reminder     => false,  
+  send_reminder     => false,
   frequency         => '20m',
   settings          => {
-              addresses    => "alerts@example.com; it@example.com"   
+              addresses    => "alerts@example.com; it@example.com"
   }
 }
 ```
-`grafana_api_path` is only required if using sub-paths for the API 
+`grafana_api_path` is only required if using sub-paths for the API
 
 Notification types and related settingsi (cf doc Grafana : https://github.com/grafana/grafana/blob/master/docs/sources/alerting/notifications.md ) :
    - email:
@@ -702,7 +702,7 @@ Notification types and related settingsi (cf doc Grafana : https://github.com/gr
        - uploadImage: true
    - teams (Microsoft Teams):
        - autoResolve : true
-       - httpMethod  : "POST" 
+       - httpMethod  : "POST"
        - uploadImage :true
        - url         : "http://example.com"
    - pagerduty:
@@ -724,7 +724,7 @@ Notification types and related settingsi (cf doc Grafana : https://github.com/gr
    - slack:
        - autoResolve : true
        - httpMethod  : "POST"
-       - uploadImage : true 
+       - uploadImage : true
        - url         : "http://slack.com/"
        - token       : "0a0a0a0a0a0a0a0a0a0a0a"
    - threema:
@@ -749,7 +749,7 @@ Notification types and related settingsi (cf doc Grafana : https://github.com/gr
        - bottoken    : "0a0a0a0a0a0a"
        - chatid      : "789789789"
        - httpMethod  : "POST"
-       - uploadImage : true 
+       - uploadImage : true
 
 #### Provisioning Grafana
 
