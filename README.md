@@ -17,6 +17,7 @@
 1. [Usage](#usage)
     * [Classes and Defined Types](#classes-and-defined-types)
     * [Advanced usage](#advanced-usage)
+1. [Tasks](#tasks)
 1. [Limitations](#limitations)
 1. [Copyright and License](#copyright-and-license)
 
@@ -863,6 +864,20 @@ point to a locally available directory on the filesystem, typically
 the filesystem of the puppetserver/master. Thus you may specify a
 local directory with grafana dashboards you wish to provision into
 grafana.
+
+## Tasks
+
+### `change_grafana_admin_password`
+
+`old_password`: the old admin password
+
+`new_password`: the password you want to use for the admin user
+
+`uri`: `http` or `https`
+
+`port`: the port Grafana runs on locally
+
+This task can be used to change the password for the admin user in grafana
 
 ## Limitations
 
