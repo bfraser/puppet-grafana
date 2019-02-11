@@ -112,12 +112,23 @@ describe 'grafana class' do
 
   context 'beta release' do
     it 'works idempotently with no errors' do
-      pp = <<-EOS
-      class { 'grafana':
-        version   => '6.0.0-beta1',
-        repo_name => 'beta',
-      }
-      EOS
+      case fact('os.family')
+      when 'Debian'
+        pp = <<-EOS
+        class { 'grafana':
+          version   => '6.0.0-beta1',
+          repo_name => 'beta',
+        }
+        EOS
+      when 'RedHat'
+        pp = <<-EOS
+        class { 'grafana':
+          version       => '6.0.0',
+          rpm_iteration => 'beta1',
+          repo_name     => 'beta',
+        }
+        EOS
+      end
 
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
