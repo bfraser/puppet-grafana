@@ -109,4 +109,23 @@ describe 'grafana class' do
       apply_manifest(pp, catch_changes: true)
     end
   end
+
+  context 'beta release' do
+    it 'works idempotently with no errors' do
+      pp = <<-EOS
+      class { 'grafana':
+        version   => '6.0.0-beta1',
+        repo_name => 'beta',
+      }
+      EOS
+
+      # Run it twice and test for idempotency
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+
+    describe package('grafana') do
+      it { is_expected.to be_installed }
+    end
+  end
 end
