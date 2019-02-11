@@ -59,7 +59,7 @@
 # [*repo_name*]
 # When using 'repo' install_method, the repo to look for packages in.
 # Set to 'stable' to install only stable versions
-# Set to 'testing' to install beta versions
+# Set to 'beta' to install beta versions
 # Defaults to stable.
 #
 # [*plugins*]
@@ -119,7 +119,7 @@ class grafana (
   Boolean $manage_package_repo          = $::grafana::params::manage_package_repo,
   String $package_name                  = $::grafana::params::package_name,
   Optional[String] $package_source      = undef,
-  Enum['stable', 'testing'] $repo_name  = $::grafana::params::repo_name,
+  Enum['stable', 'beta'] $repo_name     = $::grafana::params::repo_name,
   String $rpm_iteration                 = $::grafana::params::rpm_iteration,
   String $service_name                  = $::grafana::params::service_name,
   String $version                       = 'installed',
