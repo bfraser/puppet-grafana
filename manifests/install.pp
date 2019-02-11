@@ -99,7 +99,7 @@ class grafana::install {
 
           if ( $::grafana::manage_package_repo ){
             # http://docs.grafana.org/installation/rpm/#install-via-yum-repository
-            $baseurl = $::grafana::repo_name ? {
+            $baseurl = $grafana::repo_name ? {
               'stable' => 'https://packages.grafana.com/oss/rpm',
               'beta'   => 'https://packages.grafana.com/oss/rpm-beta',
             }
