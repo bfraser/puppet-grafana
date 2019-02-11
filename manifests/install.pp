@@ -98,9 +98,15 @@ class grafana::install {
           }
 
           if ( $::grafana::manage_package_repo ){
+            # http://docs.grafana.org/installation/rpm/#install-via-yum-repository
+            $baseurl = $::grafana::repo_name ? {
+              'stable' => 'https://packages.grafana.com/oss/rpm',
+              'beta'   => 'https://packages.grafana.com/oss/rpm-beta',
+            }
+
             yumrepo { 'grafana':
               descr    => 'grafana repo',
-              baseurl  => 'https://packages.grafana.com/oss/rpm',
+              baseurl  => $baseurl,
               gpgcheck => 1,
               gpgkey   => 'https://packages.grafana.com/gpg.key',
               enabled  => 1,
