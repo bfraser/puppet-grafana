@@ -71,7 +71,7 @@ class grafana::install {
 
           if ( $::grafana::manage_package_repo ){
             if !defined( Class['apt'] ) {
-              class { '::apt': }
+              include apt
             }
             apt::source { 'grafana':
               location     => 'https://packages.grafana.com/oss/deb',
