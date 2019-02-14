@@ -4,6 +4,38 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v6.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v6.0.0) (2019-02-14)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v5.0.0...v6.0.0)
+
+**Breaking changes:**
+
+- modulesync 2.5.1 and drop Puppet 4 [\#154](https://github.com/voxpupuli/puppet-grafana/pull/154) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Add a task for setting the admin user's password [\#148](https://github.com/voxpupuli/puppet-grafana/pull/148) ([genebean](https://github.com/genebean))
+- Integration notification channels [\#144](https://github.com/voxpupuli/puppet-grafana/pull/144) ([jnguiot](https://github.com/jnguiot))
+
+**Fixed bugs:**
+
+- Update repo\_name Enum for new 'beta' repo [\#155](https://github.com/voxpupuli/puppet-grafana/pull/155) ([JayH5](https://github.com/JayH5))
+- Fix \#152 : multi arch send out a notice [\#153](https://github.com/voxpupuli/puppet-grafana/pull/153) ([elfranne](https://github.com/elfranne))
+- fixes repo url and key [\#150](https://github.com/voxpupuli/puppet-grafana/pull/150) ([crazymind1337](https://github.com/crazymind1337))
+
+**Closed issues:**
+
+- multi arch send out a notice [\#152](https://github.com/voxpupuli/puppet-grafana/issues/152)
+- Package Repo moved to packages.grafana.com [\#149](https://github.com/voxpupuli/puppet-grafana/issues/149)
+- install\_mode archive fails if $data\_dir is not manually created [\#142](https://github.com/voxpupuli/puppet-grafana/issues/142)
+
+**Merged pull requests:**
+
+- include classes without leading :: [\#157](https://github.com/voxpupuli/puppet-grafana/pull/157) ([bastelfreak](https://github.com/bastelfreak))
+- replace deprecated has\_key\(\) with `in` [\#147](https://github.com/voxpupuli/puppet-grafana/pull/147) ([bastelfreak](https://github.com/bastelfreak))
+- archive install\_method creates data\_dir [\#143](https://github.com/voxpupuli/puppet-grafana/pull/143) ([othalla](https://github.com/othalla))
+- Fix folder typos [\#140](https://github.com/voxpupuli/puppet-grafana/pull/140) ([pfree](https://github.com/pfree))
+
 ## [v5.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v5.0.0) (2018-10-06)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v4.5.0...v5.0.0)
