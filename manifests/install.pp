@@ -78,7 +78,7 @@ class grafana::install {
               release  => 'wheezy',
               repos    => 'main',
               key      =>  {
-                'id'     => '418A7F2FB0E1E6E7EABF6FE8C2E73424D59097AB',
+                'id'     => '6A037BB52DF7D46D99DC59C101666247EBFF1218',
                 'source' => 'https://packagecloud.io/gpg.key'
               },
               before   => Package[$::grafana::package_name],
