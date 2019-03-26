@@ -49,7 +49,7 @@ describe 'grafana' do
           describe 'use archive to fetch the package to a temporary location' do
             it do
               is_expected.to contain_archive('/tmp/grafana.deb').with_source(
-                'https://s3-us-west-2.amazonaws.com/grafana-releases/release/builds/grafana_4.5.1_amd64.deb'
+                'https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_4.5.1_amd64.deb'
               )
             end
             it { is_expected.to contain_archive('/tmp/grafana.deb').that_comes_before('Package[grafana]') }

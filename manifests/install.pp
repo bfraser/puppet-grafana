@@ -15,7 +15,7 @@ class grafana::install {
   else {
     $real_package_source = $::osfamily ? {
       /(RedHat|Amazon)/ => "${base_url}/grafana-${::grafana::version}-${::grafana::rpm_iteration}.x86_64.rpm",
-      'Debian'          => "${base_url}/builds/grafana_${::grafana::version}_amd64.deb",
+      'Debian'          => "${base_url}/grafana_${::grafana::version}_amd64.deb",
       default           => $real_archive_source,
     }
   }
