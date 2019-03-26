@@ -38,7 +38,7 @@ describe 'grafana' do
         let(:params) do
           {
             install_method: 'package',
-            version: '4.5.1'
+            version: '5.4.2'
           }
         end
 
@@ -49,7 +49,7 @@ describe 'grafana' do
           describe 'use archive to fetch the package to a temporary location' do
             it do
               is_expected.to contain_archive('/tmp/grafana.deb').with_source(
-                'https://s3-us-west-2.amazonaws.com/grafana-releases/release/builds/grafana_4.5.1_amd64.deb'
+                'https://dl.grafana.com/oss/release/grafana_5.4.2_amd64.deb'
               )
             end
             it { is_expected.to contain_archive('/tmp/grafana.deb').that_comes_before('Package[grafana]') }
@@ -169,13 +169,13 @@ describe 'grafana' do
         let(:params) do
           {
             install_method: 'archive',
-            version: '4.5.1'
+            version: '5.4.2'
           }
         end
 
         install_dir    = '/usr/share/grafana'
         service_config = '/usr/share/grafana/conf/custom.ini'
-        archive_source = 'https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.5.1.linux-x64.tar.gz'
+        archive_source = 'https://dl.grafana.com/oss/release/grafana-5.4.2.linux-amd64.tar.gz'
 
         describe 'extract archive to install_dir' do
           it { is_expected.to contain_archive('/tmp/grafana.tar.gz').with_ensure('present') }

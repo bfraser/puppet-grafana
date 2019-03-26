@@ -1,12 +1,12 @@
 # == Class grafana::install
 #
 class grafana::install {
-  $base_url = 'https://s3-us-west-2.amazonaws.com/grafana-releases/release'
+  $base_url = 'https://dl.grafana.com/oss/release'
   if $::grafana::archive_source != undef {
     $real_archive_source = $::grafana::archive_source
   }
   else {
-    $real_archive_source = "${base_url}/grafana-${::grafana::version}.linux-x64.tar.gz"
+    $real_archive_source = "${base_url}/grafana-${::grafana::version}.linux-amd64.tar.gz"
   }
 
   if $::grafana::package_source != undef {
@@ -15,7 +15,7 @@ class grafana::install {
   else {
     $real_package_source = $::osfamily ? {
       /(RedHat|Amazon)/ => "${base_url}/grafana-${::grafana::version}-${::grafana::rpm_iteration}.x86_64.rpm",
-      'Debian'          => "${base_url}/builds/grafana_${::grafana::version}_amd64.deb",
+      'Debian'          => "${base_url}/grafana_${::grafana::version}_amd64.deb",
       default           => $real_archive_source,
     }
   }
