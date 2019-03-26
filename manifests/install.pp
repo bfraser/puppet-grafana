@@ -105,7 +105,12 @@ class grafana::install {
             }
 
             yumrepo { 'grafana':
-              descr    => 'grafana repo',
+              ensure => 'absent',
+              before => Package[$::grafana::package_name],
+            }
+
+            yumrepo { "grafana-${grafana::repo_name}":
+              descr    => "grafana-${grafana::repo_name} repo",
               baseurl  => $baseurl,
               gpgcheck => 1,
               gpgkey   => 'https://packages.grafana.com/gpg.key',
