@@ -118,8 +118,8 @@ describe 'grafana' do
           end
         when 'RedHat'
           describe 'yum repo dependencies first' do
-            it { is_expected.to contain_yumrepo('grafana').with(baseurl: 'https://packages.grafana.com/oss/rpm', gpgkey: 'https://packages.grafana.com/gpg.key', enabled: 1) }
-            it { is_expected.to contain_yumrepo('grafana').that_comes_before('Package[grafana]') }
+            it { is_expected.to contain_yumrepo('grafana-stable').with(baseurl: 'https://packages.grafana.com/oss/rpm', gpgkey: 'https://packages.grafana.com/gpg.key', enabled: 1) }
+            it { is_expected.to contain_yumrepo('grafana-stable').that_comes_before('Package[grafana]') }
           end
 
           describe 'install dependencies first' do
