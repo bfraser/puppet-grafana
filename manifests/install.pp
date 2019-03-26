@@ -1,12 +1,12 @@
 # == Class grafana::install
 #
 class grafana::install {
-  $base_url = 'https://s3-us-west-2.amazonaws.com/grafana-releases/release'
+  $base_url = 'https://dl.grafana.com/oss/release'
   if $::grafana::archive_source != undef {
     $real_archive_source = $::grafana::archive_source
   }
   else {
-    $real_archive_source = "${base_url}/grafana-${::grafana::version}.linux-x64.tar.gz"
+    $real_archive_source = "${base_url}/grafana-${::grafana::version}.linux-amd64.tar.gz"
   }
 
   if $::grafana::package_source != undef {
