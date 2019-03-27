@@ -9,8 +9,9 @@ class grafana::config {
         $cfg = $grafana::cfg
         $myprovision = false
 
-        file {  $grafana::cfg_location:
+        file {  'grafana.ini':
           ensure  => file,
+          path    => $grafana::cfg_location,
           content => template('grafana/config.ini.erb'),
           owner   => 'grafana',
           group   => 'grafana',
@@ -21,8 +22,9 @@ class grafana::config {
       $cfg = $grafana::cfg
       $myprovision = true
 
-      file {  $grafana::cfg_location:
+      file {  'grafana.ini':
         ensure  => file,
+        path    => $grafana::cfg_location,
         content => template('grafana/config.ini.erb'),
         owner   => 'grafana',
         group   => 'grafana',
@@ -97,7 +99,7 @@ class grafana::config {
         group   => 'grafana',
         mode    => '0640',
         content => epp('grafana/pdashboards.yaml.epp'),
-        notify  => Service[$grafana::service_name],
+        notify  => Service['grafana'],
       }
       # Loop over all providers, extract the paths and create
       # directories for each path of dashboards.
@@ -136,7 +138,7 @@ class grafana::config {
         group   => 'grafana',
         mode    => '0640',
         content => epp('grafana/pdatasources.yaml.epp'),
-        notify  => Service[$grafana::service_name],
+        notify  => Service['grafana'],
       }
     }
 

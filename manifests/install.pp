@@ -38,8 +38,9 @@ class grafana::install {
             source  => $real_package_source,
           }
 
-          package { $grafana::package_name:
+          package { 'grafana':
             ensure   => present,
+            name     => $grafana::package_name,
             provider => 'dpkg',
             source   => '/tmp/grafana.deb',
             require  => [Archive['/tmp/grafana.deb'],Package['libfontconfig1']],
@@ -50,8 +51,9 @@ class grafana::install {
             ensure => present,
           }
 
-          package { $grafana::package_name:
+          package { 'grafana':
             ensure   => present,
+            name     => $grafana::package_name,
             provider => 'rpm',
             source   => $real_package_source,
             require  => Package['fontconfig'],
@@ -82,13 +84,14 @@ class grafana::install {
                 'id'     => '4E40DDF6D76E284A4A6780E48C8C34C524098CB6',
                 'source' => 'https://packages.grafana.com/gpg.key',
               },
-              before       => Package[$grafana::package_name],
+              before       => Package['grafana'],
             }
-            Class['apt::update'] -> Package[$grafana::package_name]
+            Class['apt::update'] -> Package['grafana']
           }
 
-          package { $grafana::package_name:
+          package { 'grafana':
             ensure  => $grafana::version,
+            name    => $grafana::package_name,
             require => Package['libfontconfig1'],
           }
         }
@@ -106,7 +109,7 @@ class grafana::install {
 
             yumrepo { 'grafana':
               ensure => 'absent',
-              before => Package[$grafana::package_name],
+              before => Package['grafana'],
             }
 
             yumrepo { "grafana-${grafana::repo_name}":
@@ -115,7 +118,7 @@ class grafana::install {
               gpgcheck => 1,
               gpgkey   => 'https://packages.grafana.com/gpg.key',
               enabled  => 1,
-              before   => Package[$grafana::package_name],
+              before   => Package['grafana'],
             }
           }
 
@@ -125,8 +128,9 @@ class grafana::install {
             $real_version = "${grafana::version}-${grafana::rpm_iteration}"
           }
 
-          package { $grafana::package_name:
+          package { 'grafana':
             ensure  => $real_version,
+            name    => $grafana::package_name,
             require => Package['fontconfig'],
           }
         }
@@ -134,8 +138,9 @@ class grafana::install {
           if $grafana::manage_package_repo {
             fail('manage_package_repo is not supported on Archlinux')
           }
-          package { $grafana::package_name:
-            ensure  => 'present', # pacman provider doesn't have feature versionable
+          package { 'grafana':
+            ensure => 'present', # pacman provider doesn't have feature versionable
+            name   => $grafana::package_name,
           }
         }
         default: {

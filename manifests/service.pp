@@ -18,19 +18,21 @@ class grafana::service {
       create_resources(docker::run, $container, $defaults)
     }
     'package','repo': {
-      service { $grafana::service_name:
+      service { 'grafana':
         ensure    => running,
+        name      => $grafana::service_name,
         enable    => true,
-        subscribe => Package[$grafana::package_name],
+        subscribe => Package['grafana'],
       }
     }
     'archive': {
       $service_path   = "${grafana::install_dir}/bin/${grafana::service_name}"
       $service_config = "${grafana::install_dir}/conf/custom.ini"
 
-      if !defined(Service[$grafana::service_name]){
-        service { $grafana::service_name:
+      if !defined(Service['grafana']){
+        service { 'grafana':
           ensure     => running,
+          name       => $grafana::service_name,
           provider   => base,
           binary     => "su - grafana -c '${service_path} -config=${service_config} -homepath=${grafana::install_dir} web &'",
           hasrestart => false,

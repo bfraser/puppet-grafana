@@ -7,28 +7,9 @@ describe 'grafana' do
         facts
       end
 
-      let :service_name do
-        case facts[:osfamily]
-        when 'Archlinux'
-          'grafana'
-        else
-          'grafana-server'
-        end
-      end
-
-      let :config_path do
-        case facts[:osfamily]
-        when 'Archlinux'
-          '/etc/grafana.ini'
-        else
-          '/etc/grafana/grafana.ini'
-        end
-      end
-
       context 'with default values' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('grafana') }
-        it { is_expected.to contain_class('grafana::params') }
         it { is_expected.to contain_class('grafana::install').that_comes_before('Class[grafana::config]') }
         it { is_expected.to contain_class('grafana::config').that_notifies('Class[grafana::service]') }
         it { is_expected.to contain_class('grafana::service') }
@@ -202,8 +183,8 @@ describe 'grafana' do
         end
 
         describe 'run grafana as service' do
-          it { is_expected.to contain_service(service_name).with_ensure('running').with_provider('base') }
-          it { is_expected.to contain_service(service_name).with_hasrestart(false).with_hasstatus(false) }
+          it { is_expected.to contain_service('grafana').with_ensure('running').with_provider('base') }
+          it { is_expected.to contain_service('grafana').with_hasrestart(false).with_hasstatus(false) }
         end
 
         context 'when user already defined' do
@@ -220,16 +201,16 @@ describe 'grafana' do
 
         context 'when service already defined' do
           let(:pre_condition) do
-            'service{"grafana-server":
+            'service{"grafana":
               ensure     => running,
+              name       => "grafana-server",
               hasrestart => true,
               hasstatus  => true,
             }'
           end
 
-          # let(:params) {{ :service_name => 'grafana-server'}}
           describe 'do NOT run service' do
-            it { is_expected.not_to contain_service('grafana-server').with_hasrestart(false).with_hasstatus(false) }
+            it { is_expected.not_to contain_service('grafana').with_hasrestart(false).with_hasstatus(false) }
           end
         end
       end
@@ -250,7 +231,7 @@ describe 'grafana' do
 
       context 'configuration file' do
         describe 'should not contain any configuration when cfg param is empty' do
-          it { is_expected.to contain_file(config_path).with_content("# This file is managed by Puppet, any changes will be overwritten\n\n") }
+          it { is_expected.to contain_file('grafana.ini').with_content("# This file is managed by Puppet, any changes will be overwritten\n\n") }
         end
 
         describe 'should correctly transform cfg param entries to Grafana configuration' do
@@ -295,7 +276,7 @@ describe 'grafana' do
                      "number = 8080\n"\
                      "string = production\n"
 
-          it { is_expected.to contain_file(config_path).with_content(expected) }
+          it { is_expected.to contain_file('grafana.ini').with_content(expected) }
 
           ldap_expected = "\n[[servers]]\n"\
                            "host = \"server1\"\n"\
