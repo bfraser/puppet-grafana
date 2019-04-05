@@ -112,7 +112,7 @@ result in...
           http_port     => 8080,
         },
         database => {
-          type          => 'sqlite3',
+          type          => 'mysql',
           host          => '127.0.0.1:3306',
           name          => 'grafana',
           user          => 'root',
