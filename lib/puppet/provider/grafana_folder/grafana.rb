@@ -7,7 +7,7 @@ Puppet::Type.type(:grafana_folder).provide(:grafana, parent: Puppet::Provider::G
 
   defaultfor kernel: 'Linux'
 
-  def organization 
+  def organization
     resource[:organization]
   end
 
@@ -78,9 +78,7 @@ Puppet::Type.type(:grafana_folder).provide(:grafana, parent: Puppet::Provider::G
     begin
       folders = JSON.parse(response.body)
       folders.each do |folder|
-        if folder['title'] == resource[:title]
-          @folder = folder
-        end
+        @folder = folder if folder['title'] == resource[:title]
       end
     rescue JSON::ParserError
       raise format('Fail to parse folder %s: %s', resource[:title], response.body)
@@ -97,13 +95,13 @@ Puppet::Type.type(:grafana_folder).provide(:grafana, parent: Puppet::Provider::G
     # else, create object
     if @folder.nil?
       data = {
-        'title': resource[:title]
+        title: resource[:title]
       }
 
       response = send_request('POST', format('%s/folders', resource[:grafana_api_path]), data)
       return unless (response.code != '200') && (response.code != '412')
       raise format('Failed to create folder %s (HTTP response: %s/%s)', resource[:title], response.code, response.body)
-    else 
+    else
       data = {
         folder: folder.merge('title' => resource[:title],
                              'uid' => @folder['uid']),
@@ -118,16 +116,14 @@ Puppet::Type.type(:grafana_folder).provide(:grafana, parent: Puppet::Provider::G
 
   def slug
     resource[:title].downcase.gsub(%r{[ \+]+}, '-').gsub(%r{[^\w\- ]}, '')
-  end 
+  end
 
   def create
     save_folder(resource)
   end
 
   def destroy
-    if @folder.nil?
-      find_folder
-    end
+    find_folder unless @folder
 
     response = send_request('DELETE', format('%s/folders/%s', resource[:grafana_api_path], @folder['uid']))
 

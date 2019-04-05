@@ -40,7 +40,7 @@ describe Puppet::Type.type(:grafana_folder) do
       catalog = Puppet::Resource::Catalog.new
       service = Puppet::Type.type(:service).new(name: 'grafana-server')
       catalog.add_resource service
-      catalog.add_resource gfolder 
+      catalog.add_resource gfolder
 
       relationship = gfolder.autorequire.find do |rel|
         (rel.source.to_s == 'Service[grafana-server]') && (rel.target.to_s == gfolder.to_s)
@@ -49,7 +49,7 @@ describe Puppet::Type.type(:grafana_folder) do
     end
     it 'does not autorequire the service it is not managed' do
       catalog = Puppet::Resource::Catalog.new
-      catalog.add_resource gfolder 
+      catalog.add_resource gfolder
       expect(gfolder.autorequire).to be_empty
     end
   end
