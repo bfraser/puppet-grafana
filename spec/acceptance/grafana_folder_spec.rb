@@ -1,10 +1,10 @@
 require 'spec_helper_acceptance'
 
 describe 'grafana_folder' do
-  context 'create folder resource' do
+  context 'setup grafana server' do
     it 'runs successfully' do
       pp = <<-EOS
-      class { 'grafana': 
+      class { 'grafana':
         cfg => {
           security => {
             admin_user     => 'admin',
@@ -12,12 +12,20 @@ describe 'grafana_folder' do
           }
         }
       }
+      EOS
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+  end
 
-      grafana_folder { 'example-folder': 
+  context 'create folder resource' do
+    it 'creates the folder' do
+      pp = <<-EOS
+      grafana_folder { 'example-folder':
         ensure           => present,
         grafana_url      => 'http://localhost:3000',
         grafana_user     => 'admin',
-        grafana_password => 'admin',
+        grafana_password => 'admin'
       }
       EOS
       apply_manifest(pp, catch_failures: true)
@@ -32,24 +40,16 @@ describe 'grafana_folder' do
   end
 
   context 'destroy folder resource' do
-    it 'runs successfully' do
+    it 'destroys the folder' do
       pp = <<-EOS
-      class { 'grafana': 
-        cfg => {
-          security => {
-            admin_user     => 'admin',
-            admin_password => 'admin'
-          }
-        }
-      }
-
-      grafana_folder { 'example-folder': 
+      grafana_folder { 'example-folder':
         ensure           => absent,
         grafana_url      => 'http://localhost:3000',
         grafana_user     => 'admin',
         grafana_password => 'admin',
       }
       EOS
+
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
     end
