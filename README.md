@@ -404,6 +404,7 @@ If you are using a sub-path for the Grafana API, you will need to set the `grafa
 - `grafana_datasource`
 - `grafana_organization`
 - `grafana_user`
+- `grafana_folder`
 
 For instance, if your sub-path is `/grafana`, the `grafana_api_path` must
 be set to `/grafana/api`. Do not add a trailing `/` (slash) at the end of the value.
@@ -639,6 +640,21 @@ grafana_plugin { 'grafana-simple-json-datasource':
   repo => 'https://nexus.company.com/grafana/plugins',
 }
 ```
+
+##### `grafana_folder`
+
+Creates and manages Grafana folders via the API.
+
+The following example creates a folder named 'folder1':
+```puppet
+grafana_folder { 'folder1':
+  grafana_url       => 'http://localhost:3000',
+  grafana_api_path  => '/grafana/api',
+  grafana_user      => 'admin',
+  grafana_password  => '5ecretPassw0rd',
+}
+```
+`grafana_api_path` is only required if using sub-paths for the API
 
 ##### `grafana::user`
 
