@@ -89,9 +89,14 @@ describe 'grafana_folder' do
       apply_manifest(pp, catch_changes: true)
     end
 
-    it 'does not have the folders' do
+    it 'has no example-folder' do
       shell('curl --user admin:admin http://localhost:3000/api/folders') do |f|
         expect(f.stdout).not_to match(%r{example-folder})
+      end
+    end
+
+    it 'has no nomatch-folder' do
+      shell('curl --user admin:admin http://localhost:3000/api/folders') do |f|
         expect(f.stdout).not_to match(%r{nomatch-folder})
       end
     end
