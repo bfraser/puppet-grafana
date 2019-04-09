@@ -39,10 +39,45 @@ describe 'grafana_folder' do
     end
   end
 
-  context 'destroy folder resource' do
-    it 'destroys the folder' do
+  context 'create folder containing dashboard' do
+    it 'creates an example dashboard in the example folder' do
+      pp = <<-EOS
+      grafana_dashboard { 'example-dashboard':
+        ensure           => present,
+        grafana_url      => 'http://localhost:3000',
+        grafana_user     => 'admin',
+        grafana_password => 'admin',
+        content          => '{"uid": "abc123xy"}',
+        folder           => 'example-folder'
+      }
+      EOS
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+
+    it 'folder contains dashboard' do
+      shell('curl --user admin:admin http://localhost:3000/api/dashboards/db/example-dashboard') do |f|
+        expect(f.stdout).to match(%r{"folderId":1})
+      end
+    end
+  end
+
+  context 'destroy resources' do
+    it 'destroys the folders and dashboard' do
       pp = <<-EOS
       grafana_folder { 'example-folder':
+        ensure           => absent,
+        grafana_url      => 'http://localhost:3000',
+        grafana_user     => 'admin',
+        grafana_password => 'admin',
+      }
+      grafana_folder { 'nomatch-folder':
+        ensure           => absent,
+        grafana_url      => 'http://localhost:3000',
+        grafana_user     => 'admin',
+        grafana_password => 'admin',
+      }
+      grafana_dashboard { 'example-dashboard':
         ensure           => absent,
         grafana_url      => 'http://localhost:3000',
         grafana_user     => 'admin',
@@ -54,9 +89,10 @@ describe 'grafana_folder' do
       apply_manifest(pp, catch_changes: true)
     end
 
-    it 'does not have the folder' do
+    it 'does not have the folders' do
       shell('curl --user admin:admin http://localhost:3000/api/folders') do |f|
         expect(f.stdout).not_to match(%r{example-folder})
+        expect(f.stdout).not_to match(%r{nomatch-folder})
       end
     end
   end
