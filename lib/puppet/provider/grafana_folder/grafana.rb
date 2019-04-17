@@ -125,10 +125,8 @@ Puppet::Type.type(:grafana_folder).provide(:grafana, parent: Puppet::Provider::G
     folders unless @folders
 
     @folders.each do |folder|
-      if folder['title'] == resource[:title]
-        return true
-      end
+      return true if folder['title'] == resource[:title]
     end
-    return false
+    false
   end
 end
