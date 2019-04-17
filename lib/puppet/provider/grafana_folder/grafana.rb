@@ -61,27 +61,17 @@ Puppet::Type.type(:grafana_folder).provide(:grafana, parent: Puppet::Provider::G
     end
 
     begin
-      JSON.parse(response.body)
+      @folders = JSON.parse(response.body)
     rescue JSON::ParserError
       raise format('Fail to parse folders (HTTP response: %s/%s)', response.code, response.body)
     end
   end
 
   def find_folder
-    return unless folders.find { |x| x['title'] == resource[:title] }
+    folders unless @folders
 
-    response = send_request('GET', format('%s/folders', resource[:grafana_api_path]))
-    if response.code != '200'
-      raise format('Fail to retrieve folders (HTTP response: %s/%s)', response.code, response.body)
-    end
-
-    begin
-      folders = JSON.parse(response.body)
-      folders.each do |folder|
-        @folder = folder if folder['title'] == resource[:title]
-      end
-    rescue JSON::ParserError
-      raise format('Fail to parse folder %s: %s', resource[:title], response.body)
+    @folders.each do |folder|
+      @folder = folder if folder['title'] == resource[:title]
     end
   end
 
@@ -132,6 +122,13 @@ Puppet::Type.type(:grafana_folder).provide(:grafana, parent: Puppet::Provider::G
   end
 
   def exists?
-    find_folder
+    folders unless @folders
+
+    @folders.each do |folder|
+      if folder['title'] == resource[:title]
+        return true
+      end
+    end
+    return false
   end
 end
