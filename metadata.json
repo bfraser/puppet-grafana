@@ -50,7 +50,10 @@
       "operatingsystem": "Archlinux"
     },
     {
-      "operatingsystem": "FreeBSD"
+      "operatingsystem": "FreeBSD",
+      "operatingsystemrelease": [
+        "12"
+      ]
     }
   ],
   "requirements": [
