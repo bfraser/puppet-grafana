@@ -151,8 +151,9 @@ class grafana::install {
           }
         }
         'FreeBSD': {
-          package { 'fontconfig':
-            ensure => 'present',
+          package { 'grafana':
+            ensure  => 'present', # pkgng provider doesn't have feature versionable
+            name    => $grafana::package_name,
           }
         }
         default: {
