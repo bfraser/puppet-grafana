@@ -152,8 +152,8 @@ class grafana::install {
         }
         'FreeBSD': {
           package { 'grafana':
-            ensure  => 'present', # pkgng provider doesn't have feature versionable
-            name    => $grafana::package_name,
+            ensure => 'present', # pkgng provider doesn't have feature versionable
+            name   => $grafana::package_name,
           }
         }
         default: {
