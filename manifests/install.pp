@@ -153,7 +153,6 @@ class grafana::install {
         'FreeBSD': {
           package { 'fontconfig':
             ensure => 'present',
-            ensure => present,
           }
         }
         default: {
