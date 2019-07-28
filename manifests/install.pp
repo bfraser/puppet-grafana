@@ -150,6 +150,12 @@ class grafana::install {
             name   => $grafana::package_name,
           }
         }
+        'FreeBSD': {
+          package { 'fontconfig':
+            ensure => 'present',
+            ensure => present,
+          }
+        }
         default: {
           fail("${facts['os']['name']} not supported")
         }
