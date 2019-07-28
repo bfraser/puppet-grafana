@@ -169,8 +169,23 @@ describe 'grafana' do
           it { is_expected.to contain_user('grafana').that_comes_before('File[/usr/share/grafana]') }
         end
 
-        describe 'create data_dir' do
-          it { is_expected.to contain_file('/var/lib/grafana').with_ensure('directory') }
+        case facts[:osfamily]
+        when 'Archlinux'
+          describe 'create data_dir' do
+            it { is_expected.to contain_file('/var/lib/grafana').with_ensure('directory') }
+          end
+        when 'Debian'
+          describe 'create data_dir' do
+            it { is_expected.to contain_file('/var/lib/grafana').with_ensure('directory') }
+          end
+        when 'FreBSD'
+          describe 'create data_dir' do
+            it { is_expected.to contain_file('/var/db/grafana').with_ensure('directory') }
+          end
+        when 'RedHat'
+          describe 'create data_dir' do
+            it { is_expected.to contain_file('/var/lib/grafana').with_ensure('directory') }
+          end
         end
 
         describe 'manage install_dir' do

@@ -59,6 +59,13 @@ class grafana::install {
             require  => Package['fontconfig'],
           }
         }
+        'FreeBSD': {
+          package { 'grafana':
+            ensure   => present,
+            name     => $grafana::package_name,
+            provider => 'pkgng',
+          }
+        }
         default: {
           fail("${facts['os']['family']} not supported")
         }
@@ -140,6 +147,12 @@ class grafana::install {
           }
           package { 'grafana':
             ensure => 'present', # pacman provider doesn't have feature versionable
+            name   => $grafana::package_name,
+          }
+        }
+        'FreeBSD': {
+          package { 'grafana':
+            ensure => 'present', # pkgng provider doesn't have feature versionable
             name   => $grafana::package_name,
           }
         }
