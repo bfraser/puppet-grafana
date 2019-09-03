@@ -883,6 +883,43 @@ the filesystem of the puppetserver/master. Thus you may specify a
 local directory with grafana dashboards you wish to provision into
 grafana.
 
+##### Provisioning with dashboards from grafana.com
+
+GrafanaLabs provides lots of [dashboards that may be reused](https://grafana.com/grafana/dashboards).
+Those ones are **not directly usable** for provisioning (this is 
+a Grafana issue, not a Puppet one).
+
+In order to have a "provisionable" dashboard in JSON format, you will
+have to:
+
+1. Use a Grafana instance
+1. Import the desired dashboard
+1. Define its datasource
+1. From the dashboard view:
+    * Click the "Share dashboard" icon (top left corner of screen)
+    * Select the "Export" tab,
+    * Activate "Export for sharing externally"
+    * Click "Save to file"
+1. In the JSON file:
+    * Remove the keys `__imports` and `__requires`
+    * Replace all `${DS_PROMETHEUS}` by your datasource name
+1. Once saved, you may place this JSON file in your 
+   `puppet:///modules/my_custom_module/dashboards` directory
+
+**Note:**
+
+This procedure have been tested with Grafana 6.x. It may not work for
+ any dashboard, depending on how it's been coded.
+
+Dashboards known to be "provisionable":
+
+* [Node Exporter Server Metric](https://grafana.com/dashboards/405)
+* [Prometheus Blackbox Exporter](https://grafana.com/dashboards/7587)
+
+Dashboards known not to be "provisionable":
+
+* [HTTP Services Status](https://grafana.com/dashboards/4859)
+
 ## Tasks
 
 ### `change_grafana_admin_password`
