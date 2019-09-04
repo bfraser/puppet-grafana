@@ -886,11 +886,12 @@ grafana.
 ##### Provisioning with dashboards from grafana.com
 
 GrafanaLabs provides lots of [dashboards that may be reused](https://grafana.com/grafana/dashboards).
-Those ones are **not directly usable** for provisioning (this is 
+Those ones are **not directly usable** for provisioning (this is
 a Grafana issue, not a Puppet one).
 
-In order to have a "provisionable" dashboard in JSON format, you will
-have to:
+In order to have a "provisionable" dashboard in JSON format, you have
+to prepare it before adding it in your Puppet code. Here are the steps
+to follow:
 
 1. Use a Grafana instance
 1. Import the desired dashboard
