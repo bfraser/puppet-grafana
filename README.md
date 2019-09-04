@@ -904,7 +904,7 @@ to follow:
 1. In the JSON file:
     * Remove the keys `__imports` and `__requires`
     * Replace all `${DS_PROMETHEUS}` by your datasource name
-1. Once saved, you may place this JSON file in your 
+1. Once saved, you may place this JSON file in your
    `puppet:///modules/my_custom_module/dashboards` directory
 
 **Note:**
