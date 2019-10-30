@@ -4,6 +4,43 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v6.1.0](https://github.com/voxpupuli/puppet-grafana/tree/v6.1.0) (2019-10-30)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v6.0.0...v6.1.0)
+
+**Implemented enhancements:**
+
+- Feature request: add basicAuth for grafana\_datasource [\#43](https://github.com/voxpupuli/puppet-grafana/issues/43)
+- Add FreeBSD 12 support [\#179](https://github.com/voxpupuli/puppet-grafana/pull/179) ([olevole](https://github.com/olevole))
+- Update grafana\_dashboard resource for folders [\#172](https://github.com/voxpupuli/puppet-grafana/pull/172) ([alexconrey](https://github.com/alexconrey))
+- Implement grafana\_folder resource type [\#170](https://github.com/voxpupuli/puppet-grafana/pull/170) ([alexconrey](https://github.com/alexconrey))
+- Mark passwords as sensitive [\#165](https://github.com/voxpupuli/puppet-grafana/pull/165) ([alexjfisher](https://github.com/alexjfisher))
+
+**Fixed bugs:**
+
+- Fix version, because 6.0.0-beta1 does not exist anymore [\#163](https://github.com/voxpupuli/puppet-grafana/pull/163) ([dhoppe](https://github.com/dhoppe))
+- Fix value of variables base\_url and real\_archive\_source [\#161](https://github.com/voxpupuli/puppet-grafana/pull/161) ([dhoppe](https://github.com/dhoppe))
+- Fix value of variable real\_package\_source [\#160](https://github.com/voxpupuli/puppet-grafana/pull/160) ([dhoppe](https://github.com/dhoppe))
+
+**Closed issues:**
+
+- How to create Notification channels [\#188](https://github.com/voxpupuli/puppet-grafana/issues/188)
+- Cannot install puppet/grafana, most recent puppet/archive version is v4.2 [\#184](https://github.com/voxpupuli/puppet-grafana/issues/184)
+- \[UBUNTU 14.04\] Package not found [\#85](https://github.com/voxpupuli/puppet-grafana/issues/85)
+- Puppet module exposes passwords - current and previous in plane text during puppet runs [\#82](https://github.com/voxpupuli/puppet-grafana/issues/82)
+- using docker install with container\_cfg attempts to use incorrect permissions [\#52](https://github.com/voxpupuli/puppet-grafana/issues/52)
+- Hide sensitive data values [\#45](https://github.com/voxpupuli/puppet-grafana/issues/45)
+- Feature request: support auth.proxy config option [\#40](https://github.com/voxpupuli/puppet-grafana/issues/40)
+
+**Merged pull requests:**
+
+- Clean up acceptance spec helper [\#189](https://github.com/voxpupuli/puppet-grafana/pull/189) ([ekohl](https://github.com/ekohl))
+- DOC Add Provisioning with dashboards from grafana.com [\#185](https://github.com/voxpupuli/puppet-grafana/pull/185) ([mfaure](https://github.com/mfaure))
+- Allow puppet/archive 4.x and puppetlabs/stdlib 6.x [\#176](https://github.com/voxpupuli/puppet-grafana/pull/176) ([alexjfisher](https://github.com/alexjfisher))
+- Corrected invalid database config example [\#169](https://github.com/voxpupuli/puppet-grafana/pull/169) ([Rovanion](https://github.com/Rovanion))
+- Use data in modules instead of params.pp [\#167](https://github.com/voxpupuli/puppet-grafana/pull/167) ([dhoppe](https://github.com/dhoppe))
+- Remove Puppet 3 specific syntax [\#166](https://github.com/voxpupuli/puppet-grafana/pull/166) ([dhoppe](https://github.com/dhoppe))
+
 ## [v6.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v6.0.0) (2019-02-14)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v5.0.0...v6.0.0)
@@ -136,7 +173,6 @@ These should not affect the functionality of the module.
 **Fixed bugs:**
 
 - grafana\_datasource provider with\_credentials\(\) returns is\_default value [\#89](https://github.com/voxpupuli/puppet-grafana/issues/89)
-- fix datasource provider error [\#90](https://github.com/voxpupuli/puppet-grafana/pull/90) ([brandonrdn](https://github.com/brandonrdn))
 
 ## [v4.1.0](https://github.com/voxpupuli/puppet-grafana/tree/v4.1.0) (2018-02-03)
 
@@ -145,6 +181,10 @@ These should not affect the functionality of the module.
 **Implemented enhancements:**
 
 - \(SIMP-4206\) Added organization provider and updated datasource provider [\#86](https://github.com/voxpupuli/puppet-grafana/pull/86) ([heliocentric](https://github.com/heliocentric))
+
+**Fixed bugs:**
+
+- fix datasource provider error [\#90](https://github.com/voxpupuli/puppet-grafana/pull/90) ([brandonrdn](https://github.com/brandonrdn))
 
 **Closed issues:**
 
@@ -184,10 +224,6 @@ These should not affect the functionality of the module.
 **Fixed bugs:**
 
 - Module doesn't work on Ubuntu Xenial [\#56](https://github.com/voxpupuli/puppet-grafana/issues/56)
-
-**Merged pull requests:**
-
-- Release 4.0.1 [\#68](https://github.com/voxpupuli/puppet-grafana/pull/68) ([wyardley](https://github.com/wyardley))
 
 ## [v4.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v4.0.0) (2017-09-20)
 
