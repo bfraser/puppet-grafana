@@ -141,7 +141,7 @@ class grafana (
 
   Class['grafana::install']
   -> Class['grafana::config']
-  ~> Class['grafana::service']
+  -> Class['grafana::service']
 
   create_resources(grafana_plugin, $plugins)
   # Dependency added for Grafana_plugins to ensure it runs at the
