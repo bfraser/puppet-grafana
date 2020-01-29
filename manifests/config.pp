@@ -15,6 +15,7 @@ class grafana::config {
           content => template('grafana/config.ini.erb'),
           owner   => 'grafana',
           group   => 'grafana',
+          notify  => Class['grafana::service'],
         }
       }
     }
@@ -28,6 +29,7 @@ class grafana::config {
         content => template('grafana/config.ini.erb'),
         owner   => 'grafana',
         group   => 'grafana',
+        notify  => Class['grafana::service'],
       }
 
       $sysconfig = $grafana::sysconfig
@@ -39,6 +41,7 @@ class grafana::config {
         augeas{'sysconfig/grafana-server':
           context => "/files${$sysconfig_location}",
           changes => $changes,
+          notify  => Class['grafana::service'],
         }
       }
 
@@ -58,6 +61,7 @@ class grafana::config {
         content => template('grafana/config.ini.erb'),
         owner   => 'grafana',
         group   => 'grafana',
+        notify  => Class['grafana::service'],
       }
 
       file { [$grafana::data_dir, "${grafana::data_dir}/plugins"]:
@@ -79,6 +83,7 @@ class grafana::config {
       content => inline_template("<%= require 'toml'; TOML::Generator.new(@ldap_cfg).body %>\n"),
       owner   => 'grafana',
       group   => 'grafana',
+      notify  => Class['grafana::service'],
     }
   }
 
@@ -99,7 +104,7 @@ class grafana::config {
         group   => 'grafana',
         mode    => '0640',
         content => epp('grafana/pdashboards.yaml.epp'),
-        notify  => Service['grafana'],
+        notify  => Class['grafana::service'],
       }
       # Loop over all providers, extract the paths and create
       # directories for each path of dashboards.
@@ -138,7 +143,7 @@ class grafana::config {
         group   => 'grafana',
         mode    => '0640',
         content => epp('grafana/pdatasources.yaml.epp'),
-        notify  => Service['grafana'],
+        notify  => Class['grafana::service'],
       }
     }
 
