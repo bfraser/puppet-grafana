@@ -650,6 +650,7 @@ Creates and manages Grafana folders via the API.
 The following example creates a folder named 'folder1':
 ```puppet
 grafana_folder { 'folder1':
+  ensure            => present,
   grafana_url       => 'http://localhost:3000',
   grafana_api_path  => '/grafana/api',
   grafana_user      => 'admin',
