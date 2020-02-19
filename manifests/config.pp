@@ -77,10 +77,23 @@ class grafana::config {
   }
 
   if $grafana::ldap_cfg {
-    $ldap_cfg = $grafana::ldap_cfg
+    if $grafana::ldap_cfg =~ Array {
+      $ldap_cfg_ary = $grafana::ldap_cfg
+    } else {
+      $ldap_cfg_ary = [$grafana::ldap_cfg]
+    }
+
+    $template_body = [
+      "<% scope['ldap_cfg_ary'].each do |v| %>",
+      "<%= require 'toml'; TOML::Generator.new(v).body %>\n",
+      '<% end %>'
+    ]
+
+    $ldap_cfg_toml = inline_template($template_body.join(''))
+
     file { '/etc/grafana/ldap.toml':
       ensure  => file,
-      content => inline_template("<%= require 'toml'; TOML::Generator.new(@ldap_cfg).body %>\n"),
+      content => $ldap_cfg_toml,
       owner   => 'grafana',
       group   => 'grafana',
       notify  => Class['grafana::service'],

@@ -110,7 +110,7 @@ class grafana (
   Optional[String] $archive_source,
   String $cfg_location,
   Hash $cfg,
-  Optional[Hash] $ldap_cfg,
+  Optional[Variant[Hash,Array]] $ldap_cfg,
   Boolean $container_cfg,
   Hash $container_params,
   String $docker_image,
