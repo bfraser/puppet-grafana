@@ -86,7 +86,7 @@ class grafana::config {
     $template_body = [
       "<% scope['ldap_cfg_ary'].each do |v| %>",
       "<%= require 'toml'; TOML::Generator.new(v).body %>\n",
-      '<% end %>'
+      '<% end %>',
     ]
 
     $ldap_cfg_toml = inline_template($template_body.join(''))
