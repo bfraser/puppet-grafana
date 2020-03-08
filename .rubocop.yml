@@ -543,3 +543,7 @@ Style/FormatStringToken:
 # are located.
 RSpec/FilePath:
   Enabled: false
+
+# silence it to support older jruby (<= v1.9) which can not handle e.g. %i[]
+Style/SymbolArray:
+  Enabled: false

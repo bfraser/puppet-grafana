@@ -97,6 +97,14 @@
 # [*sysconfig*]
 # A hash of environment variables for the grafana-server service
 #
+# [*ldap_servers*]
+# A hash of ldap_servers to be passed to `create_resources`, wraps around the
+# `grafana_ldap_server` resource.
+#
+# [*ldap_group_mappings*]
+# A hash of ldap_servers to be passed to `create_resources`, wraps around the
+# `grafana_ldap_group_mapping` resource.
+#
 # Example:
 #   sysconfig => { 'http_proxy' => 'http://proxy.example.com/' }
 #
@@ -133,6 +141,8 @@ class grafana (
   Boolean $create_subdirs_provisioning,
   Optional[String] $sysconfig_location,
   Optional[Hash] $sysconfig,
+  Hash[String[1], Hash] $ldap_servers,
+  Hash[String[1], Hash] $ldap_group_mappings,
 ) {
 
   contain grafana::install
@@ -147,4 +157,7 @@ class grafana (
   # Dependency added for Grafana_plugins to ensure it runs at the
   # correct time.
   Class['grafana::config'] -> Grafana_Plugin <| |> ~> Class['grafana::service']
+
+  create_resources('grafana_ldap_server', $ldap_servers)
+  create_resources('grafana_ldap_group_mapping', $ldap_group_mappings)
 }

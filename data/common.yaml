@@ -25,3 +25,5 @@ grafana::provisioning_datasources_file: '/etc/grafana/provisioning/datasources/p
 grafana::create_subdirs_provisioning: false
 grafana::sysconfig_location: ~
 grafana::sysconfig: ~
+grafana::ldap_servers: {}
+grafana::ldap_group_mappings: {}
