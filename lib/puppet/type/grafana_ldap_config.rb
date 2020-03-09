@@ -48,7 +48,9 @@ EOF
     defaultto '0440'
 
     validate do |value|
-      # regex-pattern stolen from Puppetlabs here - all credis to them!
+      raise ArgumentError, _('file-permissions must be a String') unless value.is_a?(String)
+      raise ArgumentError, _('file-permissions must be a String') if value.empty?
+      # regex-pattern stolen from here - all credis to them!
       # https://github.com/puppetlabs/puppetlabs-stdlib/blob/master/types/filemode.pp
       # currently disabled, as it fails when implicitly called.
       #
@@ -70,7 +72,7 @@ EOF
     desc 'A command to validate the new Grafana LDAP configuration before actually replacing it'
 
     validate do |value|
-      raise ArgumentError, _('group must be a String or undef') unless value.nil? || value.is_a?(String)
+      raise ArgumentError, _('validate_cmd must be a String or undef') unless value.nil? || value.is_a?(String)
     end
   end
 
