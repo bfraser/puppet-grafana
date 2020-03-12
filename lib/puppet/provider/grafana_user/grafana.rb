@@ -82,7 +82,7 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
   end
 
   def password
-    user[:password]
+    nil
   end
 
   def password=(value)
@@ -124,6 +124,24 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
       raise format('Failed to create user %s (HTTP response: %s/%s)', resource[:name], response.code, response.body)
     end
     self.user = nil
+  end
+
+  def check_password
+    uri = URI.parse format('%s://%s:%d%s/dashboards/home', grafana_scheme, grafana_host, grafana_port, resource[:grafana_api_path])
+    request = Net::HTTP::Get.new(uri.to_s)
+    request.content_type = 'application/json'
+    request.basic_auth resource[:name], resource[:password]
+    response = Net::HTTP.start(grafana_host, grafana_port,
+                               use_ssl: grafana_scheme == 'https',
+                               verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
+      http.request(request)
+    end
+
+    if response.code == '200'
+      true
+    else
+      false
+    end
   end
 
   def delete_user
