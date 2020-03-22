@@ -27,3 +27,7 @@ grafana::sysconfig_location: ~
 grafana::sysconfig: ~
 grafana::ldap_servers: {}
 grafana::ldap_group_mappings: {}
+grafana::toml_manage_package: true
+grafana::toml_package_name: ruby-toml
+grafana::toml_package_ensure: present
+grafana::toml_package_provider: ~

@@ -196,8 +196,13 @@ class grafana::install {
     }
   }
 
-  if !empty($grafana::ldap_servers) {
-    package { 'ruby-toml': }
-    -> Grafana_ldap_config <||>
+  if $grafana::toml_manage_package and !empty($grafana::ldap_servers) {
+    ensure_packages(['toml-pkg'], {
+      ensure   => $grafana::toml_package_ensure,
+      name     => $grafana::toml_package_name,
+      provider => $grafana::toml_package_provider,
+    })
+
+    Package['toml-pkg'] -> Grafana_ldap_config <||>
   }
 }

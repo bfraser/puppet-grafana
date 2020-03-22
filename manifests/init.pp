@@ -97,6 +97,9 @@
 # [*sysconfig*]
 # A hash of environment variables for the grafana-server service
 #
+# Example:
+#   sysconfig => { 'http_proxy' => 'http://proxy.example.com/' }
+#
 # [*ldap_servers*]
 # A hash of ldap_servers to be passed to `create_resources`, wraps around the
 # `grafana_ldap_server` resource.
@@ -105,8 +108,24 @@
 # A hash of ldap_servers to be passed to `create_resources`, wraps around the
 # `grafana_ldap_group_mapping` resource.
 #
-# Example:
-#   sysconfig => { 'http_proxy' => 'http://proxy.example.com/' }
+# [*toml_manage_package*]
+# ruby-toml is required to generate the TOML-based LDAP config for Grafana.
+# Defaults to true. Set to false if you manage package- or gem-install
+# somewhere else.
+#
+# [*toml_package_name*]
+# Name of the software-package providing the TOML parser library.
+# Defaults to ruby-toml.
+#
+# [*toml_package_ensure*]
+# Ensure the package-resource - e.g. installed, absent, etc.
+# https://puppet.com/docs/puppet/latest/types/package.html#package-attribute-ensure
+# Defaults to present
+#
+# [*toml_package_provider*]
+# The package-provider used to install the TOML parser library.
+# Defaults to undef, to let Puppet decide. See
+# https://puppet.com/docs/puppet/latest/types/package.html#package-attribute-provider
 #
 # === Examples
 #
@@ -143,6 +162,10 @@ class grafana (
   Optional[Hash] $sysconfig,
   Hash[String[1], Hash] $ldap_servers,
   Hash[String[1], Hash] $ldap_group_mappings,
+  Boolean $toml_manage_package,
+  String[1] $toml_package_name,
+  String[1] $toml_package_ensure,
+  Optional[String[1]] $toml_package_provider,
 ) {
 
   contain grafana::install
