@@ -195,4 +195,9 @@ class grafana::install {
       fail("Installation method ${grafana::install_method} not supported")
     }
   }
+
+  if !empty($grafana::ldap_servers) {
+    package { 'ruby-toml': }
+    -> Grafana_ldap_config <||>
+  }
 }
