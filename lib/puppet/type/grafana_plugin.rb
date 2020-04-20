@@ -44,4 +44,8 @@ DESC
       end
     end
   end
+
+  autorequire(:grafana_conn_validator) do
+    'grafana'
+  end
 end
