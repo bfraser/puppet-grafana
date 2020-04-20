@@ -1,17 +1,9 @@
-# == Class: grafana::validator
+# @summary Manage grafana_conn_validator resource
 #
-# Includes `` resource
-#
-# === Parameters
-# [*grafana_url*]
-# Grafana URL.
-#
-# [*grafana_api_path*]
-# API path to validate with.
-#
-# === Examples
-#
-#  include grafana::validator
+# @param grafana_url
+#   Grafana URL.
+# @param grafana_api_path
+#   API path to validate with.
 #
 class grafana::validator (
   Stdlib::HTTPUrl $grafana_url = 'http://localhost:3000',
