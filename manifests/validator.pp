@@ -14,8 +14,8 @@
 #  include grafana::validator
 #
 class grafana::validator (
-  String[1] $grafana_url = 'http://localhost:3000',
-  String[1] $grafana_api_path = '/api/health',
+  Stdlib::HTTPUrl $grafana_url = 'http://localhost:3000',
+  Stdlib::Absolutepath $grafana_api_path = '/api/health',
 ) {
 
   grafana_conn_validator { 'grafana':
