@@ -31,6 +31,11 @@ Puppet::Type.newtype(:grafana_conn_validator) do
     end
   end
 
+  newparam(:timeout) do
+    desc 'How long to wait for the API to be available'
+    defaultto(20)
+  end
+
   autorequire(:service) do
     'grafana-server'
   end
