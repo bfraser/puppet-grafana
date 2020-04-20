@@ -22,7 +22,7 @@ module Puppet
         # http(s), so here we're simpling hitting a somewhat arbitrary low-impact URL
         # on the Grafana server.
         grafana_host = URI.parse(@grafana_url).host
-        grafana_port = URI.parse(@grafana_api_path).port
+        grafana_port = URI.parse(@grafana_url).port
         grafana_scheme = URI.parse(@grafana_url).scheme
         http = Net::HTTP.new(grafana_host, grafana_port)
         http.use_ssl = (grafana_scheme == 'https')
