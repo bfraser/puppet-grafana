@@ -25,7 +25,7 @@ Puppet::Type.newtype(:grafana_conn_validator) do
     defaultto '/api/health'
 
     validate do |value|
-      unless value =~ %r{^/.*/?api$}
+      unless value =~ %r{^/.*/?api/.*$}
         raise ArgumentError, format('%s is not a valid API path', value)
       end
     end
