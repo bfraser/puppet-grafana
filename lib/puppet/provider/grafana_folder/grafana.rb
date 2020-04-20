@@ -15,6 +15,35 @@ Puppet::Type.type(:grafana_folder).provide(:grafana, parent: Puppet::Provider::G
     resource[:grafana_api_path]
   end
 
+  def permissions
+    find_folder unless @folder
+    response = send_request('GET', format('%s/folders/%s/permissions', resource[:grafana_api_path], @folder['uid']))
+
+    if response.code != '200'
+      raise format('Failed to retrieve permissions %s (HTTP response: %s/%s)', resource[:title], response.code, response.body)
+    end
+    begin
+      permissions = JSON.parse(response.body)
+    rescue JSON::ParserError
+      raise format('Fail to parse permissions (HTTP response: %s/%s)', response.code, response.body)
+    end
+    parsed_permissions = []
+    # These are the only configurable keys, many others are returned
+    keep_keys = %w[permission role teamId userId]
+    permissions.each do |permission|
+      parsed_permission = {}
+      permission.each_pair do |key, value|
+        parsed_permission[key] = value if keep_keys.include?(key) && value != 0
+      end
+      parsed_permissions << parsed_permission unless parsed_permission.empty?
+    end
+    parsed_permissions
+  end
+
+  def permissions=(value)
+    save_permissions(value)
+  end
+
   def fetch_organizations
     response = send_request('GET', format('%s/orgs', resource[:grafana_api_path]))
     if response.code != '200'
@@ -85,12 +114,17 @@ Puppet::Type.type(:grafana_folder).provide(:grafana, parent: Puppet::Provider::G
     # else, create object
     if @folder.nil?
       data = {
-        title: resource[:title]
+        title: resource[:title],
+        uid: resource[:uid]
       }
 
       response = send_request('POST', format('%s/folders', resource[:grafana_api_path]), data)
-      return unless (response.code != '200') && (response.code != '412')
-      raise format('Failed to create folder %s (HTTP response: %s/%s)', resource[:title], response.code, response.body)
+      if (response.code != '200') && (response.code != '412')
+        raise format('Failed to create folder %s (HTTP response: %s/%s)', resource[:title], response.code, response.body)
+      end
+      folders
+      find_folder
+      save_permissions(resource[:permissions])
     else
       data = {
         folder: folder.merge('title' => resource[:title],
@@ -102,6 +136,19 @@ Puppet::Type.type(:grafana_folder).provide(:grafana, parent: Puppet::Provider::G
       return unless (response.code != '200') && (response.code != '412')
       raise format('Failed to update folder %s (HTTP response: %s/%s)', resource[:title], response.code, response.body)
     end
+  end
+
+  def save_permissions(value)
+    return if value.nil?
+    response = send_request 'POST', format('%s/user/using/%s', resource[:grafana_api_path], fetch_organization[:id])
+    unless response.code == '200'
+      raise format('Failed to switch to org %s (HTTP response: %s/%s)', fetch_organization[:id], response.code, response.body)
+    end
+    find_folder unless @folder
+    data = { 'items' => value }
+    response = send_request 'POST', format('%s/folders/%s/permissions', resource[:grafana_api_path], @folder['uid']), data
+    return if response.code == '200'
+    raise format('Failed to update permissions %s (HTTP response: %s/%s)', fetch_organization[:id], response.code, response.body)
   end
 
   def slug
