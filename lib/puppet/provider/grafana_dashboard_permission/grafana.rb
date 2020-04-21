@@ -125,12 +125,10 @@ Puppet::Type.type(:grafana_dashboard_permission).provide(:grafana, parent: Puppe
   end
 
   def dashboard
-    Puppet.info('inside dashboard')
     @dashboard ||= dashboards.find { |x| x[:name] == resource[:dashboard] }
   end
 
   def permissions
-    Puppet.info('inside permissions')
     return @permissions if @permissions
     raise(format('Unknown dashboard: %s', resource[:dashboard])) unless dashboard
 
@@ -154,21 +152,18 @@ Puppet::Type.type(:grafana_dashboard_permission).provide(:grafana, parent: Puppe
   end
 
   def team_permission
-    Puppet.info('inside team permission')
     raise(format('Unknown team: %s for organaization: %s', resource[:team], resource[:organization])) unless team
 
     @team_permission ||= permissions.find { |x| x[:teamId] == team[:id] }
   end
 
   def user_permission
-    Puppet.info('inside user permission')
     raise(format('Unknown user: %s for organaization: %s', resource[:user], resource[:organization])) unless user
 
     @user_permission ||= permissions.find { |x| x[:userId] == user[:id] }
   end
 
   def permission
-    Puppet.info('inside get permission')
     resource[:user] ? user_permission[:permission] : team_permission[:permission]
   end
 
@@ -213,9 +208,7 @@ Puppet::Type.type(:grafana_dashboard_permission).provide(:grafana, parent: Puppe
 
   def existing_permissions
     perms = remove_unneeded_permissions(permissions)
-    Puppet.info(perms)
     perms.map do |perm|
-      Puppet.info(perm[:userId])
       target = perm[:userId].zero? ? perm[:teamId] : perm[:userId]
       type = perm[:userId].zero? ? :teamId : :userId
       {
@@ -226,20 +219,15 @@ Puppet::Type.type(:grafana_dashboard_permission).provide(:grafana, parent: Puppe
   end
 
   def permission_data(destroy=false)
-    Puppet.info('inside save permission data')
     raise format('Unknown dashboard: %s', resource[:dashboard]) unless dashboard
 
     endpoint = format('%s/dashboards/id/%s/permissions', grafana_api_path, dashboard[:id])
 
-    # Puppet.info(existing_permissions)
     final_permissions = destroy ? { items: existing_permissions } : { items: existing_permissions + [new_permission] }
-    Puppet.info(final_permissions)
-    # Puppet.info(final_permissions)
     ['POST', endpoint, final_permissions]
   end
 
   def save_permission
-    Puppet.info('inside save permission')
     response = send_request(*permission_data)
     raise_on_error(response.code, format('Failed to update membership %s, (HTTP response: %s/%s)', resource, response.code, response.body))
   end
@@ -249,7 +237,6 @@ Puppet::Type.type(:grafana_dashboard_permission).provide(:grafana, parent: Puppe
   end
 
   def destroy
-    Puppet.info('inside destroy permission')
     response = send_request(*permission_data(true))
     raise_on_error(response.code, format('Failed to update membership %s, (HTTP response: %s/%s)', resource, response.code, response.body))
   end
@@ -257,8 +244,6 @@ Puppet::Type.type(:grafana_dashboard_permission).provide(:grafana, parent: Puppe
   def exists?
     raise('user or team parameter must be present') unless resource[:user] || resource[:team]
 
-    Puppet.info('inside exists permission')
-    # Puppet.info(resource[:user])
     resource[:user] ? user_permission : team_permission
   end
 end
