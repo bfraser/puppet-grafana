@@ -43,6 +43,9 @@ Puppet::Type.newtype(:grafana_user) do
 
   newproperty(:password) do
     desc 'The password for the user'
+    def insync?(_is)
+      provider.check_password
+    end
   end
 
   newproperty(:email) do
