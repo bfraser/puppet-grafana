@@ -80,4 +80,8 @@ Puppet::Type.newtype(:grafana_dashboard_permission) do
   autorequire(:grafana_team) do
     catalog.resources.select { |r| r.is_a?(Puppet::Type.type(:grafana_team)) }
   end
+
+  autorequire(:grafana_dashboard) do
+    catalog.resources.select { |r| r.is_a?(Puppet::Type.type(:grafana_dashboard)) }
+  end
 end
