@@ -1,13 +1,14 @@
 Puppet::Type.newtype(:grafana_organization) do
   @doc = 'Manage organizations in Grafana'
 
-  ensurable do
-    defaultvalues
-    defaultto :present
-  end
+  ensurable
 
   newparam(:name, namevar: true) do
     desc 'The name of the organization.'
+
+    validate do |value|
+      raise ArgumentError, format('Unable to modify default organization') if value == 'Main Org.'
+    end
   end
 
   newparam(:grafana_api_path) do

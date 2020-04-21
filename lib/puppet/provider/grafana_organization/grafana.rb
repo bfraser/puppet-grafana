@@ -85,6 +85,11 @@ Puppet::Type.type(:grafana_organization).provide(:grafana, parent: Puppet::Provi
     if response.code != '200'
       raise format('Failed to delete organization %s (HTTP response: %s/%s)', resource[:name], response.code, response.body)
     end
+    # change back to default organization
+    response = send_request 'POST', format('%s/user/using/1', resource[:grafana_api_path])
+    unless response.code == '200'
+      raise format('Failed to switch to org %s (HTTP response: %s/%s)', fetch_organization[:id], response.code, response.body)
+    end
     self.organization = nil
   end
 
