@@ -130,8 +130,6 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
   end
 
   def home_dashboard=(value)
-
-
     resource[:home_dashboard] = value
     save_preferences
   end
