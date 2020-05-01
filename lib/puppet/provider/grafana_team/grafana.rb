@@ -45,9 +45,6 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
     org = resource[:organization] || resource[:target_name]
     key = org.is_a?(Numeric) || org.match(%r{/^[0-9]*$/}) ? :id : :name
     @organization = organizations.find { |x| x[key] == org }
-    # return @organization if @organization
-
-    # raise format('Unknown organization: %s', org)
   end
 
   def map_teams(teams)

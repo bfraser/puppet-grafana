@@ -35,9 +35,6 @@ Puppet::Type.type(:grafana_membership).provide(:grafana, parent: Puppet::Provide
     org = resource[:membership_type] == :organization ? resource[:target_name] : resource[:organization]
     key = org.is_a?(Numeric) || org.match(%r{/^[0-9]*$/}) ? :id : :name
     @organization = organizations.find { |x| x[key] == org }
-    # return @organization if @organization
-
-    # raise format('Unknown organization: %s', org)
   end
 
   def map_teams(teams)
@@ -64,12 +61,7 @@ Puppet::Type.type(:grafana_membership).provide(:grafana, parent: Puppet::Provide
   end
 
   def team
-    # return @team if @team
-
     @team ||= teams.find { |x| x[:name] == resource[:target_name] }
-    # return @team if @team
-
-    # raise format('Unknown team: %s', resource[:target_name])
   end
 
   def map_team_members(members)
@@ -134,9 +126,6 @@ Puppet::Type.type(:grafana_membership).provide(:grafana, parent: Puppet::Provide
 
   def user
     @user ||= users.find { |x| x[:name] == resource[:user_name] }
-    # return @user if @user
-
-    # raise format('Unknown user: %s', resource[:user_name])
   end
 
   def set_current_organization
