@@ -21,6 +21,7 @@ describe 'grafana_folder' do
   context 'create folder resource' do
     it 'creates the folders' do
       pp = <<-EOS
+      include grafana::validator
       grafana_folder { 'example-folder':
         ensure           => present,
         uid              => 'example-folder',
@@ -119,6 +120,7 @@ describe 'grafana_folder' do
   context 'create folder containing dashboard' do
     it 'creates an example dashboard in the example folder' do
       pp = <<-EOS
+      include grafana::validator
       grafana_dashboard { 'example-dashboard':
         ensure           => present,
         grafana_url      => 'http://localhost:3000',
@@ -142,6 +144,7 @@ describe 'grafana_folder' do
   context 'destroy resources' do
     it 'destroys the folders and dashboard' do
       pp = <<-EOS
+      include grafana::validator
       grafana_folder { 'example-folder':
         ensure           => absent,
         grafana_url      => 'http://localhost:3000',

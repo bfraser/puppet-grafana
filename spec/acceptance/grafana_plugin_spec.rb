@@ -5,6 +5,7 @@ describe 'grafana_plugin' do
     it 'runs successfully' do
       pp = <<-EOS
       class { 'grafana':}
+      include grafana::validator
       grafana_plugin { 'grafana-simple-json-datasource': }
       EOS
       apply_manifest(pp, catch_failures: true)
@@ -22,6 +23,7 @@ describe 'grafana_plugin' do
     it 'runs successfully' do
       pp = <<-EOS
       class { 'grafana':}
+      include grafana::validator
       grafana_plugin { 'grafana-simple-json-datasource':
         ensure => present,
         repo   => 'https://nexus.company.com/grafana/plugins',
@@ -42,6 +44,7 @@ describe 'grafana_plugin' do
     it 'runs successfully' do
       pp = <<-EOS
       class { 'grafana':}
+      include grafana::validator
       grafana_plugin { 'grafana-simple-json-datasource':
         ensure => absent,
       }

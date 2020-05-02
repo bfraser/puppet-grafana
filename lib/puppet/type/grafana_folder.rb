@@ -55,4 +55,8 @@ Puppet::Type.newtype(:grafana_folder) do
   autorequire(:service) do
     'grafana-server'
   end
+
+  autorequire(:grafana_conn_validator) do
+    'grafana'
+  end
 end
