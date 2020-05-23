@@ -228,6 +228,113 @@ ldap_cfg => {
 },
 ```
 
+If you want to connect to multiple LDAP servers using different configurations,
+use an array to enwrap the configurations as shown below.
+
+```
+ldap_cfg => [
+  {
+    servers => [
+      {
+        host            => 'ldapserver1.domain1.com',
+        port            => 636+0,
+        use_ssl         => true,
+        search_filter   => '(sAMAccountName=%s)',
+        search_base_dns => [ 'dc=domain1,dc=com' ],
+        bind_dn         => 'user@domain1.com',
+        bind_password   => 'passwordhere',
+      },
+    ],
+    'servers.attributes' => {
+      name      => 'givenName',
+      surname   => 'sn',
+      username  => 'sAMAccountName',
+      member_of => 'memberOf',
+      email     => 'email',
+    },
+    'servers.group_mappings' => [
+      {
+        group_dn => cn=grafana_viewers,ou=groups,dc=domain1,dc=com
+        org_role: Viewer
+      }
+    ],
+  },
+  {
+    servers => [
+      {
+        host            => 'ldapserver2.domain2.com',
+        port            => 389+0,
+        use_ssl         => false,
+        start_tls       => true,
+        search_filter   => '(uid=%s)',
+        search_base_dns => [ 'dc=domain2,dc=com' ],
+        bind_dn         => 'user@domain2.com',
+        bind_password   => 'passwordhere',
+      },
+    ],
+    'servers.attributes' => {
+      name      => 'givenName',
+      surname   => 'sn',
+      username  => 'uid',
+      member_of => 'memberOf',
+      email     => 'mail',
+    }
+    'servers.group_mappings' => [
+      {
+        'group_dn'      => 'cn=grafana_admins,ou=groups,dc=domain2,dc=com',
+        'org_role'      => 'Admin',
+        'grafana_admin' => true,
+      }
+    ],
+  },
+]
+
+
+#####
+# or in hiera-yaml style
+grafana::ldap_cfg:
+  - servers:
+      - host: ldapserver1.domain1.com
+        port: 636
+        use_ssl: true
+        search_filter: '(sAMAccountName=%s)'
+        search_base_dns: ['dc=domain1,dc=com']
+        bind_dn: 'user@domain1.com'
+        bind_password: 'passwordhere'
+    servers.attributes:
+      name: givenName
+      surname: sn
+      username: sAMAccountName
+      member_of: memberOf
+      email: email
+    servers.group_mappings:
+      - group_dn: cn=grafana_viewers,ou=groups,dc=domain1,dc=com
+        org_role: Viewer
+
+  - servers:
+      - host: ldapserver2.domain2.com
+        port: 389
+        use_ssl: false
+        start_tls: true
+        search_filter: '(uid=%s)',
+        search_base_dns: ['dc=domain2,dc=com']
+        bind_dn: 'user@domain2.com'
+        bind_password: 'passwordhere'
+    servers.attributes:
+      name: givenName
+      surname: sn
+      username: uid
+      member_of: memberOf
+      email: mail
+    servers.group_mappings:
+      - group_dn: cn=grafana_admins,ou=groups,dc=domain2,dc=com
+        org_role: Admin
+        grafana_admin: true
+
+
+#####
+```
+
 ##### `container_cfg`
 
 Boolean to control whether a configuration file should be generated when using

@@ -100,6 +100,33 @@
 # Example:
 #   sysconfig => { 'http_proxy' => 'http://proxy.example.com/' }
 #
+# [*ldap_servers*]
+# A hash of ldap_servers to be passed to `create_resources`, wraps around the
+# `grafana_ldap_server` resource.
+#
+# [*ldap_group_mappings*]
+# A hash of ldap_servers to be passed to `create_resources`, wraps around the
+# `grafana_ldap_group_mapping` resource.
+#
+# [*toml_manage_package*]
+# ruby-toml is required to generate the TOML-based LDAP config for Grafana.
+# Defaults to true. Set to false if you manage package- or gem-install
+# somewhere else.
+#
+# [*toml_package_name*]
+# Name of the software-package providing the TOML parser library.
+# Defaults to ruby-toml.
+#
+# [*toml_package_ensure*]
+# Ensure the package-resource - e.g. installed, absent, etc.
+# https://puppet.com/docs/puppet/latest/types/package.html#package-attribute-ensure
+# Defaults to present
+#
+# [*toml_package_provider*]
+# The package-provider used to install the TOML parser library.
+# Defaults to undef, to let Puppet decide. See
+# https://puppet.com/docs/puppet/latest/types/package.html#package-attribute-provider
+#
 # === Examples
 #
 #  class { '::grafana':
@@ -110,7 +137,7 @@ class grafana (
   Optional[String] $archive_source,
   String $cfg_location,
   Hash $cfg,
-  Optional[Hash] $ldap_cfg,
+  Optional[Variant[Hash,Array]] $ldap_cfg,
   Boolean $container_cfg,
   Hash $container_params,
   String $docker_image,
@@ -133,6 +160,12 @@ class grafana (
   Boolean $create_subdirs_provisioning,
   Optional[String] $sysconfig_location,
   Optional[Hash] $sysconfig,
+  Hash[String[1], Hash] $ldap_servers,
+  Hash[String[1], Hash] $ldap_group_mappings,
+  Boolean $toml_manage_package,
+  String[1] $toml_package_name,
+  String[1] $toml_package_ensure,
+  Optional[String[1]] $toml_package_provider,
 ) {
 
   contain grafana::install
@@ -147,4 +180,7 @@ class grafana (
   # Dependency added for Grafana_plugins to ensure it runs at the
   # correct time.
   Class['grafana::config'] -> Grafana_Plugin <| |> ~> Class['grafana::service']
+
+  create_resources('grafana_ldap_server', $ldap_servers)
+  create_resources('grafana_ldap_group_mapping', $ldap_group_mappings)
 }
