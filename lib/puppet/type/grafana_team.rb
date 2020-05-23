@@ -1,14 +1,12 @@
-Puppet::Type.newtype(:grafana_organization) do
-  @doc = 'Manage organizations in Grafana'
+# frozen_string_literal: true
+
+Puppet::Type.newtype(:grafana_team) do
+  @doc = 'Manage teams in Grafana'
 
   ensurable
 
   newparam(:name, namevar: true) do
-    desc 'The name of the organization.'
-
-    validate do |value|
-      raise ArgumentError, format('Unable to modify default organization') if value == 'Main Org.'
-    end
+    desc 'The name of the team'
   end
 
   newparam(:grafana_api_path) do
@@ -41,24 +39,36 @@ Puppet::Type.newtype(:grafana_organization) do
     desc 'The password for the Grafana server'
   end
 
-  newproperty(:id) do
-    desc 'The ID of the organization'
+  newparam(:organization) do
+    desc 'The organization the team belongs to'
   end
 
-  newproperty(:address) do
-    desc 'Additional JSON data to configure the organization address (optional)'
-
-    validate do |value|
-      unless value.nil? || value.is_a?(Hash)
-        raise ArgumentError, 'address should be a Hash!'
-      end
-    end
+  newparam(:email) do
+    desc 'The email for the team'
+    defaultto ''
   end
+
+  newproperty(:home_dashboard) do
+    desc 'The id or name of the home dashboard'
+  end
+
+  newproperty(:theme) do
+    desc 'The theme to use for the team'
+  end
+
+  newproperty(:timezone) do
+    desc 'The timezone to use for the team'
+  end
+
   autorequire(:service) do
     'grafana-server'
   end
 
-  autorequire(:grafana_conn_validator) do
-    'grafana'
+  autorequire(:grafana_dashboard) do
+    catalog.resources.select { |r| r.is_a?(Puppet::Type.type(:grafana_dashboard)) }
+  end
+
+  autorequire(:grafana_organization) do
+    catalog.resources.select { |r| r.is_a?(Puppet::Type.type(:grafana_organization)) }
   end
 end

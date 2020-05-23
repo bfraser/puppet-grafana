@@ -512,6 +512,8 @@ If you are using a sub-path for the Grafana API, you will need to set the `grafa
 - `grafana_organization`
 - `grafana_user`
 - `grafana_folder`
+- `grafana_team`
+- `grafana_membership`
 
 For instance, if your sub-path is `/grafana`, the `grafana_api_path` must
 be set to `/grafana/api`. Do not add a trailing `/` (slash) at the end of the value.
@@ -539,6 +541,113 @@ grafana_organization { 'example_org':
 `name` is optional if the name will differ from example_org above.
 
 `address` is an optional parameter that requires a hash. Address settings are `{"address1":"","address2":"","city":"","zipCode":"","state":"","country":""}`
+
+#### `grafana_team`
+
+In order to use the team resource, add the following to your manifest:
+
+```puppet
+grafana_team { 'example_team':
+  grafana_url      => 'http://localhost:3000',
+  grafana_user     => 'admin',
+  grafana_password => '5ecretPassw0rd',
+  home_dashboard   => 'example_dashboard',
+  organization     => 'example_org',
+}
+```
+
+Organziation must exist if specified.
+
+`grafana_url`, `grafana_user`, and `grafana_password` are required to create teams via the API.
+
+`name` is optional if the name will differ from example_team above.
+
+`home_dashboard` is optional. Sets the home dashboard for team. Dashboard must exist.
+
+`organization` is optional. Defaults to `Main org.`
+
+`ensure` is optional. If the resource should be `present` or `absent`
+
+#### `grafana_dashboard_permission`
+
+In order to use the dashboard permission resource, add one the following to your manifest:
+
+add permissions for user:
+
+```puppet
+grafana_dashboard_permission { 'example_user_permission':
+  grafana_url      => 'http://localhost:3000',
+  grafana_user     => 'admin',
+  grafana_password => '5ecretPassw0rd',
+  dashboard        => 'example_dashboard',
+  user             => 'example_user',
+  organization     => 'example_org',
+}
+```
+
+add permissions for team:
+
+```puppet
+grafana_dashboard_permission { 'example_team_permission':
+  grafana_url      => 'http://localhost:3000',
+  grafana_user     => 'admin',
+  grafana_password => '5ecretPassw0rd',
+  dashboard        => 'example_dashboard',
+  team             => 'example_team',
+  organization     => 'example_org',
+}
+```
+
+Organziation, team, user and dashboard must exist if specified.
+
+`grafana_url`, `grafana_user`, and `grafana_password` are required to create teams via the API.
+
+`dashboard` is required. The dashboard to set permissions for.
+
+`user` is required if `team` not set. The user to add permissions for.
+
+`team` is required if `user` not set. the team to add permissions for.
+
+`name` is optional if the name will differ from example_team above.
+
+`organization` is optional. Defaults to `Main org.`
+
+`ensure` is optional. If the resource should be `present` or `absent`
+
+#### `grafana_membership`
+
+In order to use the membership resource, add the following to your manifest:
+
+```puppet
+grafana_membership { 'example_membership':
+  grafana_url      => 'http://localhost:3000',
+  grafana_user     => 'admin',
+  grafana_password => '5ecretPassw0rd',
+  membership_type => 'team',
+  organization    => 'example_org',
+  target_name     => 'example_team',
+  user_name       => 'example_user',
+  role            => 'Viewer'
+  }
+}
+```
+A membership is the concept of a user belonging to a target - either a `team` or an `organization`
+
+The user and target must both exist for a membership to be created
+
+`grafana_url`, `grafana_user`, and `grafana_password` are required to create memberships via the API.
+
+`membership_type` is required. Either `team` or `organization`
+
+`target_name` is required. Specifies the target of the membership.
+
+`user_name` is required. Specifies the user that is the focus of the membership.
+
+`role` is required. Specifies what rights to grant the user. Either `Viewer`, `Editor` or `Admin`
+
+`organization` is optional when using the `membership_type` of `team`. Defaults to `Main org.`
+
+`ensure` is optional. If the resource should be `present` or `absent`
 
 #### `grafana_dashboard`
 
