@@ -42,7 +42,7 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
   def organization
     return @organization if @organization
 
-    org = resource[:organization] || resource[:target_name]
+    org = resource[:organization]
     key = org.is_a?(Numeric) || org.match(%r{/^[0-9]*$/}) ? :id : :name
     @organization = organizations.find { |x| x[key] == org }
   end
