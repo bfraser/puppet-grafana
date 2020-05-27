@@ -87,6 +87,11 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
 
   # Return the list of dashboards
   def dashboards
+    # change organizations
+    response = send_request 'POST', format('%s/user/using/%s', resource[:grafana_api_path], fetch_organization[:id])
+    unless response.code == '200'
+      raise format('Failed to switch to org %s (HTTP response: %s/%s)', fetch_organization[:id], response.code, response.body)
+    end
     response = send_request('GET', format('%s/search', resource[:grafana_api_path]), nil, q: '', starred: false)
     if response.code != '200'
       raise format('Fail to retrieve the dashboards (HTTP response: %s/%s)', response.code, response.body)
