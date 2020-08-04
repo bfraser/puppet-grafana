@@ -40,6 +40,27 @@ describe 'grafana_plugin' do
     end
   end
 
+  context 'create plugin resource with url' do
+    it 'runs successfully' do
+      pp = <<-EOS
+      class { 'grafana':}
+      include grafana::validator
+      grafana_plugin { 'grafana-example-custom-plugin':
+        ensure => present,
+        plugin_url => 'https://github.com/example/example-custom-plugin/zipball/v1.0.0',
+      }
+      EOS
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+
+    it 'has the plugin' do
+      shell('grafana-cli plugins ls') do |r|
+        expect(r.stdout).to match(%r{grafana-example-custom-plugin})
+      end
+    end
+  end
+
   context 'destroy plugin resource' do
     it 'runs successfully' do
       pp = <<-EOS

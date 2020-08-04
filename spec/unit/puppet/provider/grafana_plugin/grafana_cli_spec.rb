@@ -70,4 +70,21 @@ Restart grafana after installing plugins . <service grafana-server restart>
       expect(provider).to have_received(:grafana_cli).with('--repo https://nexus.company.com/grafana/plugins', 'plugins', 'install', 'grafana-plugin')
     end
   end
+
+  describe 'create with plugin url' do
+    let(:resource) do
+      Puppet::Type::Grafana_plugin.new(
+        name: 'grafana-plugin',
+        plugin_url: 'https://github.com/example/example-custom-plugin/zipball/v1.0.0'
+      )
+    end
+
+    it '#create with plugin url' do
+      allow(provider).to receive(:grafana_cli)
+      provider.create
+      expect(provider).to have_received(:grafana_cli).with('--pluginUrl https://github.com/example/example-custom-plugin/zipball/v1.0.0', 'plugins', 'install', 'grafana-plugin')
+    end
+  end
+
+
 end

@@ -864,6 +864,15 @@ grafana_plugin { 'grafana-simple-json-datasource':
 }
 ```
 
+It is also possible to specify a custom plugin url to install a plugin. This will use the --pluginUrl option for plugin installation with grafana_cli.
+
+```puppet
+grafana_plugin { 'grafana-example-custom-plugin':
+  ensure    => present,
+  plugin_url => 'https://github.com/example/example-custom-plugin/zipball/v1.0.0'
+}
+```
+
 ##### `grafana_folder`
 
 Creates and manages Grafana folders via the API.

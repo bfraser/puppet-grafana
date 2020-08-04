@@ -62,7 +62,8 @@ describe 'grafana' do
             {
               'grafana-wizzle' => { 'ensure' => 'present' },
               'grafana-woozle' => { 'ensure' => 'absent' },
-              'grafana-plugin' => { 'ensure' => 'present', 'repo' => 'https://nexus.company.com/grafana/plugins' }
+              'grafana-plugin' => { 'ensure' => 'present', 'repo' => 'https://nexus.company.com/grafana/plugins' },
+              'grafana-plugin-url' => { 'ensure' => 'present', 'plugin_url' => 'https://github.com/example/example-custom-plugin/zipball/v1.0.0' }
             }
           }
         end
@@ -70,9 +71,14 @@ describe 'grafana' do
         it { is_expected.to contain_grafana_plugin('grafana-wizzle').with(ensure: 'present') }
         it { is_expected.to contain_grafana_plugin('grafana-woozle').with(ensure: 'absent').that_notifies('Class[grafana::service]') }
 
-        describe 'install plugin with pluginurl' do
+        describe 'install plugin with plugin repo' do
           it { is_expected.to contain_grafana_plugin('grafana-plugin').with(ensure: 'present', repo: 'https://nexus.company.com/grafana/plugins') }
         end
+
+        describe 'install plugin with plugin url' do
+          it { is_expected.to contain_grafana_plugin('grafana-plugin-url').with(ensure: 'present', plugin_url: 'https://github.com/example/example-custom-plugin/zipball/v1.0.0') }
+        end
+
       end
 
       context 'with parameter install_method is set to repo' do
