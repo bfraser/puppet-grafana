@@ -78,8 +78,8 @@ class grafana::install {
             ensure => present,
           }
 
-          if ( $grafana::manage_package_repo ){
-            if !defined( Class['apt'] ) {
+          if ( $grafana::manage_package_repo ) {
+            if !defined(Class['apt']) {
               include apt
             }
             apt::source { 'grafana':
@@ -87,7 +87,7 @@ class grafana::install {
               release      => $grafana::repo_name,
               architecture => 'amd64,arm64,armhf',
               repos        => 'main',
-              key          =>  {
+              key          => {
                 'id'     => '4E40DDF6D76E284A4A6780E48C8C34C524098CB6',
                 'source' => 'https://packages.grafana.com/gpg.key',
               },
@@ -107,7 +107,7 @@ class grafana::install {
             ensure => present,
           }
 
-          if ( $grafana::manage_package_repo ){
+          if ( $grafana::manage_package_repo ) {
             # http://docs.grafana.org/installation/rpm/#install-via-yum-repository
             $baseurl = $grafana::repo_name ? {
               'stable' => 'https://packages.grafana.com/oss/rpm',
@@ -164,7 +164,7 @@ class grafana::install {
     'archive': {
       # create log directory /var/log/grafana (or parameterize)
 
-      if !defined(User['grafana']){
+      if !defined(User['grafana']) {
         user { 'grafana':
           ensure => present,
           home   => $grafana::install_dir,
@@ -189,7 +189,6 @@ class grafana::install {
         cleanup         => true,
         require         => File[$grafana::install_dir],
       }
-
     }
     default: {
       fail("Installation method ${grafana::install_method} not supported")
@@ -198,9 +197,9 @@ class grafana::install {
 
   if $grafana::toml_manage_package and !empty($grafana::ldap_servers) {
     ensure_packages(['toml-pkg'], {
-      ensure   => $grafana::toml_package_ensure,
-      name     => $grafana::toml_package_name,
-      provider => $grafana::toml_package_provider,
+        ensure   => $grafana::toml_package_ensure,
+        name     => $grafana::toml_package_name,
+        provider => $grafana::toml_package_provider,
     })
 
     Package['toml-pkg'] -> Grafana_ldap_config <||>
