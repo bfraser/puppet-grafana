@@ -4,6 +4,40 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v7.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v7.0.0) (2020-08-24)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v6.1.0...v7.0.0)
+
+**Breaking changes:**
+
+- drop Ubuntu 14.04 support [\#192](https://github.com/voxpupuli/puppet-grafana/pull/192) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- add SLES support [\#220](https://github.com/voxpupuli/puppet-grafana/pull/220) ([tuxmea](https://github.com/tuxmea))
+- Support for teams, dashboard permissions and memberships [\#210](https://github.com/voxpupuli/puppet-grafana/pull/210) ([DavidReubenWhite](https://github.com/DavidReubenWhite))
+- Add mechanism to make API changes once API is available [\#208](https://github.com/voxpupuli/puppet-grafana/pull/208) ([treydock](https://github.com/treydock))
+- Update list of supported operating systems [\#204](https://github.com/voxpupuli/puppet-grafana/pull/204) ([dhoppe](https://github.com/dhoppe))
+- allow connecting to multiple LDAP services [\#199](https://github.com/voxpupuli/puppet-grafana/pull/199) ([unki](https://github.com/unki))
+
+**Fixed bugs:**
+
+- Code in maifests/service.pp refers to code from manifests/params.pp [\#206](https://github.com/voxpupuli/puppet-grafana/issues/206)
+- Grafana 5.0.3 Users passwords being set and datasources created on every puppet run [\#104](https://github.com/voxpupuli/puppet-grafana/issues/104)
+- Clean up code, because params.pp has been removed [\#214](https://github.com/voxpupuli/puppet-grafana/pull/214) ([dhoppe](https://github.com/dhoppe))
+
+**Closed issues:**
+
+- Grafana folder example doc update [\#197](https://github.com/voxpupuli/puppet-grafana/issues/197)
+
+**Merged pull requests:**
+
+- Fix `grafana_user` `password` idempotency [\#211](https://github.com/voxpupuli/puppet-grafana/pull/211) ([alexjfisher](https://github.com/alexjfisher))
+- Support managing folder permissions [\#207](https://github.com/voxpupuli/puppet-grafana/pull/207) ([treydock](https://github.com/treydock))
+- \#197 Minor Doc correction - grafana\_folder [\#198](https://github.com/voxpupuli/puppet-grafana/pull/198) ([RandellP](https://github.com/RandellP))
+- Do not restart grafana on provisioned dashboard updates [\#196](https://github.com/voxpupuli/puppet-grafana/pull/196) ([treydock](https://github.com/treydock))
+- Remove duplicate CONTRIBUTING.md file [\#193](https://github.com/voxpupuli/puppet-grafana/pull/193) ([dhoppe](https://github.com/dhoppe))
+
 ## [v6.1.0](https://github.com/voxpupuli/puppet-grafana/tree/v6.1.0) (2019-10-30)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v6.0.0...v6.1.0)
@@ -173,6 +207,7 @@ These should not affect the functionality of the module.
 **Fixed bugs:**
 
 - grafana\_datasource provider with\_credentials\(\) returns is\_default value [\#89](https://github.com/voxpupuli/puppet-grafana/issues/89)
+- fix datasource provider error [\#90](https://github.com/voxpupuli/puppet-grafana/pull/90) ([brandonrdn](https://github.com/brandonrdn))
 
 ## [v4.1.0](https://github.com/voxpupuli/puppet-grafana/tree/v4.1.0) (2018-02-03)
 
@@ -181,10 +216,6 @@ These should not affect the functionality of the module.
 **Implemented enhancements:**
 
 - \(SIMP-4206\) Added organization provider and updated datasource provider [\#86](https://github.com/voxpupuli/puppet-grafana/pull/86) ([heliocentric](https://github.com/heliocentric))
-
-**Fixed bugs:**
-
-- fix datasource provider error [\#90](https://github.com/voxpupuli/puppet-grafana/pull/90) ([brandonrdn](https://github.com/brandonrdn))
 
 **Closed issues:**
 
@@ -271,7 +302,7 @@ These should not affect the functionality of the module.
 
 **Fixed bugs:**
 
-- FIX configuration file ownership [\#30](https://github.com/voxpupuli/puppet-grafana/pull/30) ([cassianoleal](https://github.com/cassianoleal))
+- FIX configuration file ownership [\#30](https://github.com/voxpupuli/puppet-grafana/pull/30) ([c10l](https://github.com/c10l))
 
 **Closed issues:**
 
@@ -283,7 +314,7 @@ These should not affect the functionality of the module.
 - Bump version, Update changelog [\#38](https://github.com/voxpupuli/puppet-grafana/pull/38) ([dhoppe](https://github.com/dhoppe))
 - Debian and RedHat based operating systems should use the repository by default [\#36](https://github.com/voxpupuli/puppet-grafana/pull/36) ([dhoppe](https://github.com/dhoppe))
 - Add support for archlinux [\#32](https://github.com/voxpupuli/puppet-grafana/pull/32) ([bastelfreak](https://github.com/bastelfreak))
-- Fix grafana\_dashboards [\#31](https://github.com/voxpupuli/puppet-grafana/pull/31) ([cassianoleal](https://github.com/cassianoleal))
+- Fix grafana\_dashboards [\#31](https://github.com/voxpupuli/puppet-grafana/pull/31) ([c10l](https://github.com/c10l))
 - supoort jessie for install method repo [\#28](https://github.com/voxpupuli/puppet-grafana/pull/28) ([roock](https://github.com/roock))
 - Use operatinsystemmajrelease fact in repo url [\#24](https://github.com/voxpupuli/puppet-grafana/pull/24) ([mirekys](https://github.com/mirekys))
 - The puppet 4-only release will start at 3.0.0 [\#21](https://github.com/voxpupuli/puppet-grafana/pull/21) ([rnelson0](https://github.com/rnelson0))
