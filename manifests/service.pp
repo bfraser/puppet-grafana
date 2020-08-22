@@ -29,7 +29,7 @@ class grafana::service {
       $service_path   = "${grafana::install_dir}/bin/${grafana::service_name}"
       $service_config = "${grafana::install_dir}/conf/custom.ini"
 
-      if !defined(Service['grafana']){
+      if !defined(Service['grafana']) {
         service { 'grafana':
           ensure     => running,
           name       => $grafana::service_name,

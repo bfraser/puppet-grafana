@@ -167,7 +167,6 @@ class grafana (
   String[1] $toml_package_ensure,
   Optional[String[1]] $toml_package_provider,
 ) {
-
   contain grafana::install
   contain grafana::config
   contain grafana::service
