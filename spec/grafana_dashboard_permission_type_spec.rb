@@ -31,8 +31,6 @@ describe Puppet::Type.type(:grafana_dashboard_permission) do
         described_class.new title: 'foo title', user: 'foo_user', team: 'foo_team'
       end.to raise_error(Puppet::Error, %r{Only user or team can be set, not both})
     end
-
-    # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(gpermission[:user]).to eq('foo_user')
       expect(gpermission[:grafana_api_path]).to eq('/api')

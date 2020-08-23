@@ -12,7 +12,7 @@
 # limitations under the License.
 #
 require 'spec_helper'
-
+# rubocop:disable RSpec/VoidExpect
 describe Puppet::Type.type(:grafana_ldap_config) do
   # resource title
   context 'validate resource title' do

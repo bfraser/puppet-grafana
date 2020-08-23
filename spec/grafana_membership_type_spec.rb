@@ -32,8 +32,6 @@ describe Puppet::Type.type(:grafana_membership) do
         described_class.new title: 'foo title', membership_type: 'foo'
       end.to raise_error(Puppet::Error, %r{Invalid value "foo"})
     end
-
-    # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(gmembership[:user_name]).to eq('foo_user')
       expect(gmembership[:target_name]).to eq('foo_target')

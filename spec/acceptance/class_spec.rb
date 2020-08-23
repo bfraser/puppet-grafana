@@ -5,6 +5,9 @@ describe 'grafana class' do
   shell('mkdir -p /etc/puppetlabs/code/environments/production/modules/my_custom_module/files/dashboards')
 
   context 'default parameters' do
+    before do
+      install_module_from_forge('puppetlabs/apt', '>= 7.5.0 < 8.0.0')
+    end
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
       pp = <<-EOS
