@@ -18,8 +18,6 @@ describe Puppet::Type.type(:grafana_team) do
         described_class.new name: 'foo', grafana_url: 'example.com', content: '{}', ensure: :present
       end.to raise_error(Puppet::Error, %r{not a valid URL})
     end
-
-    # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(gteam[:name]).to eq('foo')
       expect(gteam[:grafana_user]).to eq('admin')

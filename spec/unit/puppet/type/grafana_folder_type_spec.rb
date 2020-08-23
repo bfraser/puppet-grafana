@@ -30,8 +30,6 @@ describe Puppet::Type.type(:grafana_folder) do
         described_class.new name: 'foo', grafana_url: 'http://example.com', grafana_api_path: '/invalidpath', ensure: :present
       end.to raise_error(Puppet::Error, %r{not a valid API path})
     end
-
-    # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(gfolder[:name]).to eq('foo')
       expect(gfolder[:grafana_url]).to eq('http://example.com/')

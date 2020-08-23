@@ -29,7 +29,6 @@ Restart grafana after installing plugins . <service grafana-server restart>
       PLUGINS
     end
 
-    # rubocop:disable RSpec/MultipleExpectations
     it 'has the correct names' do
       allow(provider_class).to receive(:grafana_cli).with('plugins', 'ls').and_return(plugins_ls_two)
       expect(provider_class.instances.map(&:name)).to match_array(['grafana-simple-json-datasource', 'jdbranham-diagram-panel'])

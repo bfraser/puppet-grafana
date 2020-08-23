@@ -22,8 +22,6 @@ describe Puppet::Type.type(:grafana_user) do
         described_class.new name: 'test', grafana_url: 'example.com'
       end.to raise_error(Puppet::Error, %r{not a valid URL})
     end
-
-    # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(guser[:name]).to eq('test')
       expect(guser[:full_name]).to eq('Mr tester')

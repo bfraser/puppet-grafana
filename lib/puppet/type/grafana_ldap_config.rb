@@ -141,7 +141,7 @@ EOF
     end
 
     metaparams = Puppet::Type.metaparams
-    excluded_metaparams = ['before', 'notify', 'require', 'subscribe', 'tag']
+    excluded_metaparams = %w[before notify require subscribe tag]
 
     metaparams.reject! { |param| excluded_metaparams.include? param }
 

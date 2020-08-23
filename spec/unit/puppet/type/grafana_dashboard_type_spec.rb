@@ -36,8 +36,6 @@ describe Puppet::Type.type(:grafana_dashboard) do
         described_class.new name: 'foo', grafana_url: 'http://example.com/', content: '{invalid', ensure: :present
       end.to raise_error(Puppet::Error, %r{Invalid JSON})
     end
-
-    # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(gdashboard[:name]).to eq('foo')
       expect(gdashboard[:grafana_url]).to eq('http://example.com/')
