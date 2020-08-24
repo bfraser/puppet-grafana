@@ -1,6 +1,6 @@
 {
   "name": "puppet-grafana",
-  "version": "7.0.0",
+  "version": "7.0.1-rc0",
   "author": "Vox Pupuli",
   "summary": "This module provides Grafana, a dashboard and graph editor for Graphite and InfluxDB.",
   "license": "Apache-2.0",
