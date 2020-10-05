@@ -514,6 +514,7 @@ If you are using a sub-path for the Grafana API, you will need to set the `grafa
 - `grafana_folder`
 - `grafana_team`
 - `grafana_membership`
+- `grafana_dashboard_permission`
 
 For instance, if your sub-path is `/grafana`, the `grafana_api_path` must
 be set to `/grafana/api`. Do not add a trailing `/` (slash) at the end of the value.
@@ -548,6 +549,7 @@ In order to use the team resource, add the following to your manifest:
 
 ```puppet
 grafana_team { 'example_team':
+  ensure           => 'present',
   grafana_url      => 'http://localhost:3000',
   grafana_user     => 'admin',
   grafana_password => '5ecretPassw0rd',
@@ -560,13 +562,13 @@ Organziation must exist if specified.
 
 `grafana_url`, `grafana_user`, and `grafana_password` are required to create teams via the API.
 
+`ensure` is required. If the resource should be `present` or `absent`
+
 `name` is optional if the name will differ from example_team above.
 
 `home_dashboard` is optional. Sets the home dashboard for team. Dashboard must exist.
 
 `organization` is optional. Defaults to `Main org.`
-
-`ensure` is optional. If the resource should be `present` or `absent`
 
 #### `grafana_dashboard_permission`
 
@@ -576,6 +578,7 @@ add permissions for user:
 
 ```puppet
 grafana_dashboard_permission { 'example_user_permission':
+  ensure           => 'present',
   grafana_url      => 'http://localhost:3000',
   grafana_user     => 'admin',
   grafana_password => '5ecretPassw0rd',
@@ -589,6 +592,7 @@ add permissions for team:
 
 ```puppet
 grafana_dashboard_permission { 'example_team_permission':
+  ensure           => 'present',
   grafana_url      => 'http://localhost:3000',
   grafana_user     => 'admin',
   grafana_password => '5ecretPassw0rd',
@@ -602,6 +606,8 @@ Organziation, team, user and dashboard must exist if specified.
 
 `grafana_url`, `grafana_user`, and `grafana_password` are required to create teams via the API.
 
+`ensure` is required. If the resource should be `present` or `absent`
+
 `dashboard` is required. The dashboard to set permissions for.
 
 `user` is required if `team` not set. The user to add permissions for.
@@ -612,22 +618,21 @@ Organziation, team, user and dashboard must exist if specified.
 
 `organization` is optional. Defaults to `Main org.`
 
-`ensure` is optional. If the resource should be `present` or `absent`
-
 #### `grafana_membership`
 
 In order to use the membership resource, add the following to your manifest:
 
 ```puppet
 grafana_membership { 'example_membership':
+  ensure           => 'present',
   grafana_url      => 'http://localhost:3000',
   grafana_user     => 'admin',
   grafana_password => '5ecretPassw0rd',
-  membership_type => 'team',
-  organization    => 'example_org',
-  target_name     => 'example_team',
-  user_name       => 'example_user',
-  role            => 'Viewer'
+  membership_type  => 'team',
+  organization     => 'example_org',
+  target_name      => 'example_team',
+  user_name        => 'example_user',
+  role             => 'Viewer'
   }
 }
 ```
@@ -636,6 +641,8 @@ A membership is the concept of a user belonging to a target - either a `team` or
 The user and target must both exist for a membership to be created
 
 `grafana_url`, `grafana_user`, and `grafana_password` are required to create memberships via the API.
+
+`ensure` is required. If the resource should be `present` or `absent`
 
 `membership_type` is required. Either `team` or `organization`
 
@@ -646,8 +653,6 @@ The user and target must both exist for a membership to be created
 `role` is required. Specifies what rights to grant the user. Either `Viewer`, `Editor` or `Admin`
 
 `organization` is optional when using the `membership_type` of `team`. Defaults to `Main org.`
-
-`ensure` is optional. If the resource should be `present` or `absent`
 
 #### `grafana_dashboard`
 
