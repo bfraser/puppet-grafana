@@ -73,4 +73,8 @@ Puppet::Type.newtype(:grafana_team) do
   autorequire(:grafana_organization) do
     catalog.resources.select { |r| r.is_a?(Puppet::Type.type(:grafana_organization)) }
   end
+
+  autorequire(:grafana_conn_validator) do
+    'grafana'
+  end
 end

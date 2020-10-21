@@ -57,5 +57,16 @@ describe Puppet::Type.type(:grafana_dashboard) do
       catalog.add_resource gdashboard
       expect(gdashboard.autorequire).to be_empty
     end
+    it 'autorequires grafana_conn_validator' do
+      catalog = Puppet::Resource::Catalog.new
+      validator = Puppet::Type.type(:grafana_conn_validator).new(name: 'grafana')
+      catalog.add_resource validator
+      catalog.add_resource gdashboard
+
+      relationship = gdashboard.autorequire.find do |rel|
+        (rel.source.to_s == 'Grafana_conn_validator[grafana]') && (rel.target.to_s == gdashboard.to_s)
+      end
+      expect(relationship).to be_a Puppet::Relationship
+    end
   end
 end
