@@ -1,4 +1,5 @@
 require 'toml'
+require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:grafana_ldap_config) do
   @doc = 'Manage Grafana LDAP configuration'
