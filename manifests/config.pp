@@ -134,13 +134,14 @@ class grafana::config {
 
           if $options['puppetsource'] {
             file { $options['path'] :
-              ensure  => directory,
-              owner   => 'grafana',
-              group   => 'grafana',
-              mode    => '0750',
-              recurse => true,
-              purge   => true,
-              source  => $options['puppetsource'],
+              ensure       => directory,
+              owner        => 'grafana',
+              group        => 'grafana',
+              mode         => '0750',
+              recurse      => true,
+              purge        => true,
+              source       => $options['puppetsource'],
+              sourceselect => 'all',
             }
           }
         }
