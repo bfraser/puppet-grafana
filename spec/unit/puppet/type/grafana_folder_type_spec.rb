@@ -30,8 +30,6 @@ describe Puppet::Type.type(:grafana_folder) do
         described_class.new name: 'foo', grafana_url: 'http://example.com', grafana_api_path: '/invalidpath', ensure: :present
       end.to raise_error(Puppet::Error, %r{not a valid API path})
     end
-
-    # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(gfolder[:name]).to eq('foo')
       expect(gfolder[:grafana_url]).to eq('http://example.com/')
@@ -51,6 +49,17 @@ describe Puppet::Type.type(:grafana_folder) do
       catalog = Puppet::Resource::Catalog.new
       catalog.add_resource gfolder
       expect(gfolder.autorequire).to be_empty
+    end
+    it 'autorequires grafana_conn_validator' do
+      catalog = Puppet::Resource::Catalog.new
+      validator = Puppet::Type.type(:grafana_conn_validator).new(name: 'grafana')
+      catalog.add_resource validator
+      catalog.add_resource gfolder
+
+      relationship = gfolder.autorequire.find do |rel|
+        (rel.source.to_s == 'Grafana_conn_validator[grafana]') && (rel.target.to_s == gfolder.to_s)
+      end
+      expect(relationship).to be_a Puppet::Relationship
     end
   end
 end

@@ -41,6 +41,7 @@ Puppet::Type.newtype(:grafana_team) do
 
   newparam(:organization) do
     desc 'The organization the team belongs to'
+    defaultto 'Main Org.'
   end
 
   newparam(:email) do
@@ -50,6 +51,7 @@ Puppet::Type.newtype(:grafana_team) do
 
   newproperty(:home_dashboard) do
     desc 'The id or name of the home dashboard'
+    defaultto 'Default'
   end
 
   newproperty(:theme) do
@@ -70,5 +72,9 @@ Puppet::Type.newtype(:grafana_team) do
 
   autorequire(:grafana_organization) do
     catalog.resources.select { |r| r.is_a?(Puppet::Type.type(:grafana_organization)) }
+  end
+
+  autorequire(:grafana_conn_validator) do
+    'grafana'
   end
 end

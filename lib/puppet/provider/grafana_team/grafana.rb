@@ -42,7 +42,7 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
   def organization
     return @organization if @organization
 
-    org = resource[:organization] || resource[:target_name]
+    org = resource[:organization]
     key = org.is_a?(Numeric) || org.match(%r{/^[0-9]*$/}) ? :id : :name
     @organization = organizations.find { |x| x[key] == org }
   end
@@ -219,9 +219,7 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
     return unless team
 
     response = send_request('DELETE', format('%s/teams/%s', resource[:grafana_api_path], @team[:id]))
-    return unless response.code != '200'
-
-    raise Puppet::Error, format('Failed to delete team %s (HTTP response: %s/%s)', resource, response.code, response.body)
+    raise_on_error(response.code, format('Failed to delete team %s (HTTP response: %s/%s)', resource, response.code, response.body))
   end
 
   def exists?

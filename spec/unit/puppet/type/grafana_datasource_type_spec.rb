@@ -53,7 +53,6 @@ describe Puppet::Type.type(:grafana_datasource) do
         described_class.new name: 'foo', grafana_url: 'http://example.com', secure_json_data: 'invalid', ensure: :present
       end.to raise_error(Puppet::Error, %r{json_data should be a Hash})
     end
-    # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(gdatasource[:name]).to eq('foo')
       expect(gdatasource[:grafana_url]).to eq('http://example.com')

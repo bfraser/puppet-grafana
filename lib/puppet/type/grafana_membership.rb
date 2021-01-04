@@ -73,4 +73,8 @@ Puppet::Type.newtype(:grafana_membership) do
   autorequire(:grafana_membership) do
     catalog.resources.select { |r| r.is_a?(Puppet::Type.type(:grafana_membership)) && r['membership_type'] == :organization } if self[:membership_type] == :team
   end
+
+  autorequire(:grafana_conn_validator) do
+    'grafana'
+  end
 end

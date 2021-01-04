@@ -31,8 +31,6 @@ describe Puppet::Type.type(:grafana_dashboard_permission) do
         described_class.new title: 'foo title', user: 'foo_user', team: 'foo_team'
       end.to raise_error(Puppet::Error, %r{Only user or team can be set, not both})
     end
-
-    # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(gpermission[:user]).to eq('foo_user')
       expect(gpermission[:grafana_api_path]).to eq('/api')
@@ -57,6 +55,18 @@ describe Puppet::Type.type(:grafana_dashboard_permission) do
       catalog = Puppet::Resource::Catalog.new
       catalog.add_resource gpermission
       expect(gpermission.autorequire).to be_empty
+    end
+
+    it 'autorequires grafana_conn_validator' do
+      catalog = Puppet::Resource::Catalog.new
+      validator = Puppet::Type.type(:grafana_conn_validator).new(name: 'grafana')
+      catalog.add_resource validator
+      catalog.add_resource gpermission
+
+      relationship = gpermission.autorequire.find do |rel|
+        (rel.source.to_s == 'Grafana_conn_validator[grafana]') && (rel.target.to_s == gpermission.to_s)
+      end
+      expect(relationship).to be_a Puppet::Relationship
     end
   end
 end

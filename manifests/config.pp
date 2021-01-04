@@ -9,7 +9,7 @@ class grafana::config {
         $cfg = $grafana::cfg
         $myprovision = false
 
-        file { 'grafana.ini':
+        file {  'grafana.ini':
           ensure  => file,
           path    => $grafana::cfg_location,
           content => template('grafana/config.ini.erb'),
@@ -39,7 +39,7 @@ class grafana::config {
         $changes = $sysconfig.map |$key, $value| { "set ${key} ${value}" }
 
         augeas { 'sysconfig/grafana-server':
-          context => "/files${$sysconfig_location}",
+          context => "/files${sysconfig_location}",
           changes => $changes,
           notify  => Class['grafana::service'],
         }
@@ -132,14 +132,17 @@ class grafana::config {
             }
           }
 
-          file { $options['path'] :
-            ensure  => directory,
-            owner   => 'grafana',
-            group   => 'grafana',
-            mode    => '0750',
-            recurse => true,
-            purge   => true,
-            source  => $options['puppetsource'],
+          if $options['puppetsource'] {
+            file { $options['path'] :
+              ensure       => directory,
+              owner        => 'grafana',
+              group        => 'grafana',
+              mode         => '0750',
+              recurse      => true,
+              purge        => true,
+              source       => $options['puppetsource'],
+              sourceselect => 'all',
+            }
           }
         }
       }

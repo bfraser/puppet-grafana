@@ -1,4 +1,5 @@
 require 'toml'
+require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:grafana_ldap_config) do
   @doc = 'Manage Grafana LDAP configuration'
@@ -141,7 +142,7 @@ EOF
     end
 
     metaparams = Puppet::Type.metaparams
-    excluded_metaparams = ['before', 'notify', 'require', 'subscribe', 'tag']
+    excluded_metaparams = %w[before notify require subscribe tag]
 
     metaparams.reject! { |param| excluded_metaparams.include? param }
 

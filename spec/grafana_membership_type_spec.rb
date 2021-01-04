@@ -32,8 +32,6 @@ describe Puppet::Type.type(:grafana_membership) do
         described_class.new title: 'foo title', membership_type: 'foo'
       end.to raise_error(Puppet::Error, %r{Invalid value "foo"})
     end
-
-    # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(gmembership[:user_name]).to eq('foo_user')
       expect(gmembership[:target_name]).to eq('foo_target')
@@ -59,6 +57,18 @@ describe Puppet::Type.type(:grafana_membership) do
       catalog = Puppet::Resource::Catalog.new
       catalog.add_resource gmembership
       expect(gmembership.autorequire).to be_empty
+    end
+
+    it 'autorequires grafana_conn_validator' do
+      catalog = Puppet::Resource::Catalog.new
+      validator = Puppet::Type.type(:grafana_conn_validator).new(name: 'grafana')
+      catalog.add_resource validator
+      catalog.add_resource gmembership
+
+      relationship = gmembership.autorequire.find do |rel|
+        (rel.source.to_s == 'Grafana_conn_validator[grafana]') && (rel.target.to_s == gmembership.to_s)
+      end
+      expect(relationship).to be_a Puppet::Relationship
     end
   end
 end

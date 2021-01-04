@@ -38,8 +38,6 @@ describe Puppet::Type.type(:grafana_notification) do
         described_class.new name: 'foo', grafana_url: 'http://example.com', settings: 'invalid'
       end.to raise_error(Puppet::Error, %r{settings should be a Hash})
     end
-
-    # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(gnotification[:name]).to eq('foo')
       expect(gnotification[:grafana_url]).to eq('http://example.com')

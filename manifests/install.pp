@@ -14,9 +14,9 @@ class grafana::install {
   }
   else {
     $real_package_source = $facts['os']['family'] ? {
-      /(RedHat|Amazon)/ => "${base_url}/grafana-${grafana::version}-${grafana::rpm_iteration}.x86_64.rpm",
-      'Debian'          => "${base_url}/grafana_${grafana::version}_amd64.deb",
-      default           => $real_archive_source,
+      /(RedHat|Amazon|Suse)/ => "${base_url}/grafana-${grafana::version}-${grafana::rpm_iteration}.x86_64.rpm",
+      'Debian'               => "${base_url}/grafana_${grafana::version}_amd64.deb",
+      default                => $real_archive_source,
     }
   }
 
@@ -46,17 +46,22 @@ class grafana::install {
             require  => [Archive['/tmp/grafana.deb'],Package['libfontconfig1']],
           }
         }
-        'RedHat': {
+        'RedHat', 'Suse': {
           package { 'fontconfig':
             ensure => present,
           }
 
+          $install_options = $facts['os']['family'] ? {
+            'Suse'  => ['--nodeps'],
+            default => undef,
+          }
           package { 'grafana':
-            ensure   => present,
-            name     => $grafana::package_name,
-            provider => 'rpm',
-            source   => $real_package_source,
-            require  => Package['fontconfig'],
+            ensure          => present,
+            name            => $grafana::package_name,
+            provider        => 'rpm',
+            install_options => $install_options,
+            source          => $real_package_source,
+            require         => Package['fontconfig'],
           }
         }
         'FreeBSD': {
@@ -196,11 +201,13 @@ class grafana::install {
   }
 
   if $grafana::toml_manage_package and !empty($grafana::ldap_servers) {
-    ensure_packages(['toml-pkg'], {
+    ensure_packages(['toml-pkg'],
+      {
         ensure   => $grafana::toml_package_ensure,
         name     => $grafana::toml_package_name,
         provider => $grafana::toml_package_provider,
-    })
+      }
+    )
 
     Package['toml-pkg'] -> Grafana_ldap_config <||>
   }

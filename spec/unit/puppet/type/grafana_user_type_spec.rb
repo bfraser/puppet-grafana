@@ -22,8 +22,6 @@ describe Puppet::Type.type(:grafana_user) do
         described_class.new name: 'test', grafana_url: 'example.com'
       end.to raise_error(Puppet::Error, %r{not a valid URL})
     end
-
-    # rubocop:disable RSpec/MultipleExpectations
     it 'accepts valid parameters' do
       expect(guser[:name]).to eq('test')
       expect(guser[:full_name]).to eq('Mr tester')
@@ -45,6 +43,17 @@ describe Puppet::Type.type(:grafana_user) do
       catalog = Puppet::Resource::Catalog.new
       catalog.add_resource guser
       expect(guser.autorequire).to be_empty
+    end
+    it 'autorequires grafana_conn_validator' do
+      catalog = Puppet::Resource::Catalog.new
+      validator = Puppet::Type.type(:grafana_conn_validator).new(name: 'grafana')
+      catalog.add_resource validator
+      catalog.add_resource guser
+
+      relationship = guser.autorequire.find do |rel|
+        (rel.source.to_s == 'Grafana_conn_validator[grafana]') && (rel.target.to_s == guser.to_s)
+      end
+      expect(relationship).to be_a Puppet::Relationship
     end
   end
 end
