@@ -132,14 +132,16 @@ class grafana::config {
             }
           }
 
-          file { $options['path'] :
-            ensure  => directory,
-            owner   => 'grafana',
-            group   => 'grafana',
-            mode    => '0750',
-            recurse => true,
-            purge   => true,
-            source  => $options['puppetsource'],
+          if $options['puppetsource'] {
+            file { $options['path'] :
+              ensure  => directory,
+              owner   => 'grafana',
+              group   => 'grafana',
+              mode    => '0750',
+              recurse => true,
+              purge   => true,
+              source  => $options['puppetsource'],
+            }
           }
         }
       }

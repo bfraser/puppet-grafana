@@ -378,6 +378,67 @@ describe 'grafana' do
         end
       end
 
+      context 'provisioning_dashboards defined' do
+        let(:params) do
+          {
+            version: '6.0.0',
+            provisioning_dashboards: {
+              apiVersion: 1,
+              providers: [
+                {
+                  name: 'default',
+                  orgId: 1,
+                  folder: '',
+                  type: 'file',
+                  disableDeletion: true,
+                  options: {
+                    path: '/var/lib/grafana/dashboards',
+                    puppetsource: 'puppet:///modules/my_custom_module/dashboards'
+                  }
+                }
+              ]
+            }
+          }
+        end
+
+        it do
+          is_expected.to contain_file('/var/lib/grafana/dashboards').with(
+            ensure: 'directory',
+            owner: 'grafana',
+            group: 'grafana',
+            mode: '0750',
+            recurse: true,
+            purge: true,
+            source: 'puppet:///modules/my_custom_module/dashboards'
+          )
+        end
+
+        context 'without puppetsource defined' do
+          let(:params) do
+            {
+              version: '6.0.0',
+              provisioning_dashboards: {
+                apiVersion: 1,
+                providers: [
+                  {
+                    name: 'default',
+                    orgId: 1,
+                    folder: '',
+                    type: 'file',
+                    disableDeletion: true,
+                    options: {
+                      path: '/var/lib/grafana/dashboards'
+                    }
+                  }
+                ]
+              }
+            }
+          end
+
+          it { is_expected.not_to contain_file('/var/lib/grafana/dashboards') }
+        end
+      end
+
       context 'sysconfig environment variables' do
         let(:params) do
           {
