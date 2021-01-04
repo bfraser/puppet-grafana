@@ -9,7 +9,7 @@ class grafana::config {
         $cfg = $grafana::cfg
         $myprovision = false
 
-        file {  'grafana.ini':
+        file { 'grafana.ini':
           ensure  => file,
           path    => $grafana::cfg_location,
           content => template('grafana/config.ini.erb'),
