@@ -63,7 +63,7 @@ describe 'grafana' do
               'grafana-wizzle' => { 'ensure' => 'present' },
               'grafana-woozle' => { 'ensure' => 'absent' },
               'grafana-plugin' => { 'ensure' => 'present', 'repo' => 'https://nexus.company.com/grafana/plugins' },
-              'grafana-plugin-url' => { 'ensure' => 'present', 'plugin_url' => 'https://github.com/example/example-custom-plugin/zipball/v1.0.0' }
+              'grafana-plugin-url' => { 'ensure' => 'present', 'plugin_url' => 'https://grafana.com/api/plugins/grafana-simple-json-datasource/versions/latest/download' }
             }
           }
         end
@@ -76,7 +76,7 @@ describe 'grafana' do
         end
 
         describe 'install plugin with plugin url' do
-          it { is_expected.to contain_grafana_plugin('grafana-plugin-url').with(ensure: 'present', plugin_url: 'https://github.com/example/example-custom-plugin/zipball/v1.0.0') }
+          it { is_expected.to contain_grafana_plugin('grafana-plugin-url').with(ensure: 'present', plugin_url: 'https://grafana.com/api/plugins/grafana-simple-json-datasource/versions/latest/download') }
         end
 
       end

@@ -19,8 +19,8 @@ describe Puppet::Type.type(:grafana_plugin) do
     expect(plugin[:repo]).to eq('https://nexus.company.com/grafana/plugins')
   end
   it 'accepts a plugin url' do
-    plugin[:plugin_url] = 'https://github.com/example/example-custom-plugin/zipball/v1.0.0'
-    expect(plugin[:plugin_url]).to eq('https://github.com/example/example-custom-plugin/zipball/v1.0.0')
+    plugin[:plugin_url] = 'https://grafana.com/api/plugins/grafana-simple-json-datasource/versions/latest/download'
+    expect(plugin[:plugin_url]).to eq('https://grafana.com/api/plugins/grafana-simple-json-datasource/versions/latest/download')
   end
 
 end
