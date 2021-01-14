@@ -1,3 +1,5 @@
+require 'puppet/parameter/boolean'
+
 Puppet::Type.newtype(:grafana_ldap_server) do
   @doc = 'Manage Grafana LDAP servers for LDAP authentication.'
 
