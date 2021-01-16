@@ -1,3 +1,5 @@
+require 'puppet/parameter/boolean'
+
 Puppet::Type.newtype(:grafana_ldap_group_mapping) do
   @doc = 'Map an LDAP group to a Grafana role.'
 
