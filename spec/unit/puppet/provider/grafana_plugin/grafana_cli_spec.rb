@@ -82,7 +82,7 @@ Restart grafana after installing plugins . <service grafana-server restart>
     it '#create with plugin url' do
       allow(provider).to receive(:grafana_cli)
       provider.create
-      expect(provider).to have_received(:grafana_cli).with('--pluginUrl https://grafana.com/api/plugins/grafana-simple-json-datasource/versions/latest/download', 'plugins', 'install', 'grafana-simple-json-datasource')
+      expect(provider).to have_received(:grafana_cli).with('--pluginUrl', 'https://grafana.com/api/plugins/grafana-simple-json-datasource/versions/latest/download', 'plugins', 'install', 'grafana-simple-json-datasource')
     end
   end
 

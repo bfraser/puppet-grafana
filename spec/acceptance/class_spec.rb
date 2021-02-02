@@ -127,7 +127,6 @@ describe 'grafana class' do
         pp = <<-EOS
         class { 'grafana':
           version       => 'latest',
-          rpm_iteration => 'beta3',
           repo_name     => 'beta',
         }
         EOS

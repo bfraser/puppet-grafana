@@ -7,19 +7,19 @@ manages grafana plugins
 
 @example Install a grafana plugin from different repo
  grafana_plugin { 'grafana-simple-json-datasource':
-   ensure => present,
+   ensure => 'present',
    repo   => 'https://nexus.company.com/grafana/plugins',
  }
 
 @example Install a grafana plugin from a plugin url
  grafana_plugin { 'grafana-example-custom-plugin':
-   ensure => present,
+   ensure     => 'present',
    plugin_url => 'https://github.com/example/example-custom-plugin/zipball/v1.0.0'
  }
 
 @example Uninstall a grafana plugin
  grafana_plugin { 'grafana-simple-json-datasource':
-   ensure => absent,
+   ensure => 'absent',
  }
 
 @example Show resources
