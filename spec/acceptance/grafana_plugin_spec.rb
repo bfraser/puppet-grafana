@@ -40,6 +40,29 @@ describe 'grafana_plugin' do
     end
   end
 
+  context 'create plugin resource with url' do
+    it 'runs successfully' do
+      # Reset and reinstall the same plugin by URL
+      shell('grafana-cli plugins uninstall grafana-simple-json-datasource')
+      pp = <<-EOS
+      class { 'grafana':}
+      include grafana::validator
+      grafana_plugin { 'grafana-simple-json-datasource':
+        ensure     => 'present',
+        plugin_url => 'https://grafana.com/api/plugins/grafana-simple-json-datasource/versions/latest/download',
+      }
+      EOS
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+
+    it 'has the plugin' do
+      shell('grafana-cli plugins ls') do |r|
+        expect(r.stdout).to match(%r{grafana-simple-json-datasource})
+      end
+    end
+  end
+
   context 'destroy plugin resource' do
     it 'runs successfully' do
       pp = <<-EOS

@@ -113,21 +113,20 @@ describe 'grafana class' do
     end
   end
 
-  context 'beta release' do
+  context 'update to beta release' do
     it 'works idempotently with no errors' do
       case fact('os.family')
       when 'Debian'
         pp = <<-EOS
         class { 'grafana':
-          version   => '6.0.0-beta3',
+          version   => 'latest',
           repo_name => 'beta',
         }
         EOS
       when 'RedHat'
         pp = <<-EOS
         class { 'grafana':
-          version       => '6.0.0',
-          rpm_iteration => 'beta3',
+          version       => 'latest',
           repo_name     => 'beta',
         }
         EOS
@@ -136,6 +135,31 @@ describe 'grafana class' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
+    end
+
+    describe package('grafana') do
+      it { is_expected.to be_installed }
+    end
+  end
+
+  context 'revert back to stable' do
+    it 'works idempotently with no errors' do
+      case fact('os.family')
+      when 'Debian'
+        pp = <<-EOS
+        class { 'grafana':
+          version => 'latest',
+        }
+        EOS
+        # Run it twice and test for idempotency
+        apply_manifest(pp, catch_failures: true)
+        apply_manifest(pp, catch_changes: true)
+      when 'RedHat'
+        shell('/bin/rm /etc/yum.repos.d/grafana-beta.repo')
+        shell('yum -y downgrade grafana')
+        # No manifest to apply here
+      end
+
     end
 
     describe package('grafana') do

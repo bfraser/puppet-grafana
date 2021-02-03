@@ -860,7 +860,16 @@ It is possible to specify a custom plugin repository to install a plugin. This w
 ```puppet
 grafana_plugin { 'grafana-simple-json-datasource':
   ensure    => present,
-  repo => 'https://nexus.company.com/grafana/plugins',
+  repo      => 'https://nexus.company.com/grafana/plugins',
+}
+```
+
+It is also possible to specify a custom plugin url to install a plugin. This will use the --pluginUrl option for plugin installation with grafana_cli.
+
+```puppet
+grafana_plugin { 'grafana-example-custom-plugin':
+  ensure     => present,
+  plugin_url => 'https://github.com/example/example-custom-plugin/zipball/v1.0.0'
 }
 ```
 

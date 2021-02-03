@@ -14,8 +14,8 @@ describe provider_class do
       # rubocop:disable Layout/TrailingWhitespace
       <<-PLUGINS
 installed plugins:
-grafana-simple-json-datasource @ 1.3.4 
-jdbranham-diagram-panel @ 1.4.0 
+grafana-simple-json-datasource @ 1.3.4
+jdbranham-diagram-panel @ 1.4.0
 
 Restart grafana after installing plugins . <service grafana-server restart>
       PLUGINS
@@ -70,4 +70,21 @@ Restart grafana after installing plugins . <service grafana-server restart>
       expect(provider).to have_received(:grafana_cli).with('--repo https://nexus.company.com/grafana/plugins', 'plugins', 'install', 'grafana-plugin')
     end
   end
+
+  describe 'create with plugin url' do
+    let(:resource) do
+      Puppet::Type::Grafana_plugin.new(
+        name: 'grafana-simple-json-datasource',
+        plugin_url: 'https://grafana.com/api/plugins/grafana-simple-json-datasource/versions/latest/download'
+      )
+    end
+
+    it '#create with plugin url' do
+      allow(provider).to receive(:grafana_cli)
+      provider.create
+      expect(provider).to have_received(:grafana_cli).with('--pluginUrl', 'https://grafana.com/api/plugins/grafana-simple-json-datasource/versions/latest/download', 'plugins', 'install', 'grafana-simple-json-datasource')
+    end
+  end
+
+
 end
