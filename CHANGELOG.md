@@ -4,9 +4,45 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v8.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v8.0.0) (2021-02-20)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v7.0.0...v8.0.0)
+
+**Breaking changes:**
+
+- Drop EoL Debian 8 support [\#233](https://github.com/voxpupuli/puppet-grafana/pull/233) ([bastelfreak](https://github.com/bastelfreak))
+- Drop Eol CentOS 6 support [\#232](https://github.com/voxpupuli/puppet-grafana/pull/232) ([bastelfreak](https://github.com/bastelfreak))
+- Mask/redact password and secure\_json\_data in grafana\_datasource; require at least puppet 6.1.0 [\#221](https://github.com/voxpupuli/puppet-grafana/pull/221) ([nmaludy](https://github.com/nmaludy))
+
+**Implemented enhancements:**
+
+- Enable Puppet 7 support [\#234](https://github.com/voxpupuli/puppet-grafana/pull/234) ([bastelfreak](https://github.com/bastelfreak))
+- Allow multiple puppetsource [\#224](https://github.com/voxpupuli/puppet-grafana/pull/224) ([jsfrerot](https://github.com/jsfrerot))
+
+**Fixed bugs:**
+
+- Fix `puppet generate types` [\#227](https://github.com/voxpupuli/puppet-grafana/pull/227) ([smortex](https://github.com/smortex))
+- Ensure all API types have grafana\_conn\_validator autorequires [\#226](https://github.com/voxpupuli/puppet-grafana/pull/226) ([treydock](https://github.com/treydock))
+- Don't manage dashboard path when puppetsource is not set [\#225](https://github.com/voxpupuli/puppet-grafana/pull/225) ([treydock](https://github.com/treydock))
+
+**Closed issues:**
+
+- Feature Request: Support for Grafana Plugin install by URL [\#173](https://github.com/voxpupuli/puppet-grafana/issues/173)
+- add/change sourceselect option for provisioning\_dashboards [\#130](https://github.com/voxpupuli/puppet-grafana/issues/130)
+
+**Merged pull requests:**
+
+- Fix types to work with 'puppet generate types' [\#236](https://github.com/voxpupuli/puppet-grafana/pull/236) ([treydock](https://github.com/treydock))
+- Rebase plugin from zip patch [\#235](https://github.com/voxpupuli/puppet-grafana/pull/235) ([XMol](https://github.com/XMol))
+- Bugfix for teams, update README and acceptance testing [\#215](https://github.com/voxpupuli/puppet-grafana/pull/215) ([DavidReubenWhite](https://github.com/DavidReubenWhite))
+
 ## [v7.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v7.0.0) (2020-08-24)
 
-[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v6.1.0...v7.0.0)
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v6.2.0...v7.0.0)
+
+## [v6.2.0](https://github.com/voxpupuli/puppet-grafana/tree/v6.2.0) (2020-08-23)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v6.1.0...v6.2.0)
 
 **Breaking changes:**
 
