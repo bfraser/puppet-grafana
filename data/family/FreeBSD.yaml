@@ -3,5 +3,5 @@ grafana::cfg_location: '/usr/local/etc/grafana.ini'
 grafana::data_dir: '/var/db/grafana'
 grafana::install_method: 'repo'
 grafana::manage_package_repo: false
-grafana::package_name: 'grafana6'
+grafana::package_name: 'grafana7'
 grafana::service_name: 'grafana'
