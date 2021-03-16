@@ -78,7 +78,6 @@ describe 'grafana' do
         describe 'install plugin with plugin url' do
           it { is_expected.to contain_grafana_plugin('grafana-plugin-url').with(ensure: 'present', plugin_url: 'https://grafana.com/api/plugins/grafana-simple-json-datasource/versions/latest/download') }
         end
-
       end
 
       context 'with parameter install_method is set to repo' do

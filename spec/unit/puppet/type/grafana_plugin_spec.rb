@@ -22,5 +22,4 @@ describe Puppet::Type.type(:grafana_plugin) do
     plugin[:plugin_url] = 'https://grafana.com/api/plugins/grafana-simple-json-datasource/versions/latest/download'
     expect(plugin[:plugin_url]).to eq('https://grafana.com/api/plugins/grafana-simple-json-datasource/versions/latest/download')
   end
-
 end
