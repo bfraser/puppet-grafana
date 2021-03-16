@@ -566,6 +566,8 @@ Organziation must exist if specified.
 
 `name` is optional if the name will differ from example_team above.
 
+`home_dashboard_folder` is optional. Sets the folder where home dashboard resides. Dashboard folder must exist.
+
 `home_dashboard` is optional. Sets the home dashboard for team. Dashboard must exist.
 
 `organization` is optional. Defaults to `Main org.`
