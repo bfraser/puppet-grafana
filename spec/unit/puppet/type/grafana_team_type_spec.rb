@@ -7,6 +7,7 @@ describe Puppet::Type.type(:grafana_team) do
       grafana_url: 'http://example.com',
       grafana_user: 'admin',
       grafana_password: 'admin',
+      home_dashboard_folder: 'bar',
       home_dashboard: 'foo_dashboard',
       organization: 'foo_organization'
     )
@@ -23,6 +24,7 @@ describe Puppet::Type.type(:grafana_team) do
       expect(gteam[:grafana_user]).to eq('admin')
       expect(gteam[:grafana_password]).to eq('admin')
       expect(gteam[:grafana_url]).to eq('http://example.com')
+      expect(gteam[:home_dashboard_folder]).to eq('bar')
       expect(gteam[:home_dashboard]).to eq('foo_dashboard')
       expect(gteam[:organization]).to eq('foo_organization')
     end

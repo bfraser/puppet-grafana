@@ -94,7 +94,7 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
 
   def setup_save_preferences_data
     endpoint = format('%s/teams/%s/preferences', resource[:grafana_api_path], @team[:id])
-    dash = get_dashboard(resource[:home_dashboard])
+    dash = get_dashboard(resource[:home_dashboard], resource[:home_dashboard_folder])
     request_data = {
       theme: resource[:theme],
       homeDashboardId: dash[:id],
@@ -121,6 +121,19 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
     raise format('Failed to switch to org %s (HTTP response: %s/%s)', organization[:id], response.code, response.body)
   end
 
+  def home_dashboard_folder
+    preferences unless @preferences
+    dash = get_dashboard(@preferences[:home_dashboard])
+    return dash[:folder_name] if dash
+
+    nil
+  end
+
+  def home_dashboard_folder=(value)
+    resource[:home_dashboard_folder] = value
+    save_preferences
+  end
+
   def home_dashboard
     preferences unless @preferences
     dash = get_dashboard(@preferences[:home_dashboard])
@@ -134,25 +147,30 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
     save_preferences
   end
 
-  def setup_search_path(ident)
-    if ident.is_a?(Numeric) || ident.match(%r{/^[0-9]*$/})
-      {
-        dashboardIds: ident,
-        type: 'dash-db'
-      }
-    else
-      {
-        query: ident,
-        type: 'dash-db'
-      }
-    end
+  def setup_search_path(ident, folder_id = nil)
+    query = if ident.is_a?(Numeric) || ident.match(%r{/^[0-9]*$/})
+              {
+                dashboardIds: ident,
+                type: 'dash-db'
+              }
+            else
+              {
+                query: ident,
+                type: 'dash-db'
+              }
+            end
+    query[:folderIds] = folder_id unless folder_id.nil?
+    query
   end
 
-  def get_dashboard(ident)
+  def get_dashboard(ident, folder = nil)
     set_current_organization
     return { id: 0, name: 'Default' } if ident == 0 # rubocop:disable Style/NumericPredicate
 
-    search_path = setup_search_path(ident)
+    folder_id = nil
+    folder_id = get_dashboard_folder_id(folder) unless folder.nil?
+
+    search_path = setup_search_path(ident, folder_id)
     response = send_request('GET', format('%s/search', resource[:grafana_api_path]), nil, search_path)
     raise_on_error(response.code, format('Fail to retrieve dashboars (HTTP response: %s/%s)', response.code, response.body))
 
@@ -165,8 +183,37 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
 
     {
       id: dashboard.first['id'],
-      name: dashboard.first['title']
+      name: dashboard.first['title'],
+      folder_uid: dashboard.first['folderUid'],
+      folder_name: dashboard.first['folderTitle'],
     }
+  end
+
+  def setup_folder_search_path(ident)
+    if ident.is_a?(Numeric) || ident.match(%r{/^[0-9]*$/})
+      {
+        folderIds: ident,
+        type: 'dash-folder'
+      }
+    else
+      {
+        query: ident,
+        type: 'dash-folder'
+      }
+    end
+  end
+
+  def get_dashboard_folder_id(ident)
+    return nil if ident.nil?
+
+    set_current_organization
+    search_path = setup_folder_search_path(ident)
+    response = send_request('GET', format('%s/search', resource[:grafana_api_path]), nil, search_path)
+    raise_on_error(response.code, format('Fail to retrieve dashboars (HTTP response: %s/%s)', response.code, response.body))
+
+    dashboard = parse_response(response.body)
+    return nil unless dashboard.first
+    dashboard.first['id']
   end
 
   def theme
