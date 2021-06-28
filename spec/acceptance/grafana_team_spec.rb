@@ -58,12 +58,35 @@ describe 'grafana_team' do
         grafana_password => 'admin',
         content          => '{"uid": "zyx986bc"}',
       }
+      grafana_folder { 'example-folder':
+        ensure           => present,
+        uid              => 'example-folder',
+        grafana_url      => 'http://localhost:3000',
+        grafana_user     => 'admin',
+        grafana_password => 'admin',
+      }
+      -> grafana_dashboard { 'example-dashboard2':
+        ensure           => present,
+        grafana_url      => 'http://localhost:3000',
+        grafana_user     => 'admin',
+        grafana_password => 'admin',
+        content          => '{"uid": "niew0ahN"}',
+        folder           => 'example-folder',
+      }
       grafana_team { 'example-team':
         ensure           => present,
         grafana_url      => 'http://localhost:3000',
         grafana_user     => 'admin',
         grafana_password => 'admin',
         home_dashboard   => 'example-dashboard',
+      }
+      grafana_team { 'example-team2':
+        ensure                => present,
+        grafana_url           => 'http://localhost:3000',
+        grafana_user          => 'admin',
+        grafana_password      => 'admin',
+        home_dashboard_folder => 'example-folder',
+        home_dashboard        => 'example-dashboard2',
       }
       EOS
       apply_manifest(pp, catch_failures: true)
@@ -72,6 +95,13 @@ describe 'grafana_team' do
 
     it 'has updated the example team home dashboard' do
       shell('curl --user admin:admin http://localhost:3000/api/teams/1/preferences') do |f|
+        data = JSON.parse(f.stdout)
+        expect(data['homeDashboardId']).not_to eq(0)
+      end
+    end
+
+    it 'has updated the example team home dashboard with folder' do
+      shell('curl --user admin:admin http://localhost:3000/api/teams/2/preferences') do |f|
         data = JSON.parse(f.stdout)
         expect(data['homeDashboardId']).not_to eq(0)
       end
@@ -118,6 +148,12 @@ describe 'grafana_team' do
         grafana_user     => 'admin',
         grafana_password => 'admin',
       }
+      grafana_team { 'example-team2':
+        ensure           => absent,
+        grafana_url      => 'http://localhost:3000',
+        grafana_user     => 'admin',
+        grafana_password => 'admin',
+      }
       grafana_team { 'example-team-on-org':
         ensure           => absent,
         grafana_url      => 'http://localhost:3000',
@@ -131,8 +167,21 @@ describe 'grafana_team' do
         grafana_user     => 'admin',
         grafana_password => 'admin',
       }
+      grafana_dashboard { 'example-dashboard2':
+        ensure           => absent,
+        grafana_url      => 'http://localhost:3000',
+        grafana_user     => 'admin',
+        grafana_password => 'admin',
+      }
+      grafana_folder { 'example-folder':
+        ensure           => absent,
+        uid              => 'example-folder',
+        grafana_url      => 'http://localhost:3000',
+        grafana_user     => 'admin',
+        grafana_password => 'admin',
+      }
       grafana_organization { 'example-organization':
-        ensure => absent,
+        ensure           => absent,
         grafana_url      => 'http://localhost:3000',
         grafana_user     => 'admin',
         grafana_password => 'admin',

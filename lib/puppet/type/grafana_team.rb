@@ -49,6 +49,10 @@ Puppet::Type.newtype(:grafana_team) do
     defaultto ''
   end
 
+  newproperty(:home_dashboard_folder) do
+    desc 'The UID or name of the home dashboard folder'
+  end
+
   newproperty(:home_dashboard) do
     desc 'The id or name of the home dashboard'
     defaultto 'Default'

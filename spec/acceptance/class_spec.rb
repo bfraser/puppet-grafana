@@ -159,7 +159,6 @@ describe 'grafana class' do
         shell('yum -y downgrade grafana')
         # No manifest to apply here
       end
-
     end
 
     describe package('grafana') do

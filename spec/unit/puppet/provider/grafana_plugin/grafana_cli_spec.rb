@@ -11,7 +11,6 @@ describe provider_class do
 
   describe '#instances' do
     let(:plugins_ls_two) do
-      # rubocop:disable Layout/TrailingWhitespace
       <<-PLUGINS
 installed plugins:
 grafana-simple-json-datasource @ 1.3.4
@@ -85,6 +84,4 @@ Restart grafana after installing plugins . <service grafana-server restart>
       expect(provider).to have_received(:grafana_cli).with('--pluginUrl', 'https://grafana.com/api/plugins/grafana-simple-json-datasource/versions/latest/download', 'plugins', 'install', 'grafana-simple-json-datasource')
     end
   end
-
-
 end
