@@ -1,24 +1,6 @@
-require 'beaker-rspec/spec_helper'
-require 'beaker-rspec/helpers/serverspec'
+# This file is completely managed via modulesync
+require 'voxpupuli/acceptance/spec_helper_acceptance'
 
-hosts.each do |host|
-  # Install Puppet
-  install_puppet
-end
+configure_beaker
 
-RSpec.configure do |c|
-  # Project root
-  proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-
-  # Readable test descriptions
-  c.formatter = :documentation
-
-  # Configure all nodes in nodeset
-  c.before :suite do
-    # Install module and dependencies
-    puppet_module_install(:source => proj_root, :module_name => 'grafana')
-    hosts.each do |host|
-      on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
-    end
-  end
-end
+Dir['./spec/support/acceptance/**/*.rb'].sort.each { |f| require f }

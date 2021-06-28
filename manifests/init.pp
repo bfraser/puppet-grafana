@@ -54,13 +54,78 @@
 #
 # [*version*]
 # The version of Grafana to install and manage.
-# Defaults to the latest version of Grafana available at the time of module release.
+# Defaults to 'installed'
 #
 # [*repo_name*]
 # When using 'repo' install_method, the repo to look for packages in.
 # Set to 'stable' to install only stable versions
-# Set to 'testing' to install beta versions
+# Set to 'beta' to install beta versions
 # Defaults to stable.
+#
+# [*plugins*]
+# A hash of plugins to be passed to `create_resources`, wraps around the
+# `grafana_plugin` resource.
+#
+# [*provisioning_dashboards*]
+# Hash of dashboards to provision into grafana. grafana > v5.0.0
+# required. Hash will be converted into YAML and used by grafana to
+# provision dashboards.
+#
+# [*provisioning_datasources*]
+# Hash of datasources to provision into grafana, grafana > v5.0.0
+# required. Hash will be converted into YAML and used by granfana to
+# configure datasources.
+#
+# [*provisioning_dashboards_file*]
+# String with the fully qualified path to place the provisioning file
+# for dashboards, only used if provisioning_dashboards is specified.
+# Defaults to '/etc/grafana/provisioning/dashboards/puppetprovisioned.yaml'
+#
+# [*provisioning_datasources_file*]
+# String with the fully qualified path to place the provisioning file
+# for datasources, only used if provisioning_datasources is specified.
+# Default to '/etc/grafana/provisioning/datasources/puppetprovisioned.yaml'
+#
+# [*create_subdirs_provisioning*]
+# Boolean, defaults to false. If true puppet will create any
+# subdirectories in the given path when provisioning dashboards.
+#
+# [*sysconfig_location*]
+# Location of the sysconfig file for the environment of the grafana-server service.
+# This is only used when the install_method is 'package' or 'repo'.
+#
+# [*sysconfig*]
+# A hash of environment variables for the grafana-server service
+#
+# Example:
+#   sysconfig => { 'http_proxy' => 'http://proxy.example.com/' }
+#
+# [*ldap_servers*]
+# A hash of ldap_servers to be passed to `create_resources`, wraps around the
+# `grafana_ldap_server` resource.
+#
+# [*ldap_group_mappings*]
+# A hash of ldap_servers to be passed to `create_resources`, wraps around the
+# `grafana_ldap_group_mapping` resource.
+#
+# [*toml_manage_package*]
+# ruby-toml is required to generate the TOML-based LDAP config for Grafana.
+# Defaults to true. Set to false if you manage package- or gem-install
+# somewhere else.
+#
+# [*toml_package_name*]
+# Name of the software-package providing the TOML parser library.
+# Defaults to ruby-toml.
+#
+# [*toml_package_ensure*]
+# Ensure the package-resource - e.g. installed, absent, etc.
+# https://puppet.com/docs/puppet/latest/types/package.html#package-attribute-ensure
+# Defaults to present
+#
+# [*toml_package_provider*]
+# The package-provider used to install the TOML parser library.
+# Defaults to undef, to let Puppet decide. See
+# https://puppet.com/docs/puppet/latest/types/package.html#package-attribute-provider
 #
 # === Examples
 #
@@ -69,35 +134,52 @@
 #  }
 #
 class grafana (
-  $archive_source      = $::grafana::params::archive_source,
-  $cfg_location        = $::grafana::params::cfg_location,
-  $cfg                 = $::grafana::params::cfg,
-  $ldap_cfg            = $::grafana::params::ldap_cfg,
-  $container_cfg       = $::grafana::params::container_cfg,
-  $container_params    = $::grafana::params::container_params,
-  $data_dir            = $::grafana::params::data_dir,
-  $install_dir         = $::grafana::params::install_dir,
-  $install_method      = $::grafana::params::install_method,
-  $manage_package_repo = $::grafana::params::manage_package_repo,
-  $package_name        = $::grafana::params::package_name,
-  $package_source      = $::grafana::params::package_source,
-  $repo_name           = $::grafana::params::repo_name,
-  $rpm_iteration       = $::grafana::params::rpm_iteration,
-  $service_name        = $::grafana::params::service_name,
-  $version             = $::grafana::params::version
-) inherits grafana::params {
+  Optional[String] $archive_source,
+  String $cfg_location,
+  Hash $cfg,
+  Optional[Variant[Hash,Array]] $ldap_cfg,
+  Boolean $container_cfg,
+  Hash $container_params,
+  String $docker_image,
+  String $docker_ports,
+  String $data_dir,
+  String $install_dir,
+  String $install_method,
+  Boolean $manage_package_repo,
+  String $package_name,
+  Optional[String] $package_source,
+  Enum['stable', 'beta'] $repo_name,
+  String $rpm_iteration,
+  String $service_name,
+  String $version,
+  Hash $plugins,
+  Hash $provisioning_dashboards,
+  Hash $provisioning_datasources,
+  String $provisioning_dashboards_file,
+  String $provisioning_datasources_file,
+  Boolean $create_subdirs_provisioning,
+  Optional[String] $sysconfig_location,
+  Optional[Hash] $sysconfig,
+  Hash[String[1], Hash] $ldap_servers,
+  Hash[String[1], Hash] $ldap_group_mappings,
+  Boolean $toml_manage_package,
+  String[1] $toml_package_name,
+  String[1] $toml_package_ensure,
+  Optional[String[1]] $toml_package_provider,
+) {
+  contain grafana::install
+  contain grafana::config
+  contain grafana::service
 
-  # validate parameters here
-  if !is_hash($cfg) {
-    fail('cfg parameter must be a hash')
-  }
+  Class['grafana::install']
+  -> Class['grafana::config']
+  -> Class['grafana::service']
 
-  class { 'grafana::install': } ->
-  class { 'grafana::config': } ~>
-  class { 'grafana::service': }
+  create_resources(grafana_plugin, $plugins)
+  # Dependency added for Grafana_plugins to ensure it runs at the
+  # correct time.
+  Class['grafana::config'] -> Grafana_Plugin <| |> ~> Class['grafana::service']
 
-  contain 'grafana::install'
-  contain 'grafana::service'
-
-  #Class['grafana']
+  create_resources('grafana_ldap_server', $ldap_servers)
+  create_resources('grafana_ldap_group_mapping', $ldap_group_mappings)
 }
