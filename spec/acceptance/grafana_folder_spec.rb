@@ -126,7 +126,7 @@ describe 'grafana_folder' do
         grafana_url      => 'http://localhost:3000',
         grafana_user     => 'admin',
         grafana_password => 'admin',
-        content          => '{"uid": "abc123xy"}',
+        content          => '{"description": "example dashboard"}',
         folder           => 'example-folder'
       }
       EOS
@@ -135,7 +135,7 @@ describe 'grafana_folder' do
     end
 
     it 'folder contains dashboard' do
-      shell('curl --user admin:admin http://localhost:3000/api/dashboards/db/example-dashboard') do |f|
+      shell('curl --user admin:admin http://localhost:3000/api/dashboards/uid/example-dashboard') do |f|
         expect(f.stdout).to match(%r{"folderId":1})
       end
     end

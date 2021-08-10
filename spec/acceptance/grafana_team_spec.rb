@@ -56,7 +56,7 @@ describe 'grafana_team' do
         grafana_url      => 'http://localhost:3000',
         grafana_user     => 'admin',
         grafana_password => 'admin',
-        content          => '{"uid": "zyx986bc"}',
+        content          => '{"description": "example dashboard"}',
       }
       grafana_folder { 'example-folder':
         ensure           => present,
@@ -70,7 +70,7 @@ describe 'grafana_team' do
         grafana_url      => 'http://localhost:3000',
         grafana_user     => 'admin',
         grafana_password => 'admin',
-        content          => '{"uid": "niew0ahN"}',
+        content          => '{"description": "example dashboard2"}',
         folder           => 'example-folder',
       }
       grafana_team { 'example-team':
