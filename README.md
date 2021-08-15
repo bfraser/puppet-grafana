@@ -1172,7 +1172,7 @@ This task can be used to change the password for the admin user in grafana
 
 ## Limitations
 
-This module has been tested on every Operting system in the metadata.json, using
+This module has been tested on every operating system in the metadata.json, using
 each of the 'archive', 'docker' and 'package' installation methods. Other
 configurations should work with minimal, if any, additional effort.
 
