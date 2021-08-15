@@ -1,11 +1,13 @@
 # grafana
 
-[![Build Status](https://travis-ci.org/voxpupuli/puppet-grafana.png?branch=master)](https://travis-ci.org/voxpupuli/puppet-grafana)
-[![Code Coverage](https://coveralls.io/repos/github/voxpupuli/puppet-grafana/badge.svg?branch=master)](https://coveralls.io/github/voxpupuli/puppet-grafana)
+[![Build Status](https://github.com/voxpupuli/puppet-grafana/workflows/CI/badge.svg)](https://github.com/voxpupuli/puppet-grafana/actions?query=workflow%3ACI)
+[![Release](https://github.com/voxpupuli/puppet-grafana/actions/workflows/release.yml/badge.svg)](https://github.com/voxpupuli/puppet-grafana/actions/workflows/release.yml)
 [![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/grafana.svg)](https://forge.puppetlabs.com/puppet/grafana)
 [![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/grafana.svg)](https://forge.puppetlabs.com/puppet/grafana)
 [![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/grafana.svg)](https://forge.puppetlabs.com/puppet/grafana)
 [![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/grafana.svg)](https://forge.puppetlabs.com/puppet/grafana)
+[![puppetmodule.info docs](http://www.puppetmodule.info/images/badge.png)](http://www.puppetmodule.info/m/puppet-grafana)
+[![Apache-2 License](https://img.shields.io/github/license/voxpupuli/puppet-grafana.svg)](LICENSE)
 
 #### Table of Contents
 
