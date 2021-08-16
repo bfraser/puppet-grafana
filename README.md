@@ -30,9 +30,10 @@ InfluxDB and OpenTSDB.
 
 ## Module Description
 
-Version 2.x of this module is designed to work with version 2.x of Grafana.
-If you would like to continue to use Grafana 1.x, please use version 1.x of
-this module.
+With the 9.0.0 release of the module we only support Grafana 6.x/7.x/8.x.
+Version 8 of the module was tested successfully on Grafana 7. Version 2.x of
+this module is designed to work with version 2.x of Grafana. If you would
+like to continue to use Grafana 1.x, please use version 1.x of this module.
 
 ## Setup
 

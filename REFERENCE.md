@@ -40,7 +40,7 @@
 
 ## Classes
 
-### `grafana`
+### <a name="grafana"></a>`grafana`
 
 == Class: grafana
 
@@ -179,226 +179,262 @@ https://puppet.com/docs/puppet/latest/types/package.html#package-attribute-provi
 
 #### Parameters
 
-The following parameters are available in the `grafana` class.
+The following parameters are available in the `grafana` class:
 
-##### `archive_source`
+* [`archive_source`](#archive_source)
+* [`cfg_location`](#cfg_location)
+* [`cfg`](#cfg)
+* [`ldap_cfg`](#ldap_cfg)
+* [`container_cfg`](#container_cfg)
+* [`container_params`](#container_params)
+* [`docker_image`](#docker_image)
+* [`docker_ports`](#docker_ports)
+* [`data_dir`](#data_dir)
+* [`install_dir`](#install_dir)
+* [`install_method`](#install_method)
+* [`manage_package_repo`](#manage_package_repo)
+* [`package_name`](#package_name)
+* [`package_source`](#package_source)
+* [`repo_name`](#repo_name)
+* [`rpm_iteration`](#rpm_iteration)
+* [`service_name`](#service_name)
+* [`version`](#version)
+* [`plugins`](#plugins)
+* [`provisioning_dashboards`](#provisioning_dashboards)
+* [`provisioning_datasources`](#provisioning_datasources)
+* [`provisioning_dashboards_file`](#provisioning_dashboards_file)
+* [`provisioning_datasources_file`](#provisioning_datasources_file)
+* [`create_subdirs_provisioning`](#create_subdirs_provisioning)
+* [`sysconfig_location`](#sysconfig_location)
+* [`sysconfig`](#sysconfig)
+* [`ldap_servers`](#ldap_servers)
+* [`ldap_group_mappings`](#ldap_group_mappings)
+* [`toml_manage_package`](#toml_manage_package)
+* [`toml_package_name`](#toml_package_name)
+* [`toml_package_ensure`](#toml_package_ensure)
+* [`toml_package_provider`](#toml_package_provider)
+
+##### <a name="archive_source"></a>`archive_source`
 
 Data type: `Optional[String]`
 
 
 
-##### `cfg_location`
+##### <a name="cfg_location"></a>`cfg_location`
 
 Data type: `String`
 
 
 
-##### `cfg`
+##### <a name="cfg"></a>`cfg`
 
 Data type: `Hash`
 
 
 
-##### `ldap_cfg`
+##### <a name="ldap_cfg"></a>`ldap_cfg`
 
 Data type: `Optional[Variant[Hash,Array]]`
 
 
 
-##### `container_cfg`
+##### <a name="container_cfg"></a>`container_cfg`
 
 Data type: `Boolean`
 
 
 
-##### `container_params`
+##### <a name="container_params"></a>`container_params`
 
 Data type: `Hash`
 
 
 
-##### `docker_image`
+##### <a name="docker_image"></a>`docker_image`
 
 Data type: `String`
 
 
 
-##### `docker_ports`
+##### <a name="docker_ports"></a>`docker_ports`
 
 Data type: `String`
 
 
 
-##### `data_dir`
+##### <a name="data_dir"></a>`data_dir`
 
 Data type: `String`
 
 
 
-##### `install_dir`
+##### <a name="install_dir"></a>`install_dir`
 
 Data type: `String`
 
 
 
-##### `install_method`
+##### <a name="install_method"></a>`install_method`
 
 Data type: `String`
 
 
 
-##### `manage_package_repo`
+##### <a name="manage_package_repo"></a>`manage_package_repo`
 
 Data type: `Boolean`
 
 
 
-##### `package_name`
+##### <a name="package_name"></a>`package_name`
 
 Data type: `String`
 
 
 
-##### `package_source`
+##### <a name="package_source"></a>`package_source`
 
 Data type: `Optional[String]`
 
 
 
-##### `repo_name`
+##### <a name="repo_name"></a>`repo_name`
 
 Data type: `Enum['stable', 'beta']`
 
 
 
-##### `rpm_iteration`
+##### <a name="rpm_iteration"></a>`rpm_iteration`
 
 Data type: `String`
 
 
 
-##### `service_name`
+##### <a name="service_name"></a>`service_name`
 
 Data type: `String`
 
 
 
-##### `version`
+##### <a name="version"></a>`version`
 
 Data type: `String`
 
 
 
-##### `plugins`
+##### <a name="plugins"></a>`plugins`
 
 Data type: `Hash`
 
 
 
-##### `provisioning_dashboards`
+##### <a name="provisioning_dashboards"></a>`provisioning_dashboards`
 
 Data type: `Hash`
 
 
 
-##### `provisioning_datasources`
+##### <a name="provisioning_datasources"></a>`provisioning_datasources`
 
 Data type: `Hash`
 
 
 
-##### `provisioning_dashboards_file`
+##### <a name="provisioning_dashboards_file"></a>`provisioning_dashboards_file`
 
 Data type: `String`
 
 
 
-##### `provisioning_datasources_file`
+##### <a name="provisioning_datasources_file"></a>`provisioning_datasources_file`
 
 Data type: `String`
 
 
 
-##### `create_subdirs_provisioning`
+##### <a name="create_subdirs_provisioning"></a>`create_subdirs_provisioning`
 
 Data type: `Boolean`
 
 
 
-##### `sysconfig_location`
+##### <a name="sysconfig_location"></a>`sysconfig_location`
 
 Data type: `Optional[String]`
 
 
 
-##### `sysconfig`
+##### <a name="sysconfig"></a>`sysconfig`
 
 Data type: `Optional[Hash]`
 
 
 
-##### `ldap_servers`
+##### <a name="ldap_servers"></a>`ldap_servers`
 
 Data type: `Hash[String[1], Hash]`
 
 
 
-##### `ldap_group_mappings`
+##### <a name="ldap_group_mappings"></a>`ldap_group_mappings`
 
 Data type: `Hash[String[1], Hash]`
 
 
 
-##### `toml_manage_package`
+##### <a name="toml_manage_package"></a>`toml_manage_package`
 
 Data type: `Boolean`
 
 
 
-##### `toml_package_name`
+##### <a name="toml_package_name"></a>`toml_package_name`
 
 Data type: `String[1]`
 
 
 
-##### `toml_package_ensure`
+##### <a name="toml_package_ensure"></a>`toml_package_ensure`
 
 Data type: `String[1]`
 
 
 
-##### `toml_package_provider`
+##### <a name="toml_package_provider"></a>`toml_package_provider`
 
 Data type: `Optional[String[1]]`
 
 
 
-### `grafana::config`
+### <a name="grafanaconfig"></a>`grafana::config`
 
 == Class grafana::config
 
 This class is called from grafana
 
-### `grafana::install`
+### <a name="grafanainstall"></a>`grafana::install`
 
 == Class grafana::install
 
-### `grafana::service`
+### <a name="grafanaservice"></a>`grafana::service`
 
 == Class grafana::service
 
 This class is meant to be called from grafana
 It ensure the service is running
 
-### `grafana::validator`
+### <a name="grafanavalidator"></a>`grafana::validator`
 
 Manage grafana_conn_validator resource
 
 #### Parameters
 
-The following parameters are available in the `grafana::validator` class.
+The following parameters are available in the `grafana::validator` class:
 
-##### `grafana_url`
+* [`grafana_url`](#grafana_url)
+* [`grafana_api_path`](#grafana_api_path)
+
+##### <a name="grafana_url"></a>`grafana_url`
 
 Data type: `Stdlib::HTTPUrl`
 
@@ -406,7 +442,7 @@ Grafana URL.
 
 Default value: `'http://localhost:3000'`
 
-##### `grafana_api_path`
+##### <a name="grafana_api_path"></a>`grafana_api_path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -416,7 +452,7 @@ Default value: `'/api/health'`
 
 ## Resource types
 
-### `grafana_conn_validator`
+### <a name="grafana_conn_validator"></a>`grafana_conn_validator`
 
 Verify connectivity to the Grafana API
 
@@ -436,36 +472,42 @@ Default value: `present`
 
 The following parameters are available in the `grafana_conn_validator` type.
 
-##### `grafana_api_path`
+* [`grafana_api_path`](#grafana_api_path)
+* [`grafana_url`](#grafana_url)
+* [`name`](#name)
+* [`provider`](#provider)
+* [`timeout`](#timeout)
+
+##### <a name="grafana_api_path"></a>`grafana_api_path`
 
 The absolute path to the API endpoint
 
 Default value: `/api/health`
 
-##### `grafana_url`
+##### <a name="grafana_url"></a>`grafana_url`
 
 The URL of the Grafana server
 
 Default value: `http://localhost:3000`
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 Arbitrary name of this resource
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `grafana_conn_validator` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
-##### `timeout`
+##### <a name="timeout"></a>`timeout`
 
 How long to wait for the API to be available
 
 Default value: `20`
 
-### `grafana_dashboard`
+### <a name="grafana_dashboard"></a>`grafana_dashboard`
 
 Manage dashboards in Grafana
 
@@ -489,46 +531,55 @@ Default value: `present`
 
 The following parameters are available in the `grafana_dashboard` type.
 
-##### `folder`
+* [`folder`](#folder)
+* [`grafana_api_path`](#grafana_api_path)
+* [`grafana_password`](#grafana_password)
+* [`grafana_url`](#grafana_url)
+* [`grafana_user`](#grafana_user)
+* [`organization`](#organization)
+* [`provider`](#provider)
+* [`title`](#title)
+
+##### <a name="folder"></a>`folder`
 
 The folder to place the dashboard in (optional)
 
-##### `grafana_api_path`
+##### <a name="grafana_api_path"></a>`grafana_api_path`
 
 The absolute path to the API endpoint
 
 Default value: `/api`
 
-##### `grafana_password`
+##### <a name="grafana_password"></a>`grafana_password`
 
 The password for the Grafana server (optional)
 
-##### `grafana_url`
+##### <a name="grafana_url"></a>`grafana_url`
 
 The URL of the Grafana server
 
 Default value: `''`
 
-##### `grafana_user`
+##### <a name="grafana_user"></a>`grafana_user`
 
 The username for the Grafana server (optional)
 
-##### `organization`
+##### <a name="organization"></a>`organization`
 
 The organization name to create the datasource on
 
 Default value: `1`
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `grafana_dashboard` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
-##### `title`
+##### <a name="title"></a>`title`
 
 The title of the dashboard.
 
-### `grafana_dashboard_permission`
+### <a name="grafana_dashboard_permission"></a>`grafana_dashboard_permission`
 
 Manage dashboard permissions in Grafana
 
@@ -554,56 +605,67 @@ The role to apply
 
 The following parameters are available in the `grafana_dashboard_permission` type.
 
-##### `dashboard`
+* [`dashboard`](#dashboard)
+* [`grafana_api_path`](#grafana_api_path)
+* [`grafana_password`](#grafana_password)
+* [`grafana_url`](#grafana_url)
+* [`grafana_user`](#grafana_user)
+* [`name`](#name)
+* [`organization`](#organization)
+* [`provider`](#provider)
+* [`team`](#team)
+* [`user`](#user)
+
+##### <a name="dashboard"></a>`dashboard`
 
 Dashboard to modify permissions for
 
-##### `grafana_api_path`
+##### <a name="grafana_api_path"></a>`grafana_api_path`
 
 The absolute path to the API endpoint
 
 Default value: `/api`
 
-##### `grafana_password`
+##### <a name="grafana_password"></a>`grafana_password`
 
 The password for the Grafana server
 
-##### `grafana_url`
+##### <a name="grafana_url"></a>`grafana_url`
 
 The URL of the Grafana server
 
 Default value: `''`
 
-##### `grafana_user`
+##### <a name="grafana_user"></a>`grafana_user`
 
 The username for the Grafana server
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The name of the permission.
 
-##### `organization`
+##### <a name="organization"></a>`organization`
 
 The name of the organization to add permission for
 
 Default value: `Main Org.`
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `grafana_dashboard_permission` resource. You will seldom need to specify this ---
 Puppet will usually discover the appropriate provider for your platform.
 
-##### `team`
+##### <a name="team"></a>`team`
 
 Team to add the permission for
 
-##### `user`
+##### <a name="user"></a>`user`
 
 User to add the permission for
 
-### `grafana_datasource`
+### <a name="grafana_datasource"></a>`grafana_datasource`
 
 Manage datasources in Grafana
 
@@ -695,44 +757,52 @@ Default value: `false`
 
 The following parameters are available in the `grafana_datasource` type.
 
-##### `grafana_api_path`
+* [`grafana_api_path`](#grafana_api_path)
+* [`grafana_password`](#grafana_password)
+* [`grafana_url`](#grafana_url)
+* [`grafana_user`](#grafana_user)
+* [`name`](#name)
+* [`organization`](#organization)
+* [`provider`](#provider)
+
+##### <a name="grafana_api_path"></a>`grafana_api_path`
 
 The absolute path to the API endpoint
 
 Default value: `/api`
 
-##### `grafana_password`
+##### <a name="grafana_password"></a>`grafana_password`
 
 The password for the Grafana server
 
-##### `grafana_url`
+##### <a name="grafana_url"></a>`grafana_url`
 
 The URL of the Grafana server
 
 Default value: `''`
 
-##### `grafana_user`
+##### <a name="grafana_user"></a>`grafana_user`
 
 The username for the Grafana server
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The name of the datasource.
 
-##### `organization`
+##### <a name="organization"></a>`organization`
 
 The organization name to create the datasource on
 
 Default value: `1`
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `grafana_datasource` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
-### `grafana_folder`
+### <a name="grafana_folder"></a>`grafana_folder`
 
 Manage folders in Grafana
 
@@ -756,46 +826,55 @@ The permissions of the folder
 
 The following parameters are available in the `grafana_folder` type.
 
-##### `grafana_api_path`
+* [`grafana_api_path`](#grafana_api_path)
+* [`grafana_password`](#grafana_password)
+* [`grafana_url`](#grafana_url)
+* [`grafana_user`](#grafana_user)
+* [`organization`](#organization)
+* [`provider`](#provider)
+* [`title`](#title)
+* [`uid`](#uid)
+
+##### <a name="grafana_api_path"></a>`grafana_api_path`
 
 The absolute path to the API endpoint
 
 Default value: `/api`
 
-##### `grafana_password`
+##### <a name="grafana_password"></a>`grafana_password`
 
 The password for the Grafana server (optional)
 
-##### `grafana_url`
+##### <a name="grafana_url"></a>`grafana_url`
 
 The URL of the Grafana server
 
 Default value: `''`
 
-##### `grafana_user`
+##### <a name="grafana_user"></a>`grafana_user`
 
 The username for the Grafana server (optional)
 
-##### `organization`
+##### <a name="organization"></a>`organization`
 
 The organization name to create the folder on
 
 Default value: `1`
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `grafana_folder` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
-##### `title`
+##### <a name="title"></a>`title`
 
 The title of the folder
 
-##### `uid`
+##### <a name="uid"></a>`uid`
 
 UID of the folder
 
-### `grafana_ldap_config`
+### <a name="grafana_ldap_config"></a>`grafana_ldap_config`
 
 Manage Grafana LDAP configuration
 
@@ -803,7 +882,15 @@ Manage Grafana LDAP configuration
 
 The following parameters are available in the `grafana_ldap_config` type.
 
-##### `backup`
+* [`backup`](#backup)
+* [`group`](#group)
+* [`mode`](#mode)
+* [`owner`](#owner)
+* [`replace`](#replace)
+* [`title`](#title)
+* [`validate_cmd`](#validate_cmd)
+
+##### <a name="backup"></a>`backup`
 
 Valid values: ``true``, ``false``, `yes`, `no`
 
@@ -811,25 +898,25 @@ Backup existing files before replacing them into the file-bucket
 
 Default value: ``false``
 
-##### `group`
+##### <a name="group"></a>`group`
 
 Group of the LDAP configuration file either as String or Integer (default: grafana)
 
 Default value: `grafana`
 
-##### `mode`
+##### <a name="mode"></a>`mode`
 
 File-permissions mode of the LDAP configuration file as String
 
 Default value: `0440`
 
-##### `owner`
+##### <a name="owner"></a>`owner`
 
 Owner of the LDAP configuration-file either as String or Integer (default: root)
 
 Default value: `root`
 
-##### `replace`
+##### <a name="replace"></a>`replace`
 
 Valid values: ``true``, ``false``, `yes`, `no`
 
@@ -837,15 +924,15 @@ Replace existing files
 
 Default value: ``true``
 
-##### `title`
+##### <a name="title"></a>`title`
 
 Path to ldap.toml
 
-##### `validate_cmd`
+##### <a name="validate_cmd"></a>`validate_cmd`
 
 A command to validate the new Grafana LDAP configuration before actually replacing it
 
-### `grafana_ldap_group_mapping`
+### <a name="grafana_ldap_group_mapping"></a>`grafana_ldap_group_mapping`
 
 Map an LDAP group to a Grafana role.
 
@@ -853,7 +940,13 @@ Map an LDAP group to a Grafana role.
 
 The following parameters are available in the `grafana_ldap_group_mapping` type.
 
-##### `grafana_admin`
+* [`grafana_admin`](#grafana_admin)
+* [`group_dn`](#group_dn)
+* [`ldap_server_name`](#ldap_server_name)
+* [`org_role`](#org_role)
+* [`title`](#title)
+
+##### <a name="grafana_admin"></a>`grafana_admin`
 
 Valid values: ``true``, ``false``, `yes`, `no`
 
@@ -861,25 +954,25 @@ Additonal flag for Grafana > v5.3 to signal admin-role to Grafana
 
 Default value: ``false``
 
-##### `group_dn`
+##### <a name="group_dn"></a>`group_dn`
 
 The LDAP distinguished-name of the group
 
-##### `ldap_server_name`
+##### <a name="ldap_server_name"></a>`ldap_server_name`
 
 The LDAP server config to apply the group-mappings on
 
-##### `org_role`
+##### <a name="org_role"></a>`org_role`
 
 Valid values: `Admin`, `Editor`, `Viewer`
 
 The Grafana role the shall be assigned to this group
 
-##### `title`
+##### <a name="title"></a>`title`
 
 A unique identifier of the resource
 
-### `grafana_ldap_server`
+### <a name="grafana_ldap_server"></a>`grafana_ldap_server`
 
 Manage Grafana LDAP servers for LDAP authentication.
 
@@ -887,67 +980,85 @@ Manage Grafana LDAP servers for LDAP authentication.
 
 The following parameters are available in the `grafana_ldap_server` type.
 
-##### `attributes`
+* [`attributes`](#attributes)
+* [`bind_dn`](#bind_dn)
+* [`bind_password`](#bind_password)
+* [`client_cert`](#client_cert)
+* [`client_key`](#client_key)
+* [`group_search_base_dns`](#group_search_base_dns)
+* [`group_search_filter`](#group_search_filter)
+* [`group_search_filter_user_attribute`](#group_search_filter_user_attribute)
+* [`hosts`](#hosts)
+* [`port`](#port)
+* [`root_ca_cert`](#root_ca_cert)
+* [`search_base_dns`](#search_base_dns)
+* [`search_filter`](#search_filter)
+* [`ssl_skip_verify`](#ssl_skip_verify)
+* [`start_tls`](#start_tls)
+* [`title`](#title)
+* [`use_ssl`](#use_ssl)
+
+##### <a name="attributes"></a>`attributes`
 
 Mapping LDAP attributes to their Grafana user-account-properties (optional)
 
-##### `bind_dn`
+##### <a name="bind_dn"></a>`bind_dn`
 
 If the LDAP server requires authentication (i.e. non-anonymous), provide the distinguished-name (dn) here (optional)
 
-##### `bind_password`
+##### <a name="bind_password"></a>`bind_password`
 
 If the LDAP server requires authentication (i.e. non-anonymous), provide the password (optional)
 
-##### `client_cert`
+##### <a name="client_cert"></a>`client_cert`
 
 If the LDAP server requires certificate-based authentication, specify the client's certificate (for TLS and SSL,
 optional)
 
-##### `client_key`
+##### <a name="client_key"></a>`client_key`
 
 If the LDAP server requires certificate-based authentication, specify the client's certificate (for TLS and SSL,
 optional)
 
-##### `group_search_base_dns`
+##### <a name="group_search_base_dns"></a>`group_search_base_dns`
 
 The base-dn to be used when querying LDAP for group-accounts (optional)
 
-##### `group_search_filter`
+##### <a name="group_search_filter"></a>`group_search_filter`
 
 A search-filter to be used when querying LDAP for group-accounts (optional)
 
-##### `group_search_filter_user_attribute`
+##### <a name="group_search_filter_user_attribute"></a>`group_search_filter_user_attribute`
 
 The attribute to be used to locate matching user-accounts in the group (optional)
 
-##### `hosts`
+##### <a name="hosts"></a>`hosts`
 
 The servers to perform LDAP authentication at
 
-##### `port`
+##### <a name="port"></a>`port`
 
 The port to connect at the LDAP servers (389 for TLS/plaintext, 636 for SSL [ldaps], optional)
 
 Default value: `389`
 
-##### `root_ca_cert`
+##### <a name="root_ca_cert"></a>`root_ca_cert`
 
 The root ca-certificate to verify the LDAP server's SSL certificate against (for TLS and SSL, optional)
 
 Default value: `/etc/ssl/certs/ca-certificates.crt`
 
-##### `search_base_dns`
+##### <a name="search_base_dns"></a>`search_base_dns`
 
 The one or more base-dn to be used when querying LDAP for user-accounts (optional)
 
 Default value: `[]`
 
-##### `search_filter`
+##### <a name="search_filter"></a>`search_filter`
 
 A search-filter to be used when querying LDAP for user-accounts (optional)
 
-##### `ssl_skip_verify`
+##### <a name="ssl_skip_verify"></a>`ssl_skip_verify`
 
 Valid values: ``true``, ``false``, `yes`, `no`
 
@@ -955,7 +1066,7 @@ Set to true to disable verification of the LDAP server's SSL certificate (for TL
 
 Default value: ``false``
 
-##### `start_tls`
+##### <a name="start_tls"></a>`start_tls`
 
 Valid values: ``true``, ``false``, `yes`, `no`
 
@@ -963,11 +1074,11 @@ Set to true if you want to perform LDAP via a TLS-connection (not meant to be fo
 
 Default value: ``true``
 
-##### `title`
+##### <a name="title"></a>`title`
 
 A unique identified for this LDAP server.
 
-##### `use_ssl`
+##### <a name="use_ssl"></a>`use_ssl`
 
 Valid values: ``true``, ``false``, `yes`, `no`
 
@@ -975,7 +1086,7 @@ Set to true if you want to perform LDAP via a SSL-connection (not meant to be fo
 
 Default value: ``false``
 
-### `grafana_membership`
+### <a name="grafana_membership"></a>`grafana_membership`
 
 Manage resource memberships in Grafana
 
@@ -1001,58 +1112,69 @@ The role to apply to the membership (Admin, Editor, Viewer)
 
 The following parameters are available in the `grafana_membership` type.
 
-##### `grafana_api_path`
+* [`grafana_api_path`](#grafana_api_path)
+* [`grafana_password`](#grafana_password)
+* [`grafana_url`](#grafana_url)
+* [`grafana_user`](#grafana_user)
+* [`membership_type`](#membership_type)
+* [`name`](#name)
+* [`organization`](#organization)
+* [`provider`](#provider)
+* [`target_name`](#target_name)
+* [`user_name`](#user_name)
+
+##### <a name="grafana_api_path"></a>`grafana_api_path`
 
 The absolute path to the API endpoint
 
 Default value: `/api`
 
-##### `grafana_password`
+##### <a name="grafana_password"></a>`grafana_password`
 
 The password for the Grafana server
 
-##### `grafana_url`
+##### <a name="grafana_url"></a>`grafana_url`
 
 The URL of the Grafana server
 
 Default value: `''`
 
-##### `grafana_user`
+##### <a name="grafana_user"></a>`grafana_user`
 
 The username for the Grafana server
 
-##### `membership_type`
+##### <a name="membership_type"></a>`membership_type`
 
 Valid values: `organization`, `team`
 
 The underlying type of the membership (organization, team)
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The name of the membership.
 
-##### `organization`
+##### <a name="organization"></a>`organization`
 
 The name of the organization to add membership for (team only)
 
 Default value: `Main Org.`
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `grafana_membership` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
-##### `target_name`
+##### <a name="target_name"></a>`target_name`
 
 The name of the target to add membership for
 
-##### `user_name`
+##### <a name="user_name"></a>`user_name`
 
 The name of the user to add membership for
 
-### `grafana_notification`
+### <a name="grafana_notification"></a>`grafana_notification`
 
 Manage notification in Grafana
 
@@ -1100,38 +1222,45 @@ The notification type
 
 The following parameters are available in the `grafana_notification` type.
 
-##### `grafana_api_path`
+* [`grafana_api_path`](#grafana_api_path)
+* [`grafana_password`](#grafana_password)
+* [`grafana_url`](#grafana_url)
+* [`grafana_user`](#grafana_user)
+* [`name`](#name)
+* [`provider`](#provider)
+
+##### <a name="grafana_api_path"></a>`grafana_api_path`
 
 The absolute path to the API endpoint
 
 Default value: `/api`
 
-##### `grafana_password`
+##### <a name="grafana_password"></a>`grafana_password`
 
 The password for the Grafana server
 
-##### `grafana_url`
+##### <a name="grafana_url"></a>`grafana_url`
 
 The URL of the Grafana server
 
 Default value: `''`
 
-##### `grafana_user`
+##### <a name="grafana_user"></a>`grafana_user`
 
 The username for the Grafana server
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The name of the notification.
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `grafana_notification` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
-### `grafana_organization`
+### <a name="grafana_organization"></a>`grafana_organization`
 
 Manage organizations in Grafana
 
@@ -1159,38 +1288,45 @@ The ID of the organization
 
 The following parameters are available in the `grafana_organization` type.
 
-##### `grafana_api_path`
+* [`grafana_api_path`](#grafana_api_path)
+* [`grafana_password`](#grafana_password)
+* [`grafana_url`](#grafana_url)
+* [`grafana_user`](#grafana_user)
+* [`name`](#name)
+* [`provider`](#provider)
+
+##### <a name="grafana_api_path"></a>`grafana_api_path`
 
 The absolute path to the API endpoint
 
 Default value: `/api`
 
-##### `grafana_password`
+##### <a name="grafana_password"></a>`grafana_password`
 
 The password for the Grafana server
 
-##### `grafana_url`
+##### <a name="grafana_url"></a>`grafana_url`
 
 The URL of the Grafana server
 
 Default value: `''`
 
-##### `grafana_user`
+##### <a name="grafana_user"></a>`grafana_user`
 
 The username for the Grafana server
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The name of the organization.
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `grafana_organization` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
-### `grafana_plugin`
+### <a name="grafana_plugin"></a>`grafana_plugin`
 
 manages grafana plugins
 
@@ -1206,8 +1342,17 @@ grafana_plugin { 'grafana-simple-json-datasource': }
 
 ```puppet
 grafana_plugin { 'grafana-simple-json-datasource':
-  ensure => present,
+  ensure => 'present',
   repo   => 'https://nexus.company.com/grafana/plugins',
+}
+```
+
+##### Install a grafana plugin from a plugin url
+
+```puppet
+grafana_plugin { 'grafana-example-custom-plugin':
+  ensure     => 'present',
+  plugin_url => 'https://github.com/example/example-custom-plugin/zipball/v1.0.0'
 }
 ```
 
@@ -1215,7 +1360,7 @@ grafana_plugin { 'grafana-simple-json-datasource':
 
 ```puppet
 grafana_plugin { 'grafana-simple-json-datasource':
-  ensure => absent,
+  ensure => 'absent',
 }
 ```
 
@@ -1241,7 +1386,12 @@ Default value: `present`
 
 The following parameters are available in the `grafana_plugin` type.
 
-##### `name`
+* [`name`](#name)
+* [`plugin_url`](#plugin_url)
+* [`provider`](#provider)
+* [`repo`](#repo)
+
+##### <a name="name"></a>`name`
 
 Valid values: `%r{^\S+$}`
 
@@ -1249,16 +1399,20 @@ namevar
 
 The name of the plugin to enable
 
-##### `provider`
+##### <a name="plugin_url"></a>`plugin_url`
+
+Full url to the plugin zip file
+
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `grafana_plugin` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
-##### `repo`
+##### <a name="repo"></a>`repo`
 
 The URL of an internal plugin server
 
-### `grafana_team`
+### <a name="grafana_team"></a>`grafana_team`
 
 Manage teams in Grafana
 
@@ -1278,6 +1432,12 @@ Default value: `present`
 
 The id or name of the home dashboard
 
+Default value: `Default`
+
+##### `home_dashboard_folder`
+
+The UID or name of the home dashboard folder
+
 ##### `theme`
 
 The theme to use for the team
@@ -1290,48 +1450,59 @@ The timezone to use for the team
 
 The following parameters are available in the `grafana_team` type.
 
-##### `email`
+* [`email`](#email)
+* [`grafana_api_path`](#grafana_api_path)
+* [`grafana_password`](#grafana_password)
+* [`grafana_url`](#grafana_url)
+* [`grafana_user`](#grafana_user)
+* [`name`](#name)
+* [`organization`](#organization)
+* [`provider`](#provider)
+
+##### <a name="email"></a>`email`
 
 The email for the team
 
 Default value: `''`
 
-##### `grafana_api_path`
+##### <a name="grafana_api_path"></a>`grafana_api_path`
 
 The absolute path to the API endpoint
 
 Default value: `/api`
 
-##### `grafana_password`
+##### <a name="grafana_password"></a>`grafana_password`
 
 The password for the Grafana server
 
-##### `grafana_url`
+##### <a name="grafana_url"></a>`grafana_url`
 
 The URL of the Grafana server
 
 Default value: `''`
 
-##### `grafana_user`
+##### <a name="grafana_user"></a>`grafana_user`
 
 The username for the Grafana server
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The name of the team
 
-##### `organization`
+##### <a name="organization"></a>`organization`
 
 The organization the team belongs to
 
-##### `provider`
+Default value: `Main Org.`
+
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `grafana_team` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
-### `grafana_user`
+### <a name="grafana_user"></a>`grafana_user`
 
 Manage users in Grafana
 
@@ -1371,44 +1542,52 @@ The theme for the user
 
 The following parameters are available in the `grafana_user` type.
 
-##### `full_name`
+* [`full_name`](#full_name)
+* [`grafana_api_path`](#grafana_api_path)
+* [`grafana_password`](#grafana_password)
+* [`grafana_url`](#grafana_url)
+* [`grafana_user`](#grafana_user)
+* [`name`](#name)
+* [`provider`](#provider)
+
+##### <a name="full_name"></a>`full_name`
 
 The full name of the user.
 
-##### `grafana_api_path`
+##### <a name="grafana_api_path"></a>`grafana_api_path`
 
 The absolute path to the API endpoint
 
 Default value: `/api`
 
-##### `grafana_password`
+##### <a name="grafana_password"></a>`grafana_password`
 
 The password for the Grafana server
 
-##### `grafana_url`
+##### <a name="grafana_url"></a>`grafana_url`
 
 The URL of the Grafana server
 
 Default value: `''`
 
-##### `grafana_user`
+##### <a name="grafana_user"></a>`grafana_user`
 
 The username for the Grafana server
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The username of the user.
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `grafana_user` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
 ## Functions
 
-### `grafana::deep_find_and_remove`
+### <a name="grafanadeep_find_and_remove"></a>`grafana::deep_find_and_remove`
 
 Type: Ruby 4.x API
 
@@ -1468,7 +1647,7 @@ Data type: `Optional[String]`
 
 
 
-### `grafana::get_sub_paths`
+### <a name="grafanaget_sub_paths"></a>`grafana::get_sub_paths`
 
 Type: Ruby 4.x API
 
@@ -1522,7 +1701,7 @@ Data type: `String`
 
 ## Tasks
 
-### `change_grafana_admin_password`
+### <a name="change_grafana_admin_password"></a>`change_grafana_admin_password`
 
 Change the Grafana admin user's password
 
