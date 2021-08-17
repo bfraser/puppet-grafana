@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v9.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v9.0.0) (2021-08-17)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v8.0.0...v9.0.0)
+
+**Breaking changes:**
+
+- Support only 6.x/7.x/8.x versions [\#246](https://github.com/voxpupuli/puppet-grafana/pull/246) ([root-expert](https://github.com/root-expert))
+- bump default grafana version for FreeBSD [\#240](https://github.com/voxpupuli/puppet-grafana/pull/240) ([olevole](https://github.com/olevole))
+
+**Implemented enhancements:**
+
+- puppetlabs/stdlib: Allow 7.x [\#244](https://github.com/voxpupuli/puppet-grafana/pull/244) ([bastelfreak](https://github.com/bastelfreak))
+- puppet/archive: allow 5.x [\#243](https://github.com/voxpupuli/puppet-grafana/pull/243) ([bastelfreak](https://github.com/bastelfreak))
+- Allow grafana\_team home dashboard to be scoped to a folder [\#241](https://github.com/voxpupuli/puppet-grafana/pull/241) ([treydock](https://github.com/treydock))
+
+**Closed issues:**
+
+- config class does not restart service [\#239](https://github.com/voxpupuli/puppet-grafana/issues/239)
+- grafana\_team resource gives Could not evaluate: Invalid parameter  [\#237](https://github.com/voxpupuli/puppet-grafana/issues/237)
+
+**Merged pull requests:**
+
+- Update README.md about tested OSes [\#250](https://github.com/voxpupuli/puppet-grafana/pull/250) ([bastelfreak](https://github.com/bastelfreak))
+- Use Iterable.find to find a folder [\#249](https://github.com/voxpupuli/puppet-grafana/pull/249) ([ekohl](https://github.com/ekohl))
+- Add Ubuntu 20.04 support [\#248](https://github.com/voxpupuli/puppet-grafana/pull/248) ([root-expert](https://github.com/root-expert))
+- Update badges in README.md [\#245](https://github.com/voxpupuli/puppet-grafana/pull/245) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v8.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v8.0.0) (2021-02-20)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v7.0.0...v8.0.0)
@@ -362,10 +389,6 @@ These should not affect the functionality of the module.
 ## [v2.6.2](https://github.com/voxpupuli/puppet-grafana/tree/v2.6.2) (2017-01-18)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v2.6.1...v2.6.2)
-
-**Merged pull requests:**
-
-- release 2.6.2 \(optimistic, i know ;\) [\#20](https://github.com/voxpupuli/puppet-grafana/pull/20) ([igalic](https://github.com/igalic))
 
 ## v2.6.1 (2017-01-18)
 
