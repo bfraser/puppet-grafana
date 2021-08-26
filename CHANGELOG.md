@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v9.0.1](https://github.com/voxpupuli/puppet-grafana/tree/v9.0.1) (2021-08-26)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v9.0.0...v9.0.1)
+
+**Merged pull requests:**
+
+- Allow stdlib 8.0.0 and archive 6.0.0 [\#252](https://github.com/voxpupuli/puppet-grafana/pull/252) ([smortex](https://github.com/smortex))
+
 ## [v9.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v9.0.0) (2021-08-17)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v8.0.0...v9.0.0)
