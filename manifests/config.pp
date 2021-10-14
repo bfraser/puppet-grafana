@@ -27,7 +27,7 @@ class grafana::config {
         ensure  => file,
         path    => $grafana::cfg_location,
         content => template('grafana/config.ini.erb'),
-        owner   => 'grafana',
+        owner   => 'root',
         group   => 'grafana',
         notify  => Class['grafana::service'],
       }
