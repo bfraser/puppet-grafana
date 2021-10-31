@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:grafana_dashboard_permission) do
@@ -31,13 +33,13 @@ describe Puppet::Type.type(:grafana_dashboard_permission) do
         described_class.new title: 'foo title', user: 'foo_user', team: 'foo_team'
       end.to raise_error(Puppet::Error, %r{Only user or team can be set, not both})
     end
+
     it 'accepts valid parameters' do
       expect(gpermission[:user]).to eq('foo_user')
       expect(gpermission[:grafana_api_path]).to eq('/api')
       expect(gpermission[:grafana_url]).to eq('http://example.com/')
       expect(gpermission[:dashboard]).to eq('foo_dashboard')
     end
-    # rubocop:enable RSpec/MultipleExpectations
 
     it 'autorequires the grafana-server for proper ordering' do
       catalog = Puppet::Resource::Catalog.new

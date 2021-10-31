@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 require 'net/http'
 
 module Puppet
   module Util
     # Validator class, for testing that Grafana is alive
     class GrafanaConnValidator
-      attr_reader :grafana_url
-      attr_reader :grafana_api_path
+      attr_reader :grafana_url, :grafana_api_path
 
       def initialize(grafana_url, grafana_api_path)
         @grafana_url      = grafana_url
@@ -35,10 +36,10 @@ module Puppet
           Puppet.notice "Unable to connect to Grafana server (#{grafana_scheme}://#{grafana_host}:#{grafana_port}): [#{response.code}] #{response.msg}"
           return false
         end
-        return true
+        true
       rescue Exception => e # rubocop:disable Lint/RescueException
         Puppet.notice "Unable to connect to Grafana server (#{grafana_scheme}://#{grafana_host}:#{grafana_port}): #{e.message}"
-        return false
+        false
       end
     end
   end

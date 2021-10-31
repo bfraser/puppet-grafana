@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # In this case I'm trying the relative path first, then falling back to normal
 # mechanisms. This should be fixed in future versions of puppet but it looks
 # like we'll need to maintain this for some time perhaps.
@@ -36,9 +38,7 @@ Puppet::Type.type(:grafana_conn_validator).provide(:net_http) do
       success = validator.attempt_connection
     end
 
-    unless success
-      Puppet.notice("Failed to connect to Grafana within timeout window of #{timeout} seconds; giving up.")
-    end
+    Puppet.notice("Failed to connect to Grafana within timeout window of #{timeout} seconds; giving up.") unless success
 
     success
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.type(:grafana_plugin).provide(:grafana_cli) do
   has_command(:grafana_cli, 'grafana-cli') do
     is_optional
@@ -11,6 +13,7 @@ Puppet::Type.type(:grafana_plugin).provide(:grafana_cli) do
     plugins = []
     grafana_cli('plugins', 'ls').split(%r{\n}).each do |line|
       next unless line =~ %r{^(\S+)\s+@\s+((?:\d\.).+)\s*$}
+
       name = Regexp.last_match(1)
       version = Regexp.last_match(2)
       Puppet.debug("Found grafana plugin #{name} #{version}")
@@ -33,7 +36,7 @@ Puppet::Type.type(:grafana_plugin).provide(:grafana_cli) do
 
   def self.prefetch(resources)
     plugins = instances
-    resources.keys.each do |name|
+    resources.each_key do |name|
       if (provider = plugins.find { |plugin| plugin.name == name })
         resources[name].provider = provider
       end

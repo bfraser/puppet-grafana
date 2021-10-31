@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #    Copyright 2015 Mirantis, Inc.
 #
 require 'json'
@@ -19,11 +21,9 @@ Puppet::Type.newtype(:grafana_dashboard) do
     desc 'The JSON representation of the dashboard.'
 
     validate do |value|
-      begin
-        JSON.parse(value)
-      rescue JSON::ParserError
-        raise ArgumentError, 'Invalid JSON string for content'
-      end
+      JSON.parse(value)
+    rescue JSON::ParserError
+      raise ArgumentError, 'Invalid JSON string for content'
     end
 
     munge do |value|
@@ -45,9 +45,7 @@ Puppet::Type.newtype(:grafana_dashboard) do
     defaultto ''
 
     validate do |value|
-      unless value =~ %r{^https?://}
-        raise ArgumentError, format('%s is not a valid URL', value)
-      end
+      raise ArgumentError, format('%s is not a valid URL', value) unless value =~ %r{^https?://}
     end
   end
 
@@ -64,9 +62,7 @@ Puppet::Type.newtype(:grafana_dashboard) do
     defaultto '/api'
 
     validate do |value|
-      unless value =~ %r{^/.*/?api$}
-        raise ArgumentError, format('%s is not a valid API path', value)
-      end
+      raise ArgumentError, format('%s is not a valid API path', value) unless value =~ %r{^/.*/?api$}
     end
   end
 
@@ -75,9 +71,8 @@ Puppet::Type.newtype(:grafana_dashboard) do
     defaultto 1
   end
 
-  # rubocop:disable Style/SignalException
   validate do
-    fail('content is required when ensure is present') if self[:ensure] == :present && self[:content].nil?
+    fail('content is required when ensure is present') if self[:ensure] == :present && self[:content].nil? # rubocop:disable Style/SignalException
   end
   autorequire(:service) do
     'grafana-server'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 
 Puppet::Type.newtype(:grafana_folder) do
@@ -18,9 +20,7 @@ Puppet::Type.newtype(:grafana_folder) do
     defaultto ''
 
     validate do |value|
-      unless value =~ %r{^https?://}
-        raise ArgumentError, format('%s is not a valid URL', value)
-      end
+      raise ArgumentError, format('%s is not a valid URL', value) unless value =~ %r{^https?://}
     end
   end
 
@@ -37,9 +37,7 @@ Puppet::Type.newtype(:grafana_folder) do
     defaultto '/api'
 
     validate do |value|
-      unless value =~ %r{^/.*/?api$}
-        raise ArgumentError, format('%s is not a valid API path', value)
-      end
+      raise ArgumentError, format('%s is not a valid API path', value) unless value =~ %r{^/.*/?api$}
     end
   end
 

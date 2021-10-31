@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Function: deep_find_and_remove
 #
 # This function takes a hash as input, along with a string
@@ -28,9 +30,7 @@ Puppet::Functions.create_function(:'grafana::deep_find_and_remove') do
       foundpaths << object[key].dup
       object[key].delete(removekey)
     end
-    if object.is_a? Enumerable
-      foundpaths << object.map { |*a| deep_find_and_remove(key, a.last) }
-    end
+    foundpaths << object.map { |*a| deep_find_and_remove(key, a.last) } if object.is_a? Enumerable
     foundpaths.flatten.compact
     foundpaths
   end
