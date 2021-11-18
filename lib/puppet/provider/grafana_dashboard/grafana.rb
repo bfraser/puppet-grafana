@@ -104,12 +104,13 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
 
   # Return the dashboard matching with the resource's title
   def find_dashboard
-    return unless dashboards.find { |x| x['title'] == resource[:title] }
+    db = dashboards.find { |x| x['title'] == resource[:title] }
+    return if db.nil?
 
-    response = send_request('GET', format('%s/dashboards/uid/%s', resource[:grafana_api_path], slug))
+    response = send_request('GET', format('%s/dashboards/uid/%s', resource[:grafana_api_path], db['uid']))
 
     if response.code != '200'
-      raise format('Fail to retrieve dashboard %s (HTTP response: %s/%s)', resource[:title], response.code, response.body)
+      raise format('Fail to retrieve dashboard %s by uid %s (HTTP response: %s/%s)', resource[:title], db['uid'], response.code, response.body)
     end
 
     begin
