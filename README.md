@@ -673,7 +673,7 @@ grafana_dashboard { 'example_dashboard':
 }
 ```
 
-`content` must be valid JSON, and is parsed before imported.
+`content` must be valid JSON, and is parsed before imported. You can use the JSON generated with the share/export functionality or from the API call to /dashboards/uid but must remove the fields "id", "uid", "title" and "version" to make the resource call idempotent.
 `grafana_user` and `grafana_password` are optional, and required when
 authentication is enabled in Grafana. `grafana_api_path` is optional, and only used when using sub-paths for the API. `organization` is optional, and used when creating a dashboard for a specific organization.
 `folder` is an optional parameter, but the folder resource must exist.
