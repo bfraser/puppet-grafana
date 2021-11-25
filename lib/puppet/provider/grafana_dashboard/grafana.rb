@@ -161,7 +161,7 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
   end
 
   def destroy
-    db = dashboards.find { |x| x['title'] ==  resource[:title] }
+    db = dashboards.find { |x| x['title'] == resource[:title] }
     raise Puppet::Error, format('Failed to delete dashboard %s, dashboard not found', resource[:title]) if db.nil?
     response = send_request('DELETE', format('%s/dashboards/uid/%s', resource[:grafana_api_path], db['uid']))
 
