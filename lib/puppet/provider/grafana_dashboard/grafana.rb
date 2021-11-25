@@ -132,8 +132,8 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
 
     data = {
       dashboard: dashboard.merge('title' => resource[:title],
-                                 'id' => @dashboard ? @dashboard['id'] : nil,
-                                 'uid' => slug,
+                                 #'id' => @dashboard ? @dashboard['id'] : nil,
+                                 #'uid' => slug, This alters the UID of the existing dashboards in unwanted ways
                                  'version' => @dashboard ? @dashboard['version'] + 1 : 0),
       folderId: @folder ? @folder['id'] : nil,
       overwrite: !@dashboard.nil?
@@ -141,7 +141,7 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
 
     response = send_request('POST', format('%s/dashboards/db', resource[:grafana_api_path]), data)
     return unless (response.code != '200') && (response.code != '412')
-    raise format('Fail to save dashboard %s (HTTP response: %s/%s', resource[:name], response.code, response.body)
+    raise format('Fail to save dashboard %s (HTTP response: %s/%s)', resource[:name], response.code, response.body)
   end
 
   def slug
@@ -149,7 +149,7 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
   end
 
   def content
-    @dashboard.reject { |k, _| k =~ %r{^id|uid|version|title$} }
+    @dashboard.reject { |k, _| k =~ %r{^uid|version|title$} }
   end
 
   def content=(value)
@@ -161,10 +161,12 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
   end
 
   def destroy
-    response = send_request('DELETE', format('%s/dashboards/uid/%s', resource[:grafana_api_path], slug))
+    db = dashboards.find { |x| x['title'] == slug }
+    raise Puppet::Error, format('Failed to delete dashboard %s, dashboard not found', resource[:title]) if db.nil?
+    response = send_request('DELETE', format('%s/dashboards/uid/%s', resource[:grafana_api_path], db['uid']))
 
     return unless response.code != '200'
-    raise Puppet::Error, format('Failed to delete dashboard %s (HTTP response: %s/%s', resource[:title], response.code, response.body)
+    raise Puppet::Error, format('Failed to delete dashboard %s (HTTP response: %s/%s)', resource[:title], response.code, response.body)
   end
 
   def exists?
