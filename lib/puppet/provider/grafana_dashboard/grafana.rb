@@ -115,7 +115,7 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
 
     begin
       # Cache the dashboard's content
-      @dashboard = JSON.parse(response.body)['dashboard'].reject { |k, _| k =~ %r{^id|uid|version|title$} }
+      @dashboard = JSON.parse(response.body)['dashboard']
     rescue JSON::ParserError
       raise format('Fail to parse dashboard %s: %s', resource[:title], response.body)
     end
