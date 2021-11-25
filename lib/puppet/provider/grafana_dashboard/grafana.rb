@@ -115,7 +115,7 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
 
     begin
       # Cache the dashboard's content
-      @dashboard = JSON.parse(response.body)['dashboard']
+      @dashboard = JSON.parse(response.body)['dashboard'].reject { |k, _| k =~ %r{^id|uid|version|title$} }
     rescue JSON::ParserError
       raise format('Fail to parse dashboard %s: %s', resource[:title], response.body)
     end
@@ -132,8 +132,8 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
 
     data = {
       dashboard: dashboard.merge('title' => resource[:title],
-                                 #'id' => @dashboard ? @dashboard['id'] : nil,
-                                 #'uid' => slug, This alters the UID of the existing dashboards in unwanted ways
+                                 'id' => @dashboard ? @dashboard['id'] : nil,
+                                 'uid' => @dashboard ? @dashboard['uid'] : nil,
                                  'version' => @dashboard ? @dashboard['version'] + 1 : 0),
       folderId: @folder ? @folder['id'] : nil,
       overwrite: !@dashboard.nil?
@@ -149,7 +149,7 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
   end
 
   def content
-    @dashboard.reject { |k, _| k =~ %r{^uid|version|title$} }
+    @dashboard.reject { |k, _| k =~ %r{^id|uid|version|title$} }
   end
 
   def content=(value)
