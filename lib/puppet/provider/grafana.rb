@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #    Copyright 2015 Mirantis, Inc.
 #
 require 'cgi'
@@ -7,19 +9,17 @@ require 'net/http'
 class Puppet::Provider::Grafana < Puppet::Provider
   # Helper methods
   def grafana_host
-    @grafana_host = URI.parse(resource[:grafana_url]).host unless @grafana_host
+    @grafana_host ||= URI.parse(resource[:grafana_url]).host
     @grafana_host
   end
 
   def grafana_port
-    @grafana_port = URI.parse(resource[:grafana_url]).port unless @grafana_port
+    @grafana_port ||= URI.parse(resource[:grafana_url]).port
     @grafana_port
   end
 
   def grafana_scheme
-    unless @grafana_scheme
-      @grafana_scheme = URI.parse(resource[:grafana_url]).scheme
-    end
+    @grafana_scheme ||= URI.parse(resource[:grafana_url]).scheme
     @grafana_scheme
   end
 
@@ -56,9 +56,7 @@ class Puppet::Provider::Grafana < Puppet::Provider
     end
 
     request.content_type = 'application/json'
-    if resource[:grafana_user] && resource[:grafana_password]
-      request.basic_auth resource[:grafana_user], resource[:grafana_password]
-    end
+    request.basic_auth resource[:grafana_user], resource[:grafana_password] if resource[:grafana_user] && resource[:grafana_password]
 
     Net::HTTP.start(grafana_host, grafana_port,
                     use_ssl: grafana_scheme == 'https',

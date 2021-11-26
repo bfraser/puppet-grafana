@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'grafana'))
@@ -9,18 +11,14 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
 
   def users
     response = send_request('GET', format('%s/users', resource[:grafana_api_path]))
-    if response.code != '200'
-      raise format('Fail to retrieve users (HTTP response: %s/%s)', response.code, response.body)
-    end
+    raise format('Fail to retrieve users (HTTP response: %s/%s)', response.code, response.body) if response.code != '200'
 
     begin
       users = JSON.parse(response.body)
 
       users.map { |x| x['id'] }.map do |id|
         response = send_request('GET', format('%s/users/%s', resource[:grafana_api_path], id))
-        if response.code != '200'
-          raise format('Fail to retrieve user %d (HTTP response: %s/%s)', id, response.code, response.body)
-        end
+        raise format('Fail to retrieve user %d (HTTP response: %s/%s)', id, response.code, response.body) if response.code != '200'
 
         user = JSON.parse(response.body)
         {
@@ -30,7 +28,7 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
           email: user['email'],
           theme: user['theme'],
           password: nil,
-          is_admin: user['isGrafanaAdmin'] ? :true : :false
+          is_admin: user['isGrafanaAdmin'] ? true : false
         }
       end
     rescue JSON::ParserError
@@ -39,7 +37,7 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
   end
 
   def user
-    @user = users.find { |x| x[:name] == resource[:name] } unless @user
+    @user ||= users.find { |x| x[:name] == resource[:name] }
     @user
   end
 
@@ -90,7 +88,7 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
     save_user
   end
 
-  # rubocop:disable Style/PredicateName
+  # rubocop:disable Naming/PredicateName
   def is_admin
     user[:is_admin]
   end
@@ -99,7 +97,7 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
     resource[:is_admin] = value
     save_user
   end
-  # rubocop:enable Style/PredicateName
+  # rubocop:enable Naming/PredicateName
 
   def save_user
     data = {
@@ -108,7 +106,7 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
       email: resource[:email],
       password: resource[:password],
       theme: resource[:theme],
-      isGrafanaAdmin: (resource[:is_admin] == :true)
+      isGrafanaAdmin: (resource[:is_admin] == true)
     }
 
     if user.nil?
@@ -120,9 +118,8 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
       response = send_request('PUT', format('%s/users/%s', resource[:grafana_api_path], user[:id]), data)
     end
 
-    if response.code != '200'
-      raise format('Failed to create user %s (HTTP response: %s/%s)', resource[:name], response.code, response.body)
-    end
+    raise format('Failed to create user %s (HTTP response: %s/%s)', resource[:name], response.code, response.body) if response.code != '200'
+
     self.user = nil
   end
 
@@ -137,19 +134,14 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
       http.request(request)
     end
 
-    if response.code == '200'
-      true
-    else
-      false
-    end
+    response.code == '200'
   end
 
   def delete_user
     response = send_request('DELETE', format('%s/admin/users/%s', resource[:grafana_api_path], user[:id]))
 
-    if response.code != '200'
-      raise format('Failed to delete user %s (HTTP response: %s/%s', resource[:name], response.code, response.body)
-    end
+    raise format('Failed to delete user %s (HTTP response: %s/%s', resource[:name], response.code, response.body) if response.code != '200'
+
     self.user = nil
   end
 

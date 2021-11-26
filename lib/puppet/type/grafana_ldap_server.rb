@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:grafana_ldap_server) do
@@ -154,11 +156,11 @@ Puppet::Type.newtype(:grafana_ldap_server) do
 
       value.each { |k, v| raise ArgumentError, _('attributes hash keys and values must be Strings') unless k.is_a?(String) && v.is_a?(String) }
 
-      raise ArgumentError, _("attributes contains an unknown key, allowed: #{valid_attributes.join(', ')}") if value.keys.reject { |key| valid_attributes.include?(key) }.count > 0
+      raise ArgumentError, _("attributes contains an unknown key, allowed: #{valid_attributes.join(', ')}") if value.keys.reject { |key| valid_attributes.include?(key) }.count.positive?
     end
   end
 
-  def set_sensitive_parameters(sensitive_parameters) # rubocop:disable Style/AccessorMethodName
+  def set_sensitive_parameters(sensitive_parameters) # rubocop:disable Naming/AccessorMethodName
     parameter(:bind_password).sensitive = true if parameter(:bind_password)
     super(sensitive_parameters)
   end
@@ -168,7 +170,7 @@ Puppet::Type.newtype(:grafana_ldap_server) do
       next unless resource.is_a?(Puppet::Type.type(:grafana_ldap_group_mapping))
       next unless resource[:ldap_server_name] == self[:name]
 
-      group_mapping = Hash[resource.original_parameters.map { |k, v| [k.to_s, v] }]
+      group_mapping = resource.original_parameters.transform_keys(&:to_s)
       group_mapping.delete('ldap_server_name')
 
       group_mapping

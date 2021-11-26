@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 #    Copyright 2015 Mirantis, Inc.
 #
 require 'json'
 
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'grafana'))
 
-# Note: this class doesn't implement the self.instances and self.prefetch
+# NOTE: this class doesn't implement the self.instances and self.prefetch
 # methods because the Grafana API doesn't allow to retrieve the dashboards and
 # all their properties in a single call.
 Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider::Grafana) do
@@ -22,18 +24,14 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
 
   def fetch_organizations
     response = send_request('GET', format('%s/orgs', resource[:grafana_api_path]))
-    if response.code != '200'
-      raise format('Fail to retrieve organizations (HTTP response: %s/%s)', response.code, response.body)
-    end
+    raise format('Fail to retrieve organizations (HTTP response: %s/%s)', response.code, response.body) if response.code != '200'
 
     begin
       fetch_organizations = JSON.parse(response.body)
 
       fetch_organizations.map { |x| x['id'] }.map do |id|
         response = send_request 'GET', format('%s/orgs/%s', resource[:grafana_api_path], id)
-        if response.code != '200'
-          raise format('Failed to retrieve organization %d (HTTP response: %s/%s)', id, response.code, response.body)
-        end
+        raise format('Failed to retrieve organization %d (HTTP response: %s/%s)', id, response.code, response.body) if response.code != '200'
 
         fetch_organization = JSON.parse(response.body)
 
@@ -48,22 +46,17 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
   end
 
   def fetch_organization
-    unless @fetch_organization
-      @fetch_organization =
-        if resource[:organization].is_a?(Numeric) || resource[:organization].match(%r{^[0-9]*$})
-          fetch_organizations.find { |x| x[:id] == resource[:organization] }
-        else
-          fetch_organizations.find { |x| x[:name] == resource[:organization] }
-        end
-    end
+    @fetch_organization ||= if resource[:organization].is_a?(Numeric) || resource[:organization].match(%r{^[0-9]*$})
+                              fetch_organizations.find { |x| x[:id] == resource[:organization] }
+                            else
+                              fetch_organizations.find { |x| x[:name] == resource[:organization] }
+                            end
     @fetch_organization
   end
 
   def folders
     response = send_request('GET', format('%s/folders', resource[:grafana_api_path]))
-    if response.code != '200'
-      raise format('Fail to retrieve the folders (HTTP response: %s/%s)', response.code, response.body)
-    end
+    raise format('Fail to retrieve the folders (HTTP response: %s/%s)', response.code, response.body) if response.code != '200'
 
     begin
       @folders = JSON.parse(response.body)
@@ -87,13 +80,10 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
   def dashboards
     # change organizations
     response = send_request 'POST', format('%s/user/using/%s', resource[:grafana_api_path], fetch_organization[:id])
-    unless response.code == '200'
-      raise format('Failed to switch to org %s (HTTP response: %s/%s)', fetch_organization[:id], response.code, response.body)
-    end
+    raise format('Failed to switch to org %s (HTTP response: %s/%s)', fetch_organization[:id], response.code, response.body) unless response.code == '200'
+
     response = send_request('GET', format('%s/search', resource[:grafana_api_path]), nil, q: '', starred: false)
-    if response.code != '200'
-      raise format('Fail to retrieve the dashboards (HTTP response: %s/%s)', response.code, response.body)
-    end
+    raise format('Fail to retrieve the dashboards (HTTP response: %s/%s)', response.code, response.body) if response.code != '200'
 
     begin
       JSON.parse(response.body)
@@ -109,9 +99,7 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
 
     response = send_request('GET', format('%s/dashboards/uid/%s', resource[:grafana_api_path], db['uid']))
 
-    if response.code != '200'
-      raise format('Fail to retrieve dashboard %s by uid %s (HTTP response: %s/%s)', resource[:title], db['uid'], response.code, response.body)
-    end
+    raise format('Fail to retrieve dashboard %s by uid %s (HTTP response: %s/%s)', resource[:title], db['uid'], response.code, response.body) if response.code != '200'
 
     begin
       # Cache the dashboard's content
@@ -126,9 +114,7 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
 
     # change organizations
     response = send_request 'POST', format('%s/user/using/%s', resource[:grafana_api_path], fetch_organization[:id])
-    unless response.code == '200'
-      raise format('Failed to switch to org %s (HTTP response: %s/%s)', fetch_organization[:id], response.code, response.body)
-    end
+    raise format('Failed to switch to org %s (HTTP response: %s/%s)', fetch_organization[:id], response.code, response.body) unless response.code == '200'
 
     data = {
       dashboard: dashboard.merge('title' => resource[:title],
@@ -141,11 +127,12 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
 
     response = send_request('POST', format('%s/dashboards/db', resource[:grafana_api_path]), data)
     return unless (response.code != '200') && (response.code != '412')
+
     raise format('Fail to save dashboard %s (HTTP response: %s/%s)', resource[:name], response.code, response.body)
   end
 
   def slug
-    resource[:title].downcase.gsub(%r{[ \+]+}, '-').gsub(%r{[^\w\- ]}, '')
+    resource[:title].downcase.gsub(%r{[ +]+}, '-').gsub(%r{[^\w\- ]}, '')
   end
 
   def content
@@ -163,9 +150,11 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
   def destroy
     db = dashboards.find { |x| x['title'] == resource[:title] }
     raise Puppet::Error, format('Failed to delete dashboard %s, dashboard not found', resource[:title]) if db.nil?
+
     response = send_request('DELETE', format('%s/dashboards/uid/%s', resource[:grafana_api_path], db['uid']))
 
     return unless response.code != '200'
+
     raise Puppet::Error, format('Failed to delete dashboard %s (HTTP response: %s/%s)', resource[:title], response.code, response.body)
   end
 

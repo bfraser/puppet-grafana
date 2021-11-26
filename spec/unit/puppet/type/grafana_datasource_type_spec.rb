@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright 2015 Mirantis, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,6 +55,7 @@ describe Puppet::Type.type(:grafana_datasource) do
         described_class.new name: 'foo', grafana_url: 'http://example.com', secure_json_data: 'invalid', ensure: :present
       end.to raise_error(Puppet::Error, %r{json_data should be a Hash})
     end
+
     it 'accepts valid parameters' do
       expect(gdatasource[:name]).to eq('foo')
       expect(gdatasource[:grafana_url]).to eq('http://example.com')
@@ -60,18 +63,17 @@ describe Puppet::Type.type(:grafana_datasource) do
       expect(gdatasource[:type]).to eq('elasticsearch')
       expect(gdatasource[:organization]).to eq('test_org')
       expect(gdatasource[:access_mode]).to eq(:proxy)
-      expect(gdatasource[:is_default]).to eq(:true)
-      expect(gdatasource[:basic_auth]).to eq(:true)
+      expect(gdatasource[:is_default]).to eq(:true) # rubocop:disable Lint/BooleanSymbol
+      expect(gdatasource[:basic_auth]).to eq(:true) # rubocop:disable Lint/BooleanSymbol
       expect(gdatasource[:basic_auth_user]).to eq('user')
       expect(gdatasource[:basic_auth_password]).to eq('password')
-      expect(gdatasource[:with_credentials]).to eq(:true)
+      expect(gdatasource[:with_credentials]).to eq(:true) # rubocop:disable Lint/BooleanSymbol
       expect(gdatasource[:database]).to eq('test_db')
       expect(gdatasource[:user]).to eq('db_user')
       expect(gdatasource[:password]).to eq('db_password')
       expect(gdatasource[:json_data]).to eq(esVersion: 5, timeField: '@timestamp', timeInterval: '1m')
       expect(gdatasource[:secure_json_data]).to eq(password: '5ecretPassw0rd')
     end
-    # rubocop:enable RSpec/MultipleExpectations
 
     it 'autorequires the grafana-server for proper ordering' do
       catalog = Puppet::Resource::Catalog.new
