@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v10.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v10.0.0) (2021-11-26)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v9.0.1...v10.0.0)
+
+**Breaking changes:**
+
+- Drop support for Debian 9, Ubuntu 16.04 \(EOL\) [\#262](https://github.com/voxpupuli/puppet-grafana/pull/262) ([smortex](https://github.com/smortex))
+
+**Implemented enhancements:**
+
+- Add support for Debian 11, CentOS 8, RedHat 8 and FreeBSD 13 [\#255](https://github.com/voxpupuli/puppet-grafana/pull/255) ([smortex](https://github.com/smortex))
+
+**Fixed bugs:**
+
+- Fix dashboard api call in grafana\_dashboard [\#267](https://github.com/voxpupuli/puppet-grafana/pull/267) ([joernott](https://github.com/joernott))
+
+**Closed issues:**
+
+- grafana\_dashboards ov version 9.0.1 does not work with Grafana 6.7.6 [\#261](https://github.com/voxpupuli/puppet-grafana/issues/261)
+
 ## [v9.0.1](https://github.com/voxpupuli/puppet-grafana/tree/v9.0.1) (2021-08-26)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v9.0.0...v9.0.1)
