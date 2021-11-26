@@ -114,7 +114,7 @@ Puppet::Type.newtype(:grafana_datasource) do
     end
   end
 
-  def set_sensitive_parameters(sensitive_parameters) # rubocop:disable Style/AccessorMethodName
+  def set_sensitive_parameters(sensitive_parameters) # rubocop:disable Naming/AccessorMethodName
     parameter(:password).sensitive = true if parameter(:password)
     parameter(:basic_auth_password).sensitive = true if parameter(:basic_auth_password)
     super(sensitive_parameters)
