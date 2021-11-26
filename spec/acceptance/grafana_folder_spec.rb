@@ -139,7 +139,7 @@ supported_versions.each do |grafana_version|
       end
 
       it 'folder contains dashboard' do
-        shell('curl --user admin:admin http://localhost:3000/api/dashboards/uid/example-dashboard') do |f|
+        shell('curl --user admin:admin http://localhost:3000/api/search?query=example-dashboard') do |f|
           expect(f.stdout).to match(%r{"folderId":1})
         end
       end

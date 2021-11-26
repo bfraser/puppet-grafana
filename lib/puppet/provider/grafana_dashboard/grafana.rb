@@ -133,7 +133,7 @@ Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider
     data = {
       dashboard: dashboard.merge('title' => resource[:title],
                                  'id' => @dashboard ? @dashboard['id'] : nil,
-                                 'uid' => @dashboard ? @dashboard['uid'] : nil,
+                                 'uid' => @dashboard ? @dashboard['uid'] : slug,
                                  'version' => @dashboard ? @dashboard['version'] + 1 : 0),
       folderId: @folder ? @folder['id'] : nil,
       overwrite: !@dashboard.nil?
