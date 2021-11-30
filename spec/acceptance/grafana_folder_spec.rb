@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 supported_versions.each do |grafana_version|
@@ -57,17 +59,20 @@ supported_versions.each do |grafana_version|
           expect(f.stdout).to match(%r{example-folder})
         end
       end
+
       it 'has created the editor folder' do
         shell('curl --user admin:admin http://localhost:3000/api/folders') do |f|
           expect(f.stdout).to match(%r{editor-folder})
         end
       end
+
       it 'has created the example folder permissions' do
         shell('curl --user admin:admin http://localhost:3000/api/folders/example-folder/permissions') do |f|
           data = JSON.parse(f.stdout)
           expect(data).to include(hash_including('permission' => 2, 'role' => 'Editor'), hash_including('permission' => 1, 'role' => 'Viewer'))
         end
       end
+
       it 'has created the editor folder permissions' do
         shell('curl --user admin:admin http://localhost:3000/api/folders/editor-folder/permissions') do |f|
           data = JSON.parse(f.stdout)
@@ -113,6 +118,7 @@ supported_versions.each do |grafana_version|
           # expect(data[0]['role']).to eq('Editor')
         end
       end
+
       it 'has updated the editor folder permissions' do
         shell('curl --user admin:admin http://localhost:3000/api/folders/editor-folder/permissions') do |f|
           data = JSON.parse(f.stdout)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:grafana_team) do
@@ -19,6 +21,7 @@ describe Puppet::Type.type(:grafana_team) do
         described_class.new name: 'foo', grafana_url: 'example.com', content: '{}', ensure: :present
       end.to raise_error(Puppet::Error, %r{not a valid URL})
     end
+
     it 'accepts valid parameters' do
       expect(gteam[:name]).to eq('foo')
       expect(gteam[:grafana_user]).to eq('admin')
@@ -28,7 +31,6 @@ describe Puppet::Type.type(:grafana_team) do
       expect(gteam[:home_dashboard]).to eq('foo_dashboard')
       expect(gteam[:organization]).to eq('foo_organization')
     end
-    # rubocop:enable RSpec/MultipleExpectations
 
     it 'autorequires the grafana-server for proper ordering' do
       catalog = Puppet::Resource::Catalog.new

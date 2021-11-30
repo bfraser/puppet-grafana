@@ -182,7 +182,7 @@ Puppet::Type.type(:grafana_dashboard_permission).provide(:grafana, parent: Puppe
   def new_permission
     key = resource[:user] ? :userId : :teamId
     subject_id = resource[:user] ? user[:id] : team[:id]
-    permission = case resource[:permission]
+    permission = case resource[:permission] # rubocop:disable Style/HashLikeCase
                  when :View
                    1
                  when :Edit
@@ -218,7 +218,7 @@ Puppet::Type.type(:grafana_dashboard_permission).provide(:grafana, parent: Puppe
     end
   end
 
-  def permission_data(destroy = false)
+  def permission_data(destroy = false) # rubocop:disable Style/OptionalBooleanParameter
     raise format('Unknown dashboard: %s', resource[:dashboard]) unless dashboard
 
     endpoint = format('%s/dashboards/id/%s/permissions', grafana_api_path, dashboard[:id])

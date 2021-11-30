@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright 2015 Mirantis, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,6 +55,7 @@ describe Puppet::Type.type(:grafana_datasource) do
         described_class.new name: 'foo', grafana_url: 'http://example.com', secure_json_data: 'invalid', ensure: :present
       end.to raise_error(Puppet::Error, %r{json_data should be a Hash})
     end
+
     it 'accepts valid parameters' do
       expect(gdatasource[:name]).to eq('foo')
       expect(gdatasource[:grafana_url]).to eq('http://example.com')
@@ -71,7 +74,6 @@ describe Puppet::Type.type(:grafana_datasource) do
       expect(gdatasource[:json_data]).to eq(esVersion: 5, timeField: '@timestamp', timeInterval: '1m')
       expect(gdatasource[:secure_json_data]).to eq(password: '5ecretPassw0rd')
     end
-    # rubocop:enable RSpec/MultipleExpectations
 
     it 'autorequires the grafana-server for proper ordering' do
       catalog = Puppet::Resource::Catalog.new

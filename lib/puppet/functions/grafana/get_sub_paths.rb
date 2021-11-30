@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Function get_sub_paths
 #
 # This function receives an input path as an input parameter, and
@@ -28,10 +30,11 @@ Puppet::Functions.create_function(:'grafana::get_sub_paths') do
     parts = ip.split('/')
     parts.each_with_index do |value, index|
       next if index.zero? || index == (parts.length - 1)
+
       allsubs << if index == 1
-                   '/' + value
+                   "/#{value}"
                  else
-                   allsubs[index - 2] + '/' + value
+                   "#{allsubs[index - 2]}/#{value}"
                  end
     end
     allsubs

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 supported_versions.each do |grafana_version|
@@ -9,6 +11,7 @@ supported_versions.each do |grafana_version|
         install_module_from_forge('puppetlabs/apt', '>= 7.5.0 < 9.0.0')
       end
       # Using puppet_apply as a helper
+
       it 'works idempotently with no errors' do
         pp = <<-EOS
         class { 'grafana':

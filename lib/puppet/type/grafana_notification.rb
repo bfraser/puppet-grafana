@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #    Copyright 2015 Mirantis, Inc.
 #
 Puppet::Type.newtype(:grafana_notification) do
@@ -14,9 +16,7 @@ Puppet::Type.newtype(:grafana_notification) do
     defaultto '/api'
 
     validate do |value|
-      unless value =~ %r{^/.*/?api$}
-        raise ArgumentError, format('%s is not a valid API path', value)
-      end
+      raise ArgumentError, format('%s is not a valid API path', value) unless value =~ %r{^/.*/?api$}
     end
   end
 
@@ -25,9 +25,7 @@ Puppet::Type.newtype(:grafana_notification) do
     defaultto ''
 
     validate do |value|
-      unless value =~ %r{^https?://}
-        raise ArgumentError, format('%s is not a valid URL', value)
-      end
+      raise ArgumentError, format('%s is not a valid URL', value) unless value =~ %r{^https?://}
     end
   end
 
@@ -63,9 +61,7 @@ Puppet::Type.newtype(:grafana_notification) do
     desc 'Additional JSON data to configure the notification'
 
     validate do |value|
-      unless value.nil? || value.is_a?(Hash)
-        raise ArgumentError, 'settings should be a Hash!'
-      end
+      raise ArgumentError, 'settings should be a Hash!' unless value.nil? || value.is_a?(Hash)
     end
   end
 

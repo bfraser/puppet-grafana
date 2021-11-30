@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.newtype(:grafana_user) do
   @doc = 'Manage users in Grafana'
 
@@ -12,9 +14,7 @@ Puppet::Type.newtype(:grafana_user) do
     defaultto '/api'
 
     validate do |value|
-      unless value =~ %r{^/.*/?api$}
-        raise ArgumentError, format('%s is not a valid API path', value)
-      end
+      raise ArgumentError, format('%s is not a valid API path', value) unless value =~ %r{^/.*/?api$}
     end
   end
 
@@ -23,9 +23,7 @@ Puppet::Type.newtype(:grafana_user) do
     defaultto ''
 
     validate do |value|
-      unless value =~ %r{^https?://}
-        raise ArgumentError, format('%s is not a valid URL', value)
-      end
+      raise ArgumentError, format('%s is not a valid URL', value) unless value =~ %r{^https?://}
     end
   end
 
@@ -43,7 +41,7 @@ Puppet::Type.newtype(:grafana_user) do
 
   newproperty(:password) do
     desc 'The password for the user'
-    def insync?(_is)
+    def insync?(_is) # rubocop:disable Naming/MethodParameterName
       provider.check_password
     end
   end

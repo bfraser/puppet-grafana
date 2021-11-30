@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright 2015 Mirantis, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,10 +32,12 @@ describe Puppet::Type.type(:grafana_folder) do
         described_class.new name: 'foo', grafana_url: 'http://example.com', grafana_api_path: '/invalidpath', ensure: :present
       end.to raise_error(Puppet::Error, %r{not a valid API path})
     end
+
     it 'accepts valid parameters' do
       expect(gfolder[:name]).to eq('foo')
       expect(gfolder[:grafana_url]).to eq('http://example.com/')
     end
+
     it 'autorequires the grafana-server for proper ordering' do
       catalog = Puppet::Resource::Catalog.new
       service = Puppet::Type.type(:service).new(name: 'grafana-server')
@@ -45,11 +49,13 @@ describe Puppet::Type.type(:grafana_folder) do
       end
       expect(relationship).to be_a Puppet::Relationship
     end
+
     it 'does not autorequire the service it is not managed' do
       catalog = Puppet::Resource::Catalog.new
       catalog.add_resource gfolder
       expect(gfolder.autorequire).to be_empty
     end
+
     it 'autorequires grafana_conn_validator' do
       catalog = Puppet::Resource::Catalog.new
       validator = Puppet::Type.type(:grafana_conn_validator).new(name: 'grafana')

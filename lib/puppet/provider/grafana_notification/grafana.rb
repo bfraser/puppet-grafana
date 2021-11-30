@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #    Copyright 2015 Mirantis, Inc.
 #
 require 'json'
@@ -15,18 +17,14 @@ Puppet::Type.type(:grafana_notification).provide(:grafana, parent: Puppet::Provi
 
   def notifications
     response = send_request('GET', format('%s/alert-notifications', resource[:grafana_api_path]))
-    if response.code != '200'
-      raise format('Fail to retrieve notifications (HTTP response: %s/%s)', response.code, response.body)
-    end
+    raise format('Fail to retrieve notifications (HTTP response: %s/%s)', response.code, response.body) if response.code != '200'
 
     begin
       notifications = JSON.parse(response.body)
 
       notifications.map { |x| x['id'] }.map do |id|
         response = send_request 'GET', format('%s/alert-notifications/%s', resource[:grafana_api_path], id)
-        if response.code != '200'
-          raise format('Failed to retrieve notification %d (HTTP response: %s/%s)', id, response.code, response.body)
-        end
+        raise format('Failed to retrieve notification %d (HTTP response: %s/%s)', id, response.code, response.body) if response.code != '200'
 
         notification = JSON.parse(response.body)
 
@@ -46,9 +44,7 @@ Puppet::Type.type(:grafana_notification).provide(:grafana, parent: Puppet::Provi
   end
 
   def notification
-    unless @notification
-      @notification = notifications.find { |x| x[:name] == resource[:name] }
-    end
+    @notification ||= notifications.find { |x| x[:name] == resource[:name] }
     @notification
   end
 
@@ -117,18 +113,16 @@ Puppet::Type.type(:grafana_notification).provide(:grafana, parent: Puppet::Provi
       data[:id] = notification[:id]
       response = send_request 'PUT', format('%s/alert-notifications/%s', resource[:grafana_api_path], notification[:id]), data
     end
-    if response.code != '200'
-      raise format('Failed to create save %s (HTTP response: %s/%s)', resource[:name], response.code, response.body)
-    end
+    raise format('Failed to create save %s (HTTP response: %s/%s)', resource[:name], response.code, response.body) if response.code != '200'
+
     self.notification = nil
   end
 
   def delete_notification
     response = send_request 'DELETE', format('%s/alert-notifications/%s', resource[:grafana_api_path], notification[:id])
 
-    if response.code != '200'
-      raise format('Failed to delete notification %s (HTTP response: %s/%s', resource[:name], response.code, response.body)
-    end
+    raise format('Failed to delete notification %s (HTTP response: %s/%s', resource[:name], response.code, response.body) if response.code != '200'
+
     self.notification = nil
   end
 

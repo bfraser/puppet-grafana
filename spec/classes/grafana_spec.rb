@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'grafana' do
@@ -15,6 +17,7 @@ describe 'grafana' do
         it { is_expected.to contain_class('grafana::service') }
       end
 
+      # rubocop:disable RSpec/EmptyExampleGroup
       context 'with parameter install_method is set to package' do
         let(:params) do
           {
@@ -29,10 +32,11 @@ describe 'grafana' do
 
           describe 'use archive to fetch the package to a temporary location' do
             it do
-              is_expected.to contain_archive('/tmp/grafana.deb').with_source(
+              expect(subject).to contain_archive('/tmp/grafana.deb').with_source(
                 'https://dl.grafana.com/oss/release/grafana_5.4.2_amd64.deb'
               )
             end
+
             it { is_expected.to contain_archive('/tmp/grafana.deb').that_comes_before('Package[grafana]') }
           end
 
@@ -175,21 +179,13 @@ describe 'grafana' do
         end
 
         case facts[:osfamily]
-        when 'Archlinux'
+        when 'Archlinux', 'Debian', 'RedHat'
           describe 'create data_dir' do
             it { is_expected.to contain_file('/var/lib/grafana').with_ensure('directory') }
           end
-        when 'Debian'
-          describe 'create data_dir' do
-            it { is_expected.to contain_file('/var/lib/grafana').with_ensure('directory') }
-          end
-        when 'FreBSD'
+        when 'FreeBSD'
           describe 'create data_dir' do
             it { is_expected.to contain_file('/var/db/grafana').with_ensure('directory') }
-          end
-        when 'RedHat'
-          describe 'create data_dir' do
-            it { is_expected.to contain_file('/var/lib/grafana').with_ensure('directory') }
           end
         end
 
@@ -259,26 +255,26 @@ describe 'grafana' do
             {
               cfg: {
                 'app_mode' => 'production',
-                'section'  => {
-                  'string'  => 'production',
-                  'number'  => 8080,
+                'section' => {
+                  'string' => 'production',
+                  'number' => 8080,
                   'boolean' => false,
-                  'empty'   => ''
+                  'empty' => ''
                 }
               },
               ldap_cfg: {
                 'servers' => [
                   { 'host' => 'server1',
-                    'use_ssl'         => true,
-                    'search_filter'   => '(sAMAccountName=%s)',
+                    'use_ssl' => true,
+                    'search_filter' => '(sAMAccountName=%s)',
                     'search_base_dns' => ['dc=domain1,dc=com'] }
                 ],
                 'servers.attributes' => {
-                  'name'      => 'givenName',
-                  'surname'   => 'sn',
-                  'username'  => 'sAMAccountName',
+                  'name' => 'givenName',
+                  'surname' => 'sn',
+                  'username' => 'sAMAccountName',
                   'member_of' => 'memberOf',
-                  'email'     => 'email'
+                  'email' => 'email'
                 }
               }
             }
@@ -295,18 +291,18 @@ describe 'grafana' do
           it { is_expected.to contain_file('grafana.ini').with_content(expected) }
 
           ldap_expected = "\n[[servers]]\n"\
-                           "host = \"server1\"\n"\
-                           "search_base_dns = [\"dc=domain1,dc=com\"]\n"\
-                           "search_filter = \"(sAMAccountName=%s)\"\n"\
-                           "use_ssl = true\n"\
-                           "\n"\
-                           "[servers.attributes]\n"\
-                           "email = \"email\"\n"\
-                           "member_of = \"memberOf\"\n"\
-                           "name = \"givenName\"\n"\
-                           "surname = \"sn\"\n"\
-                           "username = \"sAMAccountName\"\n"\
-                           "\n"
+                          "host = \"server1\"\n"\
+                          "search_base_dns = [\"dc=domain1,dc=com\"]\n"\
+                          "search_filter = \"(sAMAccountName=%s)\"\n"\
+                          "use_ssl = true\n"\
+                          "\n"\
+                          "[servers.attributes]\n"\
+                          "email = \"email\"\n"\
+                          "member_of = \"memberOf\"\n"\
+                          "name = \"givenName\"\n"\
+                          "surname = \"sn\"\n"\
+                          "username = \"sAMAccountName\"\n"\
+                          "\n"
 
           it { is_expected.to contain_file('/etc/grafana/ldap.toml').with_content(ldap_expected) }
         end
@@ -321,31 +317,31 @@ describe 'grafana' do
                 {
                   'servers' => [
                     { 'host' => 'server1a server1b',
-                      'use_ssl'         => true,
-                      'search_filter'   => '(sAMAccountName=%s)',
+                      'use_ssl' => true,
+                      'search_filter' => '(sAMAccountName=%s)',
                       'search_base_dns' => ['dc=domain1,dc=com'] }
                   ],
                   'servers.attributes' => {
-                    'name'      => 'givenName',
-                    'surname'   => 'sn',
-                    'username'  => 'sAMAccountName',
+                    'name' => 'givenName',
+                    'surname' => 'sn',
+                    'username' => 'sAMAccountName',
                     'member_of' => 'memberOf',
-                    'email'     => 'email'
+                    'email' => 'email'
                   }
                 },
                 {
                   'servers' => [
                     { 'host' => 'server2a server2b',
-                      'use_ssl'         => true,
-                      'search_filter'   => '(sAMAccountName=%s)',
+                      'use_ssl' => true,
+                      'search_filter' => '(sAMAccountName=%s)',
                       'search_base_dns' => ['dc=domain2,dc=com'] }
                   ],
                   'servers.attributes' => {
-                    'name'      => 'givenName',
-                    'surname'   => 'sn',
-                    'username'  => 'sAMAccountName',
+                    'name' => 'givenName',
+                    'surname' => 'sn',
+                    'username' => 'sAMAccountName',
                     'member_of' => 'memberOf',
-                    'email'     => 'email'
+                    'email' => 'email'
                   }
                 }
               ]
@@ -353,31 +349,31 @@ describe 'grafana' do
           end
 
           ldap_expected = "\n[[servers]]\n"\
-                           "host = \"server1a server1b\"\n"\
-                           "search_base_dns = [\"dc=domain1,dc=com\"]\n"\
-                           "search_filter = \"(sAMAccountName=%s)\"\n"\
-                           "use_ssl = true\n"\
-                           "\n"\
-                           "[servers.attributes]\n"\
-                           "email = \"email\"\n"\
-                           "member_of = \"memberOf\"\n"\
-                           "name = \"givenName\"\n"\
-                           "surname = \"sn\"\n"\
-                           "username = \"sAMAccountName\"\n"\
-                           "\n"\
-                           "\n[[servers]]\n"\
-                           "host = \"server2a server2b\"\n"\
-                           "search_base_dns = [\"dc=domain2,dc=com\"]\n"\
-                           "search_filter = \"(sAMAccountName=%s)\"\n"\
-                           "use_ssl = true\n"\
-                           "\n"\
-                           "[servers.attributes]\n"\
-                           "email = \"email\"\n"\
-                           "member_of = \"memberOf\"\n"\
-                           "name = \"givenName\"\n"\
-                           "surname = \"sn\"\n"\
-                           "username = \"sAMAccountName\"\n"\
-                           "\n"
+                          "host = \"server1a server1b\"\n"\
+                          "search_base_dns = [\"dc=domain1,dc=com\"]\n"\
+                          "search_filter = \"(sAMAccountName=%s)\"\n"\
+                          "use_ssl = true\n"\
+                          "\n"\
+                          "[servers.attributes]\n"\
+                          "email = \"email\"\n"\
+                          "member_of = \"memberOf\"\n"\
+                          "name = \"givenName\"\n"\
+                          "surname = \"sn\"\n"\
+                          "username = \"sAMAccountName\"\n"\
+                          "\n"\
+                          "\n[[servers]]\n"\
+                          "host = \"server2a server2b\"\n"\
+                          "search_base_dns = [\"dc=domain2,dc=com\"]\n"\
+                          "search_filter = \"(sAMAccountName=%s)\"\n"\
+                          "use_ssl = true\n"\
+                          "\n"\
+                          "[servers.attributes]\n"\
+                          "email = \"email\"\n"\
+                          "member_of = \"memberOf\"\n"\
+                          "name = \"givenName\"\n"\
+                          "surname = \"sn\"\n"\
+                          "username = \"sAMAccountName\"\n"\
+                          "\n"
 
           it { is_expected.to contain_file('/etc/grafana/ldap.toml').with_content(ldap_expected) }
         end
@@ -407,7 +403,7 @@ describe 'grafana' do
         end
 
         it do
-          is_expected.to contain_file('/var/lib/grafana/dashboards').with(
+          expect(subject).to contain_file('/var/lib/grafana/dashboards').with(
             ensure: 'directory',
             owner: 'grafana',
             group: 'grafana',
@@ -465,6 +461,7 @@ describe 'grafana' do
           end
         end
       end
+      # rubocop:enable RSpec/EmptyExampleGroup
     end
   end
 end
