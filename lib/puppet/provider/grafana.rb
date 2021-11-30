@@ -51,6 +51,9 @@ class Puppet::Provider::Grafana < Puppet::Provider
       request = Net::HTTP::Get.new(uri.request_uri)
     when 'DELETE'
       request = Net::HTTP::Delete.new(uri.request_uri)
+    when 'PATCH'
+      request = Net::HTTP::Patch.new(uri.request_uri)
+      request.body = data.to_json
     else
       raise Puppet::Error, format('Unsupported HTTP operation %s', operation)
     end
