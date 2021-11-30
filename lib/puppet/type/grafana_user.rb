@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Puppet::Type.newtype(:grafana_user) do
   @doc = 'Manage users in Grafana'
 
@@ -14,7 +12,9 @@ Puppet::Type.newtype(:grafana_user) do
     defaultto '/api'
 
     validate do |value|
-      raise ArgumentError, format('%s is not a valid API path', value) unless value =~ %r{^/.*/?api$}
+      unless value =~ %r{^/.*/?api$}
+        raise ArgumentError, format('%s is not a valid API path', value)
+      end
     end
   end
 
@@ -23,7 +23,9 @@ Puppet::Type.newtype(:grafana_user) do
     defaultto ''
 
     validate do |value|
-      raise ArgumentError, format('%s is not a valid URL', value) unless value =~ %r{^https?://}
+      unless value =~ %r{^https?://}
+        raise ArgumentError, format('%s is not a valid URL', value)
+      end
     end
   end
 
@@ -41,7 +43,7 @@ Puppet::Type.newtype(:grafana_user) do
 
   newproperty(:password) do
     desc 'The password for the user'
-    def insync?(_is) # rubocop:disable Naming/MethodParameterName
+    def insync?(_is)
       provider.check_password
     end
   end
@@ -56,11 +58,11 @@ Puppet::Type.newtype(:grafana_user) do
 
   newproperty(:is_admin) do
     desc 'Whether the user is a grafana admin'
-    newvalues(true, false)
-    defaultto false
+    newvalues(:true, :false)
+    defaultto :false
   end
 
-  def set_sensitive_parameters(sensitive_parameters) # rubocop:disable Naming/AccessorMethodName
+  def set_sensitive_parameters(sensitive_parameters) # rubocop:disable Style/AccessorMethodName
     parameter(:password).sensitive = true if parameter(:password)
     super(sensitive_parameters)
   end

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'spec_helper'
 
 describe Puppet::Type.type(:grafana_membership) do
@@ -34,7 +32,6 @@ describe Puppet::Type.type(:grafana_membership) do
         described_class.new title: 'foo title', membership_type: 'foo'
       end.to raise_error(Puppet::Error, %r{Invalid value "foo"})
     end
-
     it 'accepts valid parameters' do
       expect(gmembership[:user_name]).to eq('foo_user')
       expect(gmembership[:target_name]).to eq('foo_target')
@@ -42,6 +39,7 @@ describe Puppet::Type.type(:grafana_membership) do
       expect(gmembership[:grafana_url]).to eq('http://example.com/')
       expect(gmembership[:membership_type]).to eq(:organization)
     end
+    # rubocop:enable RSpec/MultipleExpectations
 
     it 'autorequires the grafana-server for proper ordering' do
       catalog = Puppet::Resource::Catalog.new

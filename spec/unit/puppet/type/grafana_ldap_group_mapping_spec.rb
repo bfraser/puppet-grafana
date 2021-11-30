@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -151,4 +149,3 @@ describe Puppet::Type.type(:grafana_ldap_group_mapping) do
     end
   end
 end
-# rubocop:enable RSpec/VoidExpect

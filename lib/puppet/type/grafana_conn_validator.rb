@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Puppet::Type.newtype(:grafana_conn_validator) do
   desc <<-DESC
   Verify connectivity to the Grafana API
@@ -16,7 +14,9 @@ Puppet::Type.newtype(:grafana_conn_validator) do
     defaultto 'http://localhost:3000'
 
     validate do |value|
-      raise ArgumentError, format('%s is not a valid URL', value) unless value =~ %r{^https?://}
+      unless value =~ %r{^https?://}
+        raise ArgumentError, format('%s is not a valid URL', value)
+      end
     end
   end
 
@@ -25,7 +25,9 @@ Puppet::Type.newtype(:grafana_conn_validator) do
     defaultto '/api/health'
 
     validate do |value|
-      raise ArgumentError, format('%s is not a valid API path', value) unless value =~ %r{^/.*/?api/.*$}
+      unless value =~ %r{^/.*/?api/.*$}
+        raise ArgumentError, format('%s is not a valid API path', value)
+      end
     end
   end
 

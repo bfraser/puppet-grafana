@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -24,14 +22,12 @@ describe Puppet::Type.type(:grafana_user) do
         described_class.new name: 'test', grafana_url: 'example.com'
       end.to raise_error(Puppet::Error, %r{not a valid URL})
     end
-
     it 'accepts valid parameters' do
       expect(guser[:name]).to eq('test')
       expect(guser[:full_name]).to eq('Mr tester')
       expect(guser[:password]).to eq('t3st')
       expect(guser[:grafana_url]).to eq('http://example.com/')
     end
-
     it 'autorequires the grafana-server for proper ordering' do
       catalog = Puppet::Resource::Catalog.new
       service = Puppet::Type.type(:service).new(name: 'grafana-server')
@@ -43,13 +39,11 @@ describe Puppet::Type.type(:grafana_user) do
       end
       expect(relationship).to be_a Puppet::Relationship
     end
-
     it 'does not autorequire the service it is not managed' do
       catalog = Puppet::Resource::Catalog.new
       catalog.add_resource guser
       expect(guser.autorequire).to be_empty
     end
-
     it 'autorequires grafana_conn_validator' do
       catalog = Puppet::Resource::Catalog.new
       validator = Puppet::Type.type(:grafana_conn_validator).new(name: 'grafana')

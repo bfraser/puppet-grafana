@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 def prepare_host
   cleanup_script = <<-SHELL
   /opt/puppetlabs/bin/puppet resource package grafana ensure=purged

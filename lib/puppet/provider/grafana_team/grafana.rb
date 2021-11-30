@@ -213,7 +213,6 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
 
     dashboard = parse_response(response.body)
     return nil unless dashboard.first
-
     dashboard.first['id']
   end
 

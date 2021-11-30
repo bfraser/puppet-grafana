@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'spec_helper_acceptance'
 
 supported_versions.each do |grafana_version|

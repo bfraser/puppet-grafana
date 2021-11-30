@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Copyright 2015 Mirantis, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,16 +38,16 @@ describe Puppet::Type.type(:grafana_notification) do
         described_class.new name: 'foo', grafana_url: 'http://example.com', settings: 'invalid'
       end.to raise_error(Puppet::Error, %r{settings should be a Hash})
     end
-
     it 'accepts valid parameters' do
       expect(gnotification[:name]).to eq('foo')
       expect(gnotification[:grafana_url]).to eq('http://example.com')
       expect(gnotification[:type]).to eq('email')
-      expect(gnotification[:is_default]).to eq(:true) # rubocop:disable Lint/BooleanSymbol
-      expect(gnotification[:send_reminder]).to eq(:true) # rubocop:disable Lint/BooleanSymbol
+      expect(gnotification[:is_default]).to eq(:true)
+      expect(gnotification[:send_reminder]).to eq(:true)
       expect(gnotification[:frequency]).to eq('20m')
       expect(gnotification[:settings]).to eq(adresses: 'test@example.com')
     end
+    # rubocop:enable RSpec/MultipleExpectations
 
     it 'autorequires the grafana-server for proper ordering' do
       catalog = Puppet::Resource::Catalog.new

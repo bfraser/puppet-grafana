@@ -14,7 +14,9 @@ Puppet::Type.newtype(:grafana_team) do
     defaultto '/api'
 
     validate do |value|
-      raise ArgumentError, format('%s is not a valid API path', value) unless value =~ %r{^/.*/?api$}
+      unless value =~ %r{^/.*/?api$}
+        raise ArgumentError, format('%s is not a valid API path', value)
+      end
     end
   end
 
@@ -23,7 +25,9 @@ Puppet::Type.newtype(:grafana_team) do
     defaultto ''
 
     validate do |value|
-      raise ArgumentError, format('%s is not a valid URL', value) unless value =~ %r{^https?://}
+      unless value =~ %r{^https?://}
+        raise ArgumentError, format('%s is not a valid URL', value)
+      end
     end
   end
 

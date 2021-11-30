@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:grafana_ldap_group_mapping) do

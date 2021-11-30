@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 #    Copyright 2015 Mirantis, Inc.
 #
 Puppet::Type.newtype(:grafana_datasource) do
@@ -16,7 +14,9 @@ Puppet::Type.newtype(:grafana_datasource) do
     defaultto '/api'
 
     validate do |value|
-      raise ArgumentError, format('%s is not a valid API path', value) unless value =~ %r{^/.*/?api$}
+      unless value =~ %r{^/.*/?api$}
+        raise ArgumentError, format('%s is not a valid API path', value)
+      end
     end
   end
 
@@ -25,7 +25,9 @@ Puppet::Type.newtype(:grafana_datasource) do
     defaultto ''
 
     validate do |value|
-      raise ArgumentError, format('%s is not a valid URL', value) unless value =~ %r{^https?://}
+      unless value =~ %r{^https?://}
+        raise ArgumentError, format('%s is not a valid URL', value)
+      end
     end
   end
 
@@ -71,14 +73,14 @@ Puppet::Type.newtype(:grafana_datasource) do
 
   newproperty(:is_default) do
     desc 'Whether the datasource is the default one'
-    newvalues(true, false)
-    defaultto false
+    newvalues(:true, :false)
+    defaultto :false
   end
 
   newproperty(:basic_auth) do
     desc 'Whether basic auth is enabled or not'
-    newvalues(true, false)
-    defaultto false
+    newvalues(:true, :false)
+    defaultto :false
   end
 
   newproperty(:basic_auth_user) do
@@ -93,15 +95,17 @@ Puppet::Type.newtype(:grafana_datasource) do
 
   newproperty(:with_credentials) do
     desc 'Whether credentials such as cookies or auth headers should be sent with cross-site requests'
-    newvalues(true, false)
-    defaultto false
+    newvalues(:true, :false)
+    defaultto :false
   end
 
   newproperty(:json_data) do
     desc 'Additional JSON data to configure the datasource (optional)'
 
     validate do |value|
-      raise ArgumentError, 'json_data should be a Hash!' unless value.nil? || value.is_a?(Hash)
+      unless value.nil? || value.is_a?(Hash)
+        raise ArgumentError, 'json_data should be a Hash!'
+      end
     end
   end
 
@@ -110,7 +114,9 @@ Puppet::Type.newtype(:grafana_datasource) do
     sensitive true
 
     validate do |value|
-      raise ArgumentError, 'secure_json_data should be a Hash!' unless value.nil? || value.is_a?(Hash)
+      unless value.nil? || value.is_a?(Hash)
+        raise ArgumentError, 'secure_json_data should be a Hash!'
+      end
     end
   end
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'spec_helper_acceptance'
 
 supported_versions.each do |grafana_version|
@@ -24,7 +22,6 @@ supported_versions.each do |grafana_version|
         apply_manifest(pp, catch_changes: true)
       end
     end
-
     it 'runs successfully' do
       pp = <<-EOS
       grafana_user { 'user1':

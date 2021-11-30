@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 #    Copyright 2015 Mirantis, Inc.
 #
 require 'json'
@@ -17,14 +15,18 @@ Puppet::Type.type(:grafana_notification).provide(:grafana, parent: Puppet::Provi
 
   def notifications
     response = send_request('GET', format('%s/alert-notifications', resource[:grafana_api_path]))
-    raise format('Fail to retrieve notifications (HTTP response: %s/%s)', response.code, response.body) if response.code != '200'
+    if response.code != '200'
+      raise format('Fail to retrieve notifications (HTTP response: %s/%s)', response.code, response.body)
+    end
 
     begin
       notifications = JSON.parse(response.body)
 
       notifications.map { |x| x['id'] }.map do |id|
         response = send_request 'GET', format('%s/alert-notifications/%s', resource[:grafana_api_path], id)
-        raise format('Failed to retrieve notification %d (HTTP response: %s/%s)', id, response.code, response.body) if response.code != '200'
+        if response.code != '200'
+          raise format('Failed to retrieve notification %d (HTTP response: %s/%s)', id, response.code, response.body)
+        end
 
         notification = JSON.parse(response.body)
 
@@ -32,8 +34,8 @@ Puppet::Type.type(:grafana_notification).provide(:grafana, parent: Puppet::Provi
           id: notification['id'],
           name: notification['name'],
           type: notification['type'],
-          is_default: notification['isDefault'] ? true : false,
-          send_reminder: notification['sendReminder'] ? true : false,
+          is_default: notification['isDefault'] ? :true : :false,
+          send_reminder: notification['sendReminder'] ? :true : :false,
           frequency: notification['frequency'],
           settings: notification['settings']
         }
@@ -44,7 +46,9 @@ Puppet::Type.type(:grafana_notification).provide(:grafana, parent: Puppet::Provi
   end
 
   def notification
-    @notification ||= notifications.find { |x| x[:name] == resource[:name] }
+    unless @notification
+      @notification = notifications.find { |x| x[:name] == resource[:name] }
+    end
     @notification
   end
 
@@ -59,7 +63,7 @@ Puppet::Type.type(:grafana_notification).provide(:grafana, parent: Puppet::Provi
     save_notification
   end
 
-  # rubocop:disable Naming/PredicateName
+  # rubocop:disable Style/PredicateName
   def is_default
     notification[:is_default]
   end
@@ -77,7 +81,7 @@ Puppet::Type.type(:grafana_notification).provide(:grafana, parent: Puppet::Provi
     resource[:send_reminder] = value
     save_notification
   end
-  # rubocop:enable Naming/PredicateName
+  # rubocop:enable Style/PredicateName
 
   def frequency
     notification[:frequency]
@@ -101,8 +105,8 @@ Puppet::Type.type(:grafana_notification).provide(:grafana, parent: Puppet::Provi
     data = {
       name: resource[:name],
       type: resource[:type],
-      isDefault: (resource[:is_default] == true),
-      sendReminder: (resource[:send_reminder] == true),
+      isDefault: (resource[:is_default] == :true),
+      sendReminder: (resource[:send_reminder] == :true),
       frequency: resource[:frequency],
       settings: resource[:settings]
     }
@@ -113,16 +117,18 @@ Puppet::Type.type(:grafana_notification).provide(:grafana, parent: Puppet::Provi
       data[:id] = notification[:id]
       response = send_request 'PUT', format('%s/alert-notifications/%s', resource[:grafana_api_path], notification[:id]), data
     end
-    raise format('Failed to create save %s (HTTP response: %s/%s)', resource[:name], response.code, response.body) if response.code != '200'
-
+    if response.code != '200'
+      raise format('Failed to create save %s (HTTP response: %s/%s)', resource[:name], response.code, response.body)
+    end
     self.notification = nil
   end
 
   def delete_notification
     response = send_request 'DELETE', format('%s/alert-notifications/%s', resource[:grafana_api_path], notification[:id])
 
-    raise format('Failed to delete notification %s (HTTP response: %s/%s', resource[:name], response.code, response.body) if response.code != '200'
-
+    if response.code != '200'
+      raise format('Failed to delete notification %s (HTTP response: %s/%s', resource[:name], response.code, response.body)
+    end
     self.notification = nil
   end
 
