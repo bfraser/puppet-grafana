@@ -28,7 +28,7 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
           email: user['email'],
           theme: user['theme'],
           password: nil,
-          is_admin: user['isGrafanaAdmin'] ? true : false
+          is_admin: user['isGrafanaAdmin'] ? :true : :false
         }
       end
     rescue JSON::ParserError
@@ -88,7 +88,7 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
     save_user
   end
 
-  # rubocop:disable Naming/PredicateName
+  # rubocop:disable Style/PredicateName
   def is_admin
     user[:is_admin]
   end
@@ -97,7 +97,7 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
     resource[:is_admin] = value
     save_user
   end
-  # rubocop:enable Naming/PredicateName
+  # rubocop:enable Style/PredicateName
 
   def save_user
     data = {
@@ -106,7 +106,7 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
       email: resource[:email],
       password: resource[:password],
       theme: resource[:theme],
-      isGrafanaAdmin: (resource[:is_admin] == true)
+      isGrafanaAdmin: (resource[:is_admin] == :true)
     }
 
     if user.nil?

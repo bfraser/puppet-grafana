@@ -72,9 +72,9 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
           password: datasource['password'],
           database: datasource['database'],
           access_mode: datasource['access'],
-          is_default: datasource['isDefault'] ? true : false,
-          with_credentials: datasource['withCredentials'] ? true : false,
-          basic_auth: datasource['basicAuth'] ? true : false,
+          is_default: datasource['isDefault'] ? :true : :false,
+          with_credentials: datasource['withCredentials'] ? :true : :false,
+          basic_auth: datasource['basicAuth'] ? :true : :false,
           basic_auth_user: datasource['basicAuthUser'],
           basic_auth_password: datasource['basicAuthPassword'],
           json_data: datasource['jsonData'],
@@ -147,7 +147,7 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
     save_datasource
   end
 
-  # rubocop:disable Naming/PredicateName
+  # rubocop:disable Style/PredicateName
   def is_default
     datasource[:is_default]
   end
@@ -156,7 +156,7 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
     resource[:is_default] = value
     save_datasource
   end
-  # rubocop:enable Naming/PredicateName
+  # rubocop:enable Style/PredicateName
 
   def basic_auth
     datasource[:basic_auth]
@@ -225,11 +225,11 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
       database: resource[:database],
       user: resource[:user],
       password: resource[:password],
-      isDefault: (resource[:is_default] == true),
-      basicAuth: (resource[:basic_auth] == true),
+      isDefault: (resource[:is_default] == :true),
+      basicAuth: (resource[:basic_auth] == :true),
       basicAuthUser: resource[:basic_auth_user],
       basicAuthPassword: resource[:basic_auth_password],
-      withCredentials: (resource[:with_credentials] == true),
+      withCredentials: (resource[:with_credentials] == :true),
       jsonData: resource[:json_data],
       secureJsonData: resource[:secure_json_data]
     }

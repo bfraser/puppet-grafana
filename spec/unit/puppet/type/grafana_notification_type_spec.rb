@@ -45,8 +45,8 @@ describe Puppet::Type.type(:grafana_notification) do
       expect(gnotification[:name]).to eq('foo')
       expect(gnotification[:grafana_url]).to eq('http://example.com')
       expect(gnotification[:type]).to eq('email')
-      expect(gnotification[:is_default]).to eq(:true) # rubocop:disable Lint/BooleanSymbol
-      expect(gnotification[:send_reminder]).to eq(:true) # rubocop:disable Lint/BooleanSymbol
+      expect(gnotification[:is_default]).to eq(:true)
+      expect(gnotification[:send_reminder]).to eq(:true)
       expect(gnotification[:frequency]).to eq('20m')
       expect(gnotification[:settings]).to eq(adresses: 'test@example.com')
     end

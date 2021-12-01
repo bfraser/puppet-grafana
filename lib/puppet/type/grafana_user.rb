@@ -56,11 +56,11 @@ Puppet::Type.newtype(:grafana_user) do
 
   newproperty(:is_admin) do
     desc 'Whether the user is a grafana admin'
-    newvalues(true, false)
-    defaultto false
+    newvalues(:true, :false)
+    defaultto :false
   end
 
-  def set_sensitive_parameters(sensitive_parameters) # rubocop:disable Naming/AccessorMethodName
+  def set_sensitive_parameters(sensitive_parameters) # rubocop:disable Style/AccessorMethodName
     parameter(:password).sensitive = true if parameter(:password)
     super(sensitive_parameters)
   end

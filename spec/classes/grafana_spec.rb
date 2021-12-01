@@ -183,7 +183,7 @@ describe 'grafana' do
           describe 'create data_dir' do
             it { is_expected.to contain_file('/var/lib/grafana').with_ensure('directory') }
           end
-        when 'FreBSD'
+        when 'FreeBSD'
           describe 'create data_dir' do
             it { is_expected.to contain_file('/var/db/grafana').with_ensure('directory') }
           end

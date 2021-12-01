@@ -63,11 +63,11 @@ describe Puppet::Type.type(:grafana_datasource) do
       expect(gdatasource[:type]).to eq('elasticsearch')
       expect(gdatasource[:organization]).to eq('test_org')
       expect(gdatasource[:access_mode]).to eq(:proxy)
-      expect(gdatasource[:is_default]).to eq(:true) # rubocop:disable Lint/BooleanSymbol
-      expect(gdatasource[:basic_auth]).to eq(:true) # rubocop:disable Lint/BooleanSymbol
+      expect(gdatasource[:is_default]).to eq(:true)
+      expect(gdatasource[:basic_auth]).to eq(:true)
       expect(gdatasource[:basic_auth_user]).to eq('user')
       expect(gdatasource[:basic_auth_password]).to eq('password')
-      expect(gdatasource[:with_credentials]).to eq(:true) # rubocop:disable Lint/BooleanSymbol
+      expect(gdatasource[:with_credentials]).to eq(:true)
       expect(gdatasource[:database]).to eq('test_db')
       expect(gdatasource[:user]).to eq('db_user')
       expect(gdatasource[:password]).to eq('db_password')

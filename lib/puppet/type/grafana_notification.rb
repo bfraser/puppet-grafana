@@ -43,14 +43,14 @@ Puppet::Type.newtype(:grafana_notification) do
 
   newproperty(:is_default) do
     desc 'Whether the notification is the default one'
-    newvalues(true, false)
-    defaultto false
+    newvalues(:true, :false)
+    defaultto :false
   end
 
   newproperty(:send_reminder) do
     desc 'Whether automatic message resending is enabled or not'
-    newvalues(true, false)
-    defaultto false
+    newvalues(:true, :false)
+    defaultto :false
   end
 
   newproperty(:frequency) do

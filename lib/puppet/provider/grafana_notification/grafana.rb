@@ -32,8 +32,8 @@ Puppet::Type.type(:grafana_notification).provide(:grafana, parent: Puppet::Provi
           id: notification['id'],
           name: notification['name'],
           type: notification['type'],
-          is_default: notification['isDefault'] ? true : false,
-          send_reminder: notification['sendReminder'] ? true : false,
+          is_default: notification['isDefault'] ? :true : :false,
+          send_reminder: notification['sendReminder'] ? :true : :false,
           frequency: notification['frequency'],
           settings: notification['settings']
         }
@@ -59,7 +59,7 @@ Puppet::Type.type(:grafana_notification).provide(:grafana, parent: Puppet::Provi
     save_notification
   end
 
-  # rubocop:disable Naming/PredicateName
+  # rubocop:disable Style/PredicateName
   def is_default
     notification[:is_default]
   end
@@ -77,7 +77,7 @@ Puppet::Type.type(:grafana_notification).provide(:grafana, parent: Puppet::Provi
     resource[:send_reminder] = value
     save_notification
   end
-  # rubocop:enable Naming/PredicateName
+  # rubocop:enable Style/PredicateName
 
   def frequency
     notification[:frequency]
@@ -101,8 +101,8 @@ Puppet::Type.type(:grafana_notification).provide(:grafana, parent: Puppet::Provi
     data = {
       name: resource[:name],
       type: resource[:type],
-      isDefault: (resource[:is_default] == true),
-      sendReminder: (resource[:send_reminder] == true),
+      isDefault: (resource[:is_default] == :true),
+      sendReminder: (resource[:send_reminder] == :true),
       frequency: resource[:frequency],
       settings: resource[:settings]
     }

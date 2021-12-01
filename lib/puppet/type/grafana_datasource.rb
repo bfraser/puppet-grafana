@@ -71,14 +71,14 @@ Puppet::Type.newtype(:grafana_datasource) do
 
   newproperty(:is_default) do
     desc 'Whether the datasource is the default one'
-    newvalues(true, false)
-    defaultto false
+    newvalues(:true, :false)
+    defaultto :false
   end
 
   newproperty(:basic_auth) do
     desc 'Whether basic auth is enabled or not'
-    newvalues(true, false)
-    defaultto false
+    newvalues(:true, :false)
+    defaultto :false
   end
 
   newproperty(:basic_auth_user) do
@@ -93,8 +93,8 @@ Puppet::Type.newtype(:grafana_datasource) do
 
   newproperty(:with_credentials) do
     desc 'Whether credentials such as cookies or auth headers should be sent with cross-site requests'
-    newvalues(true, false)
-    defaultto false
+    newvalues(:true, :false)
+    defaultto :false
   end
 
   newproperty(:json_data) do
