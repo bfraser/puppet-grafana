@@ -17,7 +17,6 @@ describe 'grafana' do
         it { is_expected.to contain_class('grafana::service') }
       end
 
-      # rubocop:disable RSpec/EmptyExampleGroup
       context 'with parameter install_method is set to package' do
         let(:params) do
           {
@@ -461,7 +460,6 @@ describe 'grafana' do
           end
         end
       end
-      # rubocop:enable RSpec/EmptyExampleGroup
     end
   end
 end

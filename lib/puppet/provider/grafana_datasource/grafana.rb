@@ -147,7 +147,7 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
     save_datasource
   end
 
-  # rubocop:disable Style/PredicateName
+  # rubocop:disable Naming/PredicateName
   def is_default
     datasource[:is_default]
   end
@@ -156,7 +156,7 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
     resource[:is_default] = value
     save_datasource
   end
-  # rubocop:enable Style/PredicateName
+  # rubocop:enable Naming/PredicateName
 
   def basic_auth
     datasource[:basic_auth]
