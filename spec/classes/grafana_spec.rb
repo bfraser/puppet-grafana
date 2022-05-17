@@ -305,6 +305,40 @@ describe 'grafana' do
 
           it { is_expected.to contain_file('/etc/grafana/ldap.toml').with_content(ldap_expected) }
         end
+
+        context 'with Sensitive `cfg`' do
+          let(:params) do
+            {
+              cfg: sensitive(
+                {
+                  'database' => {
+                    'type' => 'postgres',
+                    'host' => 'db.example.com:5432',
+                    'name' => 'grafana',
+                    'user' => 'grafana',
+                    'password' => 'hunter2',
+                  },
+                }
+              )
+            }
+          end
+
+          let(:expected) do
+            <<~CONTENT
+              # This file is managed by Puppet, any changes will be overwritten
+
+
+              [database]
+              host = db.example.com:5432
+              name = grafana
+              password = hunter2
+              type = postgres
+              user = grafana
+            CONTENT
+          end
+
+          it { is_expected.to contain_file('grafana.ini').with_content(sensitive(expected)) }
+        end
       end
 
       context 'multiple ldap configuration' do
