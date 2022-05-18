@@ -101,7 +101,7 @@ Manages the Grafana configuration file. Grafana comes with its own default
 settings in a different configuration file (/opt/grafana/current/conf/defaults.ini),
 therefore this module does not supply any defaults.
 
-This parameter only accepts a hash as its value. Keys with hashes as values will
+This parameter only accepts a `Hash` (or `Sensitive[Hash]`) as its value. Keys with hashes as values will
 generate sections, any other values are just plain values. The example below will
 result in...
 
@@ -154,6 +154,8 @@ Some minor notes:
 * The order of the keys in this hash is the same as they will be written to the
   configuration file. So settings that do not fall under a section will have to
   come before any sections in the hash.
+* If your configuration contains secrets you want hidden in Puppet log output and reports
+  use a `Sensitive[Hash]` instead of a normal `Hash`
 
 #### `ldap_cfg`
 

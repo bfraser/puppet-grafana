@@ -218,7 +218,7 @@ Puppet::Type.type(:grafana_dashboard_permission).provide(:grafana, parent: Puppe
     end
   end
 
-  def permission_data(destroy = false) # rubocop:disable Style/OptionalBooleanParameter
+  def permission_data(destroy = false)
     raise format('Unknown dashboard: %s', resource[:dashboard]) unless dashboard
 
     endpoint = format('%s/dashboards/id/%s/permissions', grafana_api_path, dashboard[:id])

@@ -1,18 +1,22 @@
-# == Class grafana::config
-#
-# This class is called from grafana
-#
+# @api private
 class grafana::config {
+  if $grafana::cfg =~ Sensitive {
+    $cfg = $grafana::cfg.unwrap
+    $cfg_content = Sensitive(template('grafana/config.ini.erb'))
+  } else {
+    $cfg = $grafana::cfg
+    $cfg_content = template('grafana/config.ini.erb')
+  }
+
   case $grafana::install_method {
     'docker': {
       if $grafana::container_cfg {
-        $cfg = $grafana::cfg
         $myprovision = false
 
         file { 'grafana.ini':
           ensure  => file,
           path    => $grafana::cfg_location,
-          content => template('grafana/config.ini.erb'),
+          content => $cfg_content,
           owner   => 'grafana',
           group   => 'grafana',
           notify  => Class['grafana::service'],
@@ -20,13 +24,12 @@ class grafana::config {
       }
     }
     'package','repo': {
-      $cfg = $grafana::cfg
       $myprovision = true
 
       file { 'grafana.ini':
         ensure  => file,
         path    => $grafana::cfg_location,
-        content => template('grafana/config.ini.erb'),
+        content => $cfg_content,
         owner   => 'root',
         group   => 'grafana',
         notify  => Class['grafana::service'],
@@ -53,12 +56,11 @@ class grafana::config {
       }
     }
     'archive': {
-      $cfg = $grafana::cfg
       $myprovision = true
 
       file { "${grafana::install_dir}/conf/custom.ini":
         ensure  => file,
-        content => template('grafana/config.ini.erb'),
+        content => $cfg_content,
         owner   => 'grafana',
         group   => 'grafana',
         notify  => Class['grafana::service'],
