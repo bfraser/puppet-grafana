@@ -137,7 +137,7 @@ class grafana (
   Optional[String] $archive_source,
   String $cfg_location,
   Variant[Hash,Sensitive[Hash]] $cfg,
-  Optional[Variant[Hash,Array]] $ldap_cfg,
+  Optional[Variant[Hash,Array[Hash],Sensitive[Hash],Sensitive[Array[Hash]]]] $ldap_cfg,
   Boolean $container_cfg,
   Hash $container_params,
   String $docker_image,
