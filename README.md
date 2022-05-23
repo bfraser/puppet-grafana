@@ -159,6 +159,13 @@ Some minor notes:
 
 #### `ldap_cfg`
 
+Manages the Grafana LDAP configuration file. This hash is directly translated
+into the corresponding TOML file, allowing for full flexibility in generating
+the configuration.
+
+See the [LDAP documentation](http://docs.grafana.org/v2.1/installation/ldap/)
+for more information.
+
 ##### TOML note
 
 This option **requires** the [toml](https://github.com/toml-lang/toml) gem. Either
@@ -188,32 +195,13 @@ be enabled in the main configuration file. Enable it in cfg with:
   config_file => '/etc/grafana/ldap.toml',
 },
 ```
-
-#### Integer note
-
-Puppet may convert integers into strings while parsing the hash and converting
-into toml. This can be worked around by appending 0 to an integer.
-
-Example:
-
-```
-port => 636+0,
-```
-
-Manages the Grafana LDAP configuration file. This hash is directly translated
-into the corresponding TOML file, allowing for full flexibility in generating
-the configuration.
-
-See the [LDAP documentation](http://docs.grafana.org/v2.1/installation/ldap/)
-for more information.
-
 #### Example LDAP config
 
 ```
 ldap_cfg => {
   servers => [
     { host            => 'ldapserver1.domain1.com',
-      port            => 636+0,
+      port            => 636,
       use_ssl         => true,
       search_filter   => '(sAMAccountName=%s)',
       search_base_dns => [ 'dc=domain1,dc=com' ],
@@ -240,7 +228,7 @@ ldap_cfg => [
     servers => [
       {
         host            => 'ldapserver1.domain1.com',
-        port            => 636+0,
+        port            => 636,
         use_ssl         => true,
         search_filter   => '(sAMAccountName=%s)',
         search_base_dns => [ 'dc=domain1,dc=com' ],
@@ -257,8 +245,8 @@ ldap_cfg => [
     },
     'servers.group_mappings' => [
       {
-        group_dn => cn=grafana_viewers,ou=groups,dc=domain1,dc=com
-        org_role: Viewer
+        group_dn => 'cn=grafana_viewers,ou=groups,dc=domain1,dc=com',
+        org_role => 'Viewer',
       }
     ],
   },
@@ -266,7 +254,7 @@ ldap_cfg => [
     servers => [
       {
         host            => 'ldapserver2.domain2.com',
-        port            => 389+0,
+        port            => 389,
         use_ssl         => false,
         start_tls       => true,
         search_filter   => '(uid=%s)',
