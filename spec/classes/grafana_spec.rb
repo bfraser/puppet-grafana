@@ -273,7 +273,7 @@ describe 'grafana' do
                   'surname' => 'sn',
                   'username' => 'sAMAccountName',
                   'member_of' => 'memberOf',
-                  'email' => 'email'
+                  'email' => 'mail'
                 }
               }
             }
@@ -296,7 +296,7 @@ describe 'grafana' do
                           "use_ssl = true\n"\
                           "\n"\
                           "[servers.attributes]\n"\
-                          "email = \"email\"\n"\
+                          "email = \"mail\"\n"\
                           "member_of = \"memberOf\"\n"\
                           "name = \"givenName\"\n"\
                           "surname = \"sn\"\n"\
@@ -359,7 +359,7 @@ describe 'grafana' do
                     'surname' => 'sn',
                     'username' => 'sAMAccountName',
                     'member_of' => 'memberOf',
-                    'email' => 'email'
+                    'email' => 'mail'
                   }
                 },
                 {
@@ -374,7 +374,7 @@ describe 'grafana' do
                     'surname' => 'sn',
                     'username' => 'sAMAccountName',
                     'member_of' => 'memberOf',
-                    'email' => 'email'
+                    'email' => 'mail'
                   }
                 }
               ]
@@ -388,7 +388,7 @@ describe 'grafana' do
                           "use_ssl = true\n"\
                           "\n"\
                           "[servers.attributes]\n"\
-                          "email = \"email\"\n"\
+                          "email = \"mail\"\n"\
                           "member_of = \"memberOf\"\n"\
                           "name = \"givenName\"\n"\
                           "surname = \"sn\"\n"\
@@ -401,7 +401,7 @@ describe 'grafana' do
                           "use_ssl = true\n"\
                           "\n"\
                           "[servers.attributes]\n"\
-                          "email = \"email\"\n"\
+                          "email = \"mail\"\n"\
                           "member_of = \"memberOf\"\n"\
                           "name = \"givenName\"\n"\
                           "surname = \"sn\"\n"\
@@ -409,6 +409,65 @@ describe 'grafana' do
                           "\n"
 
           it { is_expected.to contain_file('/etc/grafana/ldap.toml').with_content(ldap_expected) }
+        end
+      end
+
+      context 'with Sensitive `ldap_cfg`' do
+        let(:ldap_cfg) do
+          {
+            'servers' => [
+              { 'host' => 'server1a server1b',
+                'use_ssl' => true,
+                'search_filter' => '(sAMAccountName=%s)',
+                'search_base_dns' => ['dc=domain1,dc=com'] }
+            ],
+            'servers.attributes' => {
+              'name' => 'givenName',
+              'surname' => 'sn',
+              'username' => 'sAMAccountName',
+              'member_of' => 'memberOf',
+              'email' => 'mail'
+            }
+          }
+        end
+
+        let(:expected) do
+          <<~CONTENT
+
+            [[servers]]
+            host = "server1a server1b"
+            search_base_dns = ["dc=domain1,dc=com"]
+            search_filter = "(sAMAccountName=%s)"
+            use_ssl = true
+
+            [servers.attributes]
+            email = "mail"
+            member_of = "memberOf"
+            name = "givenName"
+            surname = "sn"
+            username = "sAMAccountName"
+
+          CONTENT
+        end
+
+        context 'Sensitive[Hash]' do
+          let(:params) do
+            {
+              ldap_cfg: sensitive(ldap_cfg)
+            }
+          end
+
+          it { is_expected.to contain_file('/etc/grafana/ldap.toml').with_content(sensitive(expected)) }
+        end
+
+        context 'Sensitive[Array[Hash]]' do
+          let(:params) do
+            {
+              ldap_cfg: sensitive([ldap_cfg])
+            }
+          end
+
+          it { is_expected.to contain_file('/etc/grafana/ldap.toml').with_content(sensitive(expected)) }
         end
       end
 

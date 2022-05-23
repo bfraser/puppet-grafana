@@ -183,6 +183,10 @@ or manually using one of the following:
   # AIO or PE puppetserver
   /opt/puppet/bin/puppetserver gem install toml
 ```
+##### secrets
+
+LDAP configuration usually contains secrets. If you want to stop these being leaked in logs and reports,
+the `ldap_cfg` parameter will optionally accept the `Sensitive` data type.
 
 ##### cfg note
 
@@ -198,7 +202,7 @@ be enabled in the main configuration file. Enable it in cfg with:
 #### Example LDAP config
 
 ```
-ldap_cfg => {
+ldap_cfg => Sensitive({
   servers => [
     { host            => 'ldapserver1.domain1.com',
       port            => 636,
@@ -214,16 +218,16 @@ ldap_cfg => {
     surname   => 'sn',
     username  => 'sAMAccountName',
     member_of => 'memberOf',
-    email     => 'email',
+    email     => 'mail',
   }
-},
+}),
 ```
 
 If you want to connect to multiple LDAP servers using different configurations,
 use an array to enwrap the configurations as shown below.
 
 ```
-ldap_cfg => [
+ldap_cfg => Sensitive([
   {
     servers => [
       {
@@ -241,7 +245,7 @@ ldap_cfg => [
       surname   => 'sn',
       username  => 'sAMAccountName',
       member_of => 'memberOf',
-      email     => 'email',
+      email     => 'mail',
     },
     'servers.group_mappings' => [
       {
@@ -278,7 +282,7 @@ ldap_cfg => [
       }
     ],
   },
-]
+])
 
 
 #####
@@ -297,7 +301,7 @@ grafana::ldap_cfg:
       surname: sn
       username: sAMAccountName
       member_of: memberOf
-      email: email
+      email: mail
     servers.group_mappings:
       - group_dn: cn=grafana_viewers,ou=groups,dc=domain1,dc=com
         org_role: Viewer
