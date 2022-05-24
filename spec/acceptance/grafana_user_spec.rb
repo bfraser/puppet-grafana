@@ -25,19 +25,99 @@ supported_versions.each do |grafana_version|
       end
     end
 
-    it 'runs successfully' do
-      pp = <<-EOS
-      grafana_user { 'user1':
-        grafana_url       => 'http://localhost:3000',
-        grafana_user      => 'admin',
-        grafana_password  => 'admin',
-        full_name         => 'John Doe',
-        password          => 'Us3r5ecret',
-        email             => 'john@example.com',
-      }
-      EOS
-      apply_manifest(pp, catch_failures: true)
-      apply_manifest(pp, catch_changes: true)
+    it_behaves_like 'an idempotent resource' do
+      let(:manifest) do
+        <<-PUPPET
+        grafana_user { 'user1':
+          grafana_url      => 'http://localhost:3000',
+          grafana_user     => 'admin',
+          grafana_password => 'admin',
+          full_name        => 'John Doe',
+          password         => 'Us3r5ecret',
+          email            => 'john@example.com',
+        }
+        PUPPET
+      end
+    end
+
+    describe 'advanced use' do
+      describe 'creating an admin' do
+        it_behaves_like 'an idempotent resource' do
+          let(:manifest) do
+            <<-PUPPET
+            grafana_user { 'admin1':
+              grafana_url      => 'http://localhost:3000',
+              grafana_user     => 'admin',
+              grafana_password => 'admin',
+              full_name        => 'Admin User',
+              password         => 'Admin5ecret',
+              email            => 'admin@example.com',
+              is_admin         => true,
+            }
+            PUPPET
+          end
+        end
+      end
+
+      describe 'updating a user password with new admin user' do
+        it_behaves_like 'an idempotent resource' do
+          let(:manifest) do
+            <<-PUPPET
+            grafana_user { 'user1':
+              grafana_url      => 'http://localhost:3000',
+              grafana_user     => 'admin1',
+              grafana_password => 'Admin5ecret',
+              password         => 'newpassword',
+            }
+            PUPPET
+          end
+        end
+      end
+
+      describe 'Turning a user into an admin' do
+        it_behaves_like 'an idempotent resource' do
+          let(:manifest) do
+            <<-PUPPET
+            grafana_user { 'user1':
+              grafana_url      => 'http://localhost:3000',
+              grafana_user     => 'admin1',
+              grafana_password => 'Admin5ecret',
+              is_admin         => true,
+            }
+            PUPPET
+          end
+        end
+      end
+
+      describe 'updating full_name' do
+        it_behaves_like 'an idempotent resource' do
+          let(:manifest) do
+            <<-PUPPET
+            grafana_user { 'user1':
+              grafana_url      => 'http://localhost:3000',
+              grafana_user     => 'admin1',
+              grafana_password => 'Admin5ecret',
+              full_name        => 'My new Admin user',
+            }
+            PUPPET
+          end
+        end
+      end
+
+      describe 'deleting a user' do
+        it_behaves_like 'an idempotent resource' do
+          let(:manifest) do
+            <<-PUPPET
+            grafana_user { 'admin1':
+              ensure           => absent,
+              grafana_url      => 'http://localhost:3000',
+              grafana_user     => 'user1',
+              grafana_password => 'newpassword',
+            }
+            PUPPET
+          end
+        end
+      end
     end
   end
 end

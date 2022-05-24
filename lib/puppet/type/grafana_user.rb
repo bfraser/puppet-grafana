@@ -35,7 +35,7 @@ Puppet::Type.newtype(:grafana_user) do
     desc 'The password for the Grafana server'
   end
 
-  newparam(:full_name) do
+  newproperty(:full_name) do
     desc 'The full name of the user.'
   end
 
@@ -57,7 +57,6 @@ Puppet::Type.newtype(:grafana_user) do
   newproperty(:is_admin) do
     desc 'Whether the user is a grafana admin'
     newvalues(:true, :false)
-    defaultto :false
   end
 
   def set_sensitive_parameters(sensitive_parameters) # rubocop:disable Naming/AccessorMethodName
