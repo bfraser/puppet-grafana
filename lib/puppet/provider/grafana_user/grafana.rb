@@ -12,35 +12,33 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
     @property_flush = {}
   end
 
-  def users
-    response = send_request('GET', format('%s/users', resource[:grafana_api_path]))
-    raise format('Fail to retrieve users (HTTP response: %s/%s)', response.code, response.body) if response.code != '200'
+  # https://grafana.com/docs/grafana/v8.4/http_api/user/#get-single-user-by-usernamelogin-or-email
+  def get_user_by_name(username)
+    response = send_request('GET', format('%s/users/lookup', resource[:grafana_api_path]), nil, { 'loginOrEmail' => username })
 
-    begin
-      users = JSON.parse(response.body)
-
-      users.map { |x| x['id'] }.map do |id|
-        response = send_request('GET', format('%s/users/%s', resource[:grafana_api_path], id))
-        raise format('Fail to retrieve user %d (HTTP response: %s/%s)', id, response.code, response.body) if response.code != '200'
-
-        user = JSON.parse(response.body)
-        {
-          id: id,
-          name: user['login'],
-          full_name: user['name'],
-          email: user['email'],
-          theme: user['theme'],
-          password: nil,
-          is_admin: user['isGrafanaAdmin'] ? :true : :false
-        }
-      end
-    rescue JSON::ParserError
-      raise format('Fail to parse response: %s', response.body)
+    case response.code
+    when '404'
+      ret = nil
+    when '200'
+      user = JSON.parse(response.body)
+      ret = {
+        id: user['id'],
+        name: user['login'],
+        full_name: user['name'],
+        email: user['email'],
+        theme: user['theme'],
+        password: nil,
+        is_admin: user['isGrafanaAdmin'] ? :true : :false
+      }
+    else
+      raise format('Fail to retrieve user %s (HTTP response: %s/%s)', username, response.code, response.body)
     end
+
+    ret
   end
 
   def user
-    @user ||= users.find { |x| x[:name] == resource[:name] }
+    @user ||= get_user_by_name(resource[:name])
     @user
   end
 
