@@ -3,11 +3,16 @@
 Puppet::Type.newtype(:grafana_organization) do
   @doc = 'Manage organizations in Grafana'
 
-  ensurable
+  ensurable do
+    defaultvalues
+    defaultto :present
+  end
 
   newparam(:name, namevar: true) do
     desc 'The name of the organization.'
 
+    # You can't delete the default organization without first switching the API user (eg. 'admin')
+    # to another org first, so implementing this is non trivial.
     validate do |value|
       raise ArgumentError, format('Unable to modify default organization') if value == 'Main Org.'
     end
@@ -39,17 +44,6 @@ Puppet::Type.newtype(:grafana_organization) do
     desc 'The password for the Grafana server'
   end
 
-  newproperty(:id) do
-    desc 'The ID of the organization'
-  end
-
-  newproperty(:address) do
-    desc 'Additional JSON data to configure the organization address (optional)'
-
-    validate do |value|
-      raise ArgumentError, 'address should be a Hash!' unless value.nil? || value.is_a?(Hash)
-    end
-  end
   autorequire(:service) do
     'grafana-server'
   end
