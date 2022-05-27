@@ -40,6 +40,33 @@ supported_versions.each do |grafana_version|
       end
     end
 
+    describe 'managing 100 users' do
+      it_behaves_like 'an idempotent resource' do
+        let(:manifest) do
+          <<-PUPPET
+          grafana_user { range('testuser00', 'testuser99'):
+            ensure           => present,
+            grafana_url      => 'http://localhost:3000',
+            grafana_user     => 'admin',
+            grafana_password => 'admin',
+          }
+          PUPPET
+        end
+      end
+      it_behaves_like 'an idempotent resource' do
+        let(:manifest) do
+          <<-PUPPET
+          grafana_user { range('testuser00', 'testuser99'):
+            ensure           => absent,
+            grafana_url      => 'http://localhost:3000',
+            grafana_user     => 'admin',
+            grafana_password => 'admin',
+          }
+          PUPPET
+        end
+      end
+    end
+
     describe 'advanced use' do
       describe 'creating an admin' do
         it_behaves_like 'an idempotent resource' do
