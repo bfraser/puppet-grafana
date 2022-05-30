@@ -32,6 +32,41 @@ describe Puppet::Type.type(:grafana_user) do
       expect(guser[:grafana_url]).to eq('http://example.com/')
     end
 
+    describe 'organizations' do
+      it 'has an `organizations` property' do
+        expect(described_class.attrtype(:organizations)).to eq(:property)
+      end
+
+      [
+        { 'org1' => 'viewer', 'org2' => 'admin', 'org3' => 'editor' },
+        { 'org1' => 'Viewer', 'org2' => 'Admin', 'org3' => 'Editor' },
+        {},
+      ].each do |value|
+        it "supports #{value} as a value for `organizations`" do
+          expect { described_class.new(name: 'test', grafana_url: 'http://example.com/', organizations: value) }.not_to raise_error
+        end
+      end
+
+      [
+        'org1',
+        42,
+        false,
+        true,
+      ].each do |value|
+        it "does not support #{value} as a value for `organizations`" do
+          expect { described_class.new(name: 'test', grafana_url: 'http://example.com/', organizations: value) }.to raise_error(Puppet::Error, %r{organizations must be a Hash})
+        end
+      end
+
+      it 'does not accept unknown roles' do
+        expect { described_class.new(name: 'test', grafana_url: 'http://example.com/', organizations: { 'org1' => 'superuser' }) }.to raise_error(Puppet::Error, %r{organizations contains unrecognised roles})
+      end
+
+      it 'capitalizes role names' do
+        expect(described_class.new(name: 'test', grafana_url: 'http://example.com/', organizations: { 'org1' => 'admin' })[:organizations]).to eq({ 'org1' => 'Admin' })
+      end
+    end
+
     it 'autorequires the grafana-server for proper ordering' do
       catalog = Puppet::Resource::Catalog.new
       service = Puppet::Type.type(:service).new(name: 'grafana-server')
@@ -58,6 +93,19 @@ describe Puppet::Type.type(:grafana_user) do
 
       relationship = guser.autorequire.find do |rel|
         (rel.source.to_s == 'Grafana_conn_validator[grafana]') && (rel.target.to_s == guser.to_s)
+      end
+      expect(relationship).to be_a Puppet::Relationship
+    end
+
+    it 'autorequires the grafana_organizations for proper ordering' do
+      catalog = Puppet::Resource::Catalog.new
+      organization = Puppet::Type.type(:grafana_organization).new(name: 'testorg', grafana_url: 'http://example.com/')
+      user = described_class.new(name: 'test', grafana_url: 'http://example.com/', organizations: { 'testorg' => 'Admin' })
+      catalog.add_resource organization
+      catalog.add_resource user
+
+      relationship = user.autorequire.find do |rel|
+        (rel.source.to_s == 'Grafana_organization[testorg]') && (rel.target.to_s == user.to_s)
       end
       expect(relationship).to be_a Puppet::Relationship
     end

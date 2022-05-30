@@ -59,6 +59,19 @@ Puppet::Type.newtype(:grafana_user) do
     newvalues(:true, :false)
   end
 
+  newproperty(:organizations) do
+    desc 'A hash of organizations and roles'
+
+    validate do |value|
+      raise ArgumentError, 'organizations must be a Hash!' unless value.nil? || value.is_a?(Hash)
+      raise ArgumentError, 'organizations contains unrecognised roles' unless (value.values.map(&:downcase) - %w[viewer editor admin]).empty?
+    end
+
+    munge do |value|
+      value.transform_values(&:capitalize)
+    end
+  end
+
   def set_sensitive_parameters(sensitive_parameters) # rubocop:disable Naming/AccessorMethodName
     parameter(:password).sensitive = true if parameter(:password)
     super(sensitive_parameters)
@@ -70,5 +83,13 @@ Puppet::Type.newtype(:grafana_user) do
 
   autorequire(:grafana_conn_validator) do
     'grafana'
+  end
+
+  autorequire(:grafana_organization) do
+    if self[:organizations]
+      self[:organizations].keys
+    else
+      []
+    end
   end
 end

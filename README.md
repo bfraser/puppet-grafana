@@ -899,9 +899,20 @@ grafana_user { 'username':
   full_name         => 'John Doe',
   password          => 'Us3r5ecret',
   email             => 'john@example.com',
+  organizations     => {
+    'Example Org' => 'Editor',
+    'Main org.'   => 'Viewer',
+    'Another Org' => 'Admin',
+  },
 }
 ```
+
 `grafana_api_path` is only required if using sub-paths for the API
+
+If `organizations` is specified, the user's organizations will be managed.
+These should be specified as a hash of organization names and roles.
+
+If puppet is managing any of these organizations, they will be autorequired.
 
 ##### `grafana::notification`
 
