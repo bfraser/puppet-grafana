@@ -8,18 +8,11 @@ describe Puppet::Type.type(:grafana_organization) do
       name: 'foo',
       grafana_url: 'http://example.com',
       grafana_user: 'admin',
-      grafana_password: 'admin',
-      address: { address1: 'test address1', address2: 'test address2', city: 'CityName', state: 'NewState', zipcode: '12345', country: 'USA' }
+      grafana_password: 'admin'
     )
   end
 
   context 'when setting parameters' do
-    it "fails if json_data isn't valid" do
-      expect do
-        described_class.new name: 'foo', address: 'invalid address'
-      end.to raise_error(Puppet::Error, %r{address should be a Hash!})
-    end
-
     it "fails if grafana_url isn't HTTP-based" do
       expect do
         described_class.new name: 'foo', grafana_url: 'example.com', content: '{}', ensure: :present
@@ -31,7 +24,6 @@ describe Puppet::Type.type(:grafana_organization) do
       expect(gorganization[:grafana_user]).to eq('admin')
       expect(gorganization[:grafana_password]).to eq('admin')
       expect(gorganization[:grafana_url]).to eq('http://example.com')
-      expect(gorganization[:address]).to eq(address1: 'test address1', address2: 'test address2', city: 'CityName', state: 'NewState', zipcode: '12345', country: 'USA')
     end
 
     it 'autorequires the grafana-server for proper ordering' do

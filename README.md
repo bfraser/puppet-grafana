@@ -526,6 +526,7 @@ In order to use the organization resource, add the following to your manifest:
 
 ```puppet
 grafana_organization { 'example_org':
+  ensure           => present,
   grafana_url      => 'http://localhost:3000',
   grafana_user     => 'admin',
   grafana_password => '5ecretPassw0rd',
@@ -534,9 +535,8 @@ grafana_organization { 'example_org':
 
 `grafana_url`, `grafana_user`, and `grafana_password` are required to create organizations via the API.
 
-`name` is optional if the name will differ from example_org above.
-
-`address` is an optional parameter that requires a hash. Address settings are `{"address1":"","address2":"","city":"","zipCode":"","state":"","country":""}`
+set `ensure => absent` if you want to remove an organization.
+Removing the default organization, (`Main org.`), is not supported.
 
 #### `grafana_team`
 
