@@ -10,6 +10,7 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
   def initialize(value = {})
     super(value)
     @property_flush = {}
+    @org_ids = {}
   end
 
   # https://grafana.com/docs/grafana/v8.4/http_api/user/#get-single-user-by-usernamelogin-or-email
@@ -28,13 +29,39 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
         email: user['email'],
         theme: user['theme'],
         password: nil,
-        is_admin: user['isGrafanaAdmin'] ? :true : :false
+        is_admin: user['isGrafanaAdmin'] ? :true : :false,
+        organizations: user_orgs(user['id'])
       }
     else
-      raise format('Fail to retrieve user %s (HTTP response: %s/%s)', username, response.code, response.body)
+      raise format('Failed to retrieve user %s (HTTP response: %s/%s)', username, response.code, response.body)
     end
 
     ret
+  end
+
+  def user_orgs(user_id)
+    response = send_request('GET', format('%s/users/%d/orgs', resource[:grafana_api_path], user_id))
+    raise format('Failed to retrieve organizations for user with id %d (HTTP response: %s/%s)', user_id, response.code, response.body) if response.code != '200'
+
+    JSON.parse(response.body).each_with_object({}) do |org, orgs|
+      # Store the mapping of organization name to id so we can skip making an extra API call later
+      @org_ids[org['name']] = org['orgId']
+      orgs[org['name']] = org['role']
+    end
+  end
+
+  # Returns the id of an organization
+  # If we already have learnt this, and stored it in @org_ids we can just return it.
+  # Otherwise, we have to make a separate API call to look it up.
+  def org_id(org_name)
+    return @org_ids[org_name] if @org_ids[org_name]
+
+    debug("Looking up org_id of #{org_name}")
+
+    response = send_request('GET', format('%s/orgs/name/%s', resource[:grafana_api_path], org_name))
+    raise format('Failed to retrieve organization\'s id for %s (HTTP response: %s/%s)', org_name, response.code, response.body) if response.code != '200'
+
+    @org_ids[org_name] = JSON.parse(response.body)['id']
   end
 
   def user
@@ -94,6 +121,14 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
   end
   # rubocop:enable Naming/PredicateName
 
+  def organizations
+    user[:organizations]
+  end
+
+  def organizations=(value)
+    @property_flush[:organizations] = value
+  end
+
   def flush
     if @property_flush[:ensure] == :absent
       delete_user
@@ -102,6 +137,7 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
 
     password = @property_flush.delete(:password)
     is_admin = @property_flush.delete(:is_admin)
+    organizations = @property_flush.delete(:organizations)
 
     unless @property_flush.empty?
       debug('Updating user properties')
@@ -109,22 +145,63 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
       # If we don't include the login name, and email is being updated, then login will be reset to match the email address!
       data = @property_flush.merge({ login: resource[:name] })
       response = send_request('PUT', format('%s/users/%s', resource[:grafana_api_path], user[:id]), data)
-      raise format('Failed to update properties for user %s (HTTP response: %s/%s', resource[:name], response.code, response.body) if response.code != '200'
+      raise format('Failed to update properties for user %s (HTTP response: %s/%s)', resource[:name], response.code, response.body) if response.code != '200'
     end
 
     if password
       debug('Updating user password')
       response = send_request 'PUT', format('%s/admin/users/%s/password', resource[:grafana_api_path], user[:id]), password: password
-      raise format('Failed to update password for user %s (HTTP response: %s/%s', resource[:name], response.code, response.body) if response.code != '200'
+      raise format('Failed to update password for user %s (HTTP response: %s/%s)', resource[:name], response.code, response.body) if response.code != '200'
     end
 
     update_admin_flag(is_admin) unless is_admin.nil?
+
+    update_organizations(organizations) unless organizations.nil?
+  end
+
+  def update_organizations(organizations)
+    debug('Updating user organizations')
+
+    # For all orgs that are in `to`, but not in `from`, add the user to the org
+    (organizations.keys - user[:organizations].keys).each do |org|
+      debug("Adding #{resource[:name]} to #{org} with role #{organizations[org]}")
+      add_org_user(org_id(org), resource[:name], organizations[org])
+    end
+
+    # For all orgs that are in both, update the role if needed
+    (organizations.keys & user[:organizations].keys).each do |org|
+      unless organizations[org] == user[:organizations][org]
+        debug("Updating #{resource[:name]} #{org} role to #{organizations[org]}")
+        update_org_user(org_id(org), user[:id], organizations[org])
+      end
+    end
+
+    # For all orgs that are in `from`, but not in `to`, delete the user from the org
+    (user[:organizations].keys - organizations.keys).each do |org|
+      debug("Deleting #{resource[:name]} from #{org}")
+      delete_org_user(org_id(org), user[:id])
+    end
+  end
+
+  def update_org_user(org_id, user_id, role)
+    response = send_request 'PATCH', format('%s/orgs/%d/users/%d', resource[:grafana_api_path], org_id, user_id), { 'role' => role }
+    raise format('Failed to update organization role for user_id %d and org_id %d to %s (HTTP response: %s/%s)', user_id, org_id, role, response.code, response.body) if response.code != '200'
+  end
+
+  def add_org_user(org_id, user_name, role)
+    response = send_request 'POST', format('%s/orgs/%d/users', resource[:grafana_api_path], org_id), { 'loginOrEmail' => user_name, 'role' => role }
+    raise format('Failed to add user_id %d to organization_id %d with role %s (HTTP response: %s/%s)', user_id, org_id, role, response.code, response.body) if response.code != '200'
+  end
+
+  def delete_org_user(org_id, user_id)
+    response = send_request 'DELETE', format('%s/orgs/%d/users/%d', resource[:grafana_api_path], org_id, user_id)
+    raise format('Failed to delete user_id %d from organization_id %d (HTTP response: %s/%s)', user_id, org_id, response.code, response.body) if response.code != '200'
   end
 
   def update_admin_flag(is_admin)
     debug("Setting isGrafanaAdmin to #{is_admin}")
     response = send_request 'PUT', format('%s/admin/users/%s/permissions', resource[:grafana_api_path], user[:id]), isGrafanaAdmin: (is_admin == :true)
-    raise format('Failed to update isGrafanaAdmin for user %s (HTTP response: %s/%s', resource[:name], response.code, response.body) if response.code != '200'
+    raise format('Failed to update isGrafanaAdmin for user %s (HTTP response: %s/%s)', resource[:name], response.code, response.body) if response.code != '200'
   end
 
   def check_password
@@ -144,7 +221,7 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
   def delete_user
     response = send_request('DELETE', format('%s/admin/users/%s', resource[:grafana_api_path], user[:id]))
 
-    raise format('Failed to delete user %s (HTTP response: %s/%s', resource[:name], response.code, response.body) if response.code != '200'
+    raise format('Failed to delete user %s (HTTP response: %s/%s)', resource[:name], response.code, response.body) if response.code != '200'
 
     self.user = nil
   end
@@ -164,6 +241,7 @@ Puppet::Type.type(:grafana_user).provide(:grafana, parent: Puppet::Provider::Gra
     raise format('Failed to create user %s (HTTP response: %s/%s)', resource[:name], response.code, response.body) if response.code != '200'
 
     update_admin_flag(resource[:is_admin]) unless resource[:is_admin].nil?
+    update_organizations(resource[:organizations]) unless resource[:organizations].nil?
   end
 
   def random_password

@@ -145,6 +145,114 @@ supported_versions.each do |grafana_version|
           end
         end
       end
+
+      describe 'organizations' do
+        describe 'Adding a new user to a new organization' do
+          it_behaves_like 'an idempotent resource' do
+            let(:manifest) do
+              <<-PUPPET
+              grafana_user { 'orguser1':
+                ensure           => present,
+                grafana_url      => 'http://localhost:3000',
+                grafana_user     => 'admin',
+                grafana_password => 'admin',
+                organizations    => {
+                  'testorg1' => 'admin',
+                },
+              }
+
+              grafana_organization { ['testorg1','testorg2','testorg3']:
+                ensure           => present,
+                grafana_url      => 'http://localhost:3000',
+                grafana_user     => 'admin',
+                grafana_password => 'admin',
+              }
+              PUPPET
+            end
+          end
+        end
+
+        describe 'Adding a user to existing organizations' do
+          it_behaves_like 'an idempotent resource' do
+            let(:manifest) do
+              <<-PUPPET
+              grafana_user { 'orguser1':
+                ensure           => present,
+                grafana_url      => 'http://localhost:3000',
+                grafana_user     => 'admin',
+                grafana_password => 'admin',
+                organizations    => {
+                  'testorg1' => 'admin',
+                  'testorg2' => 'viewer',
+                  'testorg3' => 'Editor',
+                },
+              }
+              PUPPET
+            end
+          end
+        end
+
+        describe 'Updating a users organizations' do
+          it_behaves_like 'an idempotent resource' do
+            let(:manifest) do
+              <<-PUPPET
+              grafana_user { 'orguser1':
+                ensure           => present,
+                grafana_url      => 'http://localhost:3000',
+                grafana_user     => 'admin',
+                grafana_password => 'admin',
+                organizations    => {
+                  'testorg1' => 'viewer',
+                  'testorg2' => 'editor',
+                  'testorg3' => 'admin',
+                },
+              }
+              PUPPET
+            end
+          end
+        end
+
+        describe 'Removing a user from an organization' do
+          it_behaves_like 'an idempotent resource' do
+            let(:manifest) do
+              <<-PUPPET
+              grafana_user { 'orguser1':
+                ensure           => present,
+                grafana_url      => 'http://localhost:3000',
+                grafana_user     => 'admin',
+                grafana_password => 'admin',
+                organizations    => {
+                  'testorg1' => 'viewer',
+                  'testorg2' => 'editor',
+                },
+              }
+              PUPPET
+            end
+          end
+        end
+
+        describe 'Cleaning up' do
+          it_behaves_like 'an idempotent resource' do
+            let(:manifest) do
+              <<-PUPPET
+              grafana_user { 'orguser1':
+                ensure           => absent,
+                grafana_url      => 'http://localhost:3000',
+                grafana_user     => 'admin',
+                grafana_password => 'admin',
+              }
+              grafana_organization {['testorg1','testorg2','testorg3']:
+                ensure           => absent,
+                grafana_url      => 'http://localhost:3000',
+                grafana_user     => 'admin',
+                grafana_password => 'admin',
+                require          => Grafana_user['orguser1'],
+              }
+              PUPPET
+            end
+          end
+        end
+      end
     end
   end
 end
