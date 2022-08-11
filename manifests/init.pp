@@ -60,7 +60,16 @@
 # When using 'repo' install_method, the repo to look for packages in.
 # Set to 'stable' to install only stable versions
 # Set to 'beta' to install beta versions
+# Set to 'custom' to install from custom repo. Use full URL
 # Defaults to stable.
+#
+# @repo_gpg_key_url When using 'repo' install_method, the repo_gpg_key_url to look for the gpg signing key of the repo. Defaults to https://packages.grafana.com/gpg.key. # lint:ignore:140chars
+#
+# @repo_key_id When using 'repo' install_method, the repo_key_id of the repo_gpg_key_url key on Debian based systems. Defaults to 4E40DDF6D76E284A4A6780E48C8C34C524098CB6. # lint:ignore:140chars
+#
+# @repo_release Optional value, needed on Debian based systems, if repo name is set to custom, used to identify the release of the repo. No default value. # lint:ignore:140chars
+#
+# @repo_url When using 'repo' install_method, the repo_url to look for packages in. Set to a custom string value to install from a custom repo. Defaults to https://packages.grafana.com/oss/OS_SPECIFIC_SLUG_HERE.  # lint:ignore:140chars
 #
 # [*plugins*]
 # A hash of plugins to be passed to `create_resources`, wraps around the
@@ -148,7 +157,10 @@ class grafana (
   Boolean $manage_package_repo,
   String $package_name,
   Optional[String] $package_source,
-  Enum['stable', 'beta'] $repo_name,
+  Enum['stable', 'beta', 'custom'] $repo_name,
+  Optional[String[1]] $repo_key_id,
+  Optional[String[1]] $repo_release,
+  Optional[Stdlib::HTTPUrl] $repo_url,
   String $rpm_iteration,
   String $service_name,
   String $version,
@@ -166,6 +178,7 @@ class grafana (
   String[1] $toml_package_name,
   String[1] $toml_package_ensure,
   Optional[String[1]] $toml_package_provider,
+  Stdlib::HTTPUrl $repo_gpg_key_url = 'https://packages.grafana.com/gpg.key',
 ) {
   contain grafana::install
   contain grafana::config

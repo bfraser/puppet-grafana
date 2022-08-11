@@ -14,6 +14,9 @@ grafana::manage_package_repo: true
 grafana::package_name: 'grafana'
 grafana::package_source: ~
 grafana::repo_name: 'stable'
+grafana::repo_key_id: ~
+grafana::repo_release: ~
+grafana::repo_url: ~
 grafana::rpm_iteration: '1'
 grafana::service_name: 'grafana-server'
 grafana::version: 'installed'
