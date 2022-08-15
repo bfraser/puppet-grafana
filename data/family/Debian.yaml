@@ -1,3 +1,5 @@
 ---
 grafana::install_method: 'repo'
+grafana::repo_url: 'https://packages.grafana.com/oss/deb'
+grafana::repo_key_id: '4E40DDF6D76E284A4A6780E48C8C34C524098CB6'
 grafana::sysconfig_location: '/etc/default/grafana-server'
