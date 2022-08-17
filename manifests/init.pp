@@ -1,8 +1,6 @@
-# == Class: grafana
 #
-# Installs and configures Grafana.
+# @summary Installs and configures Grafana.
 #
-# === Parameters
 # @param archive_source Download location of tarball to be used with the 'archive' install method.
 #   Defaults to the URL of the latest version of Grafana available at the time of module release.
 #
@@ -59,7 +57,7 @@
 #
 # @param repo_release Optional value, needed on Debian based systems.
 #   If repo name is set to custom, used to identify the release of the repo. No default value.
-# @param repo_url When using 'repo' install_method, the repo_url to look for packages in. 
+# @param repo_url When using 'repo' install_method, the repo_url to look for packages in.
 #   Set to a custom string value to install from a custom repo. Defaults to https://packages.grafana.com/oss/OS_SPECIFIC_SLUG_HERE.
 #
 # @param plugins A hash of plugins to be passed to `create_resources`, wraps around the

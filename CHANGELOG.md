@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v11.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v11.0.0) (2022-08-17)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v10.0.1...v11.0.0)
+
+**Breaking changes:**
+
+- Disable Arch Linux testing [\#292](https://github.com/voxpupuli/puppet-grafana/pull/292) ([bastelfreak](https://github.com/bastelfreak))
+- Remove `address` param from `grafana_organization` [\#284](https://github.com/voxpupuli/puppet-grafana/pull/284) ([alexjfisher](https://github.com/alexjfisher))
+
+**Implemented enhancements:**
+
+- Switch documentation to puppet strings [\#294](https://github.com/voxpupuli/puppet-grafana/pull/294) ([SimonHoenscheid](https://github.com/SimonHoenscheid))
+- Add support for custom repository URL [\#291](https://github.com/voxpupuli/puppet-grafana/pull/291) ([SimonHoenscheid](https://github.com/SimonHoenscheid))
+- Add `organizations` property to `grafana_user` [\#286](https://github.com/voxpupuli/puppet-grafana/pull/286) ([alexjfisher](https://github.com/alexjfisher))
+- Fix performance of `grafana_user` [\#285](https://github.com/voxpupuli/puppet-grafana/pull/285) ([alexjfisher](https://github.com/alexjfisher))
+- Accept `Sensitive` `ldap_cfg` [\#282](https://github.com/voxpupuli/puppet-grafana/pull/282) ([alexjfisher](https://github.com/alexjfisher))
+- Accept `Sensitive` `cfg` [\#280](https://github.com/voxpupuli/puppet-grafana/pull/280) ([alexjfisher](https://github.com/alexjfisher))
+
+**Fixed bugs:**
+
+- Fix `grafana_user` and switch to using `flush` [\#283](https://github.com/voxpupuli/puppet-grafana/pull/283) ([alexjfisher](https://github.com/alexjfisher))
+- Set grafana.ini owner to root with packages [\#264](https://github.com/voxpupuli/puppet-grafana/pull/264) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- Remove outdated `Integer note` from README [\#281](https://github.com/voxpupuli/puppet-grafana/pull/281) ([alexjfisher](https://github.com/alexjfisher))
+
 ## [v10.0.1](https://github.com/voxpupuli/puppet-grafana/tree/v10.0.1) (2021-12-02)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v10.0.0...v10.0.1)
@@ -103,7 +130,7 @@ These should not affect the functionality of the module.
 
 - Fix types to work with 'puppet generate types' [\#236](https://github.com/voxpupuli/puppet-grafana/pull/236) ([treydock](https://github.com/treydock))
 - Rebase plugin from zip patch [\#235](https://github.com/voxpupuli/puppet-grafana/pull/235) ([XMol](https://github.com/XMol))
-- Bugfix for teams, update README and acceptance testing [\#215](https://github.com/voxpupuli/puppet-grafana/pull/215) ([DavidReubenWhite](https://github.com/DavidReubenWhite))
+- Bugfix for teams, update README and acceptance testing [\#215](https://github.com/voxpupuli/puppet-grafana/pull/215) ([MorningLightMountain713](https://github.com/MorningLightMountain713))
 
 ## [v7.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v7.0.0) (2020-08-24)
 
@@ -120,7 +147,7 @@ These should not affect the functionality of the module.
 **Implemented enhancements:**
 
 - add SLES support [\#220](https://github.com/voxpupuli/puppet-grafana/pull/220) ([tuxmea](https://github.com/tuxmea))
-- Support for teams, dashboard permissions and memberships [\#210](https://github.com/voxpupuli/puppet-grafana/pull/210) ([DavidReubenWhite](https://github.com/DavidReubenWhite))
+- Support for teams, dashboard permissions and memberships [\#210](https://github.com/voxpupuli/puppet-grafana/pull/210) ([MorningLightMountain713](https://github.com/MorningLightMountain713))
 - Add mechanism to make API changes once API is available [\#208](https://github.com/voxpupuli/puppet-grafana/pull/208) ([treydock](https://github.com/treydock))
 - Update list of supported operating systems [\#204](https://github.com/voxpupuli/puppet-grafana/pull/204) ([dhoppe](https://github.com/dhoppe))
 - allow connecting to multiple LDAP services [\#199](https://github.com/voxpupuli/puppet-grafana/pull/199) ([unki](https://github.com/unki))
