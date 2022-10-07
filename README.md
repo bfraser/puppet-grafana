@@ -168,7 +168,7 @@ for more information.
 
 ##### TOML note
 
-This option **requires** the [toml](https://github.com/toml-lang/toml) gem. Either
+This option **requires** the [toml](https://rubygems.org/gems/toml/) gem. Either
 install the gem using puppet's native gem provider,
 [puppetserver_gem](https://forge.puppetlabs.com/puppetlabs/puppetserver_gem),
 [pe_gem](https://forge.puppetlabs.com/puppetlabs/pe_gem),
