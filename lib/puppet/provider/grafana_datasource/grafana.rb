@@ -3,6 +3,7 @@
 #    Copyright 2015 Mirantis, Inc.
 #
 require 'json'
+require 'erb'
 
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'grafana'))
 
@@ -50,36 +51,22 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
     @fetch_organization
   end
 
-  def datasources
-    response = send_request('GET', format('%s/datasources', resource[:grafana_api_path]))
-    raise format('Fail to retrieve datasources (HTTP response: %s/%s)', response.code, response.body) if response.code != '200'
+  def datasource_by_name
+    response = send_request('GET', format('%s/datasources/name/%s', resource[:grafana_api_path], ERB::Util.url_encode(resource[:name])))
+    return nil if response.code == '404'
+
+    raise Puppet::Error, format('Failed to retrieve datasource %s (HTTP response: %s/%s)', resource[:name], response.code, response.body) if response.code != '200'
 
     begin
-      datasources = JSON.parse(response.body)
-
-      datasources.map { |x| x['id'] }.map do |id|
-        response = send_request 'GET', format('%s/datasources/%s', resource[:grafana_api_path], id)
-        raise format('Failed to retrieve datasource %d (HTTP response: %s/%s)', id, response.code, response.body) if response.code != '200'
-
-        datasource = JSON.parse(response.body)
-
-        {
-          id: datasource['id'],
-          name: datasource['name'],
-          url: datasource['url'],
-          type: datasource['type'],
-          user: datasource['user'],
-          password: datasource['password'],
-          database: datasource['database'],
-          access_mode: datasource['access'],
-          is_default: datasource['isDefault'] ? :true : :false,
-          with_credentials: datasource['withCredentials'] ? :true : :false,
-          basic_auth: datasource['basicAuth'] ? :true : :false,
-          basic_auth_user: datasource['basicAuthUser'],
-          basic_auth_password: datasource['basicAuthPassword'],
-          json_data: datasource['jsonData'],
-          secure_json_data: datasource['secureJsonData']
-        }
+      JSON.parse(response.body).transform_values do |v|
+        case v
+        when true
+          :true
+        when false
+          :false
+        else
+          v
+        end
       end
     rescue JSON::ParserError
       raise format('Failed to parse response: %s', response.body)
@@ -87,166 +74,167 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
   end
 
   def datasource
-    @datasource ||= datasources.find { |x| x[:name] == resource[:name] }
+    @datasource ||= datasource_by_name
     @datasource
   end
 
   attr_writer :datasource
 
-  def type
-    datasource[:type]
-  end
+  # Create setters for all properties just so they exist
+  mk_resource_methods # Creates setters for all properties
 
-  def type=(value)
-    resource[:type] = value
-    save_datasource
+  # Then override all of the getters
+  def type
+    datasource['type']
   end
 
   def url
-    datasource[:url]
-  end
-
-  def url=(value)
-    resource[:url] = value
-    save_datasource
+    datasource['url']
   end
 
   def access_mode
-    datasource[:access_mode]
-  end
-
-  def access_mode=(value)
-    resource[:access_mode] = value
-    save_datasource
+    datasource['access']
   end
 
   def database
-    datasource[:database]
-  end
-
-  def database=(value)
-    resource[:database] = value
-    save_datasource
+    datasource['database']
   end
 
   def user
-    datasource[:user]
-  end
-
-  def user=(value)
-    resource[:user] = value
-    save_datasource
+    datasource['user']
   end
 
   def password
-    datasource[:password]
-  end
-
-  def password=(value)
-    resource[:password] = value
-    save_datasource
+    datasource['password']
   end
 
   # rubocop:disable Naming/PredicateName
   def is_default
-    datasource[:is_default]
+    datasource['isDefault']
   end
 
-  def is_default=(value)
-    resource[:is_default] = value
-    save_datasource
-  end
   # rubocop:enable Naming/PredicateName
 
   def basic_auth
-    datasource[:basic_auth]
-  end
-
-  def basic_auth=(value)
-    resource[:basic_auth] = value
-    save_datasource
+    datasource['basicAuth']
   end
 
   def basic_auth_user
-    datasource[:basic_auth_user]
-  end
-
-  def basic_auth_user=(value)
-    resource[:basic_auth_user] = value
-    save_datasource
+    datasource['basicAuthUser']
   end
 
   def basic_auth_password
-    datasource[:basic_auth_password]
-  end
-
-  def basic_auth_password=(value)
-    resource[:basic_auth_password] = value
-    save_datasource
+    datasource['basicAuthPassword']
   end
 
   def with_credentials
-    datasource[:with_credentials]
-  end
-
-  def with_credentials=(value)
-    resource[:with_credentials] = value
-    save_datasource
+    datasource['withCredentials']
   end
 
   def json_data
-    datasource[:json_data]
+    datasource['jsonData']
   end
 
-  def json_data=(value)
-    resource[:json_data] = value
-    save_datasource
+  def id
+    datasource['id']
+  end
+
+  def uid
+    datasource['uid']
   end
 
   def secure_json_data
-    datasource[:secure_json_data]
+    # The API never returns `secure` data, so we won't ever be able to tell if the current state is correct.
+    # TODO: Figure this out!!
+    {}
   end
 
-  def secure_json_data=(value)
-    resource[:secure_json_data] = value
-    save_datasource
-  end
+  def flush
+    return if resource['ensure'] == :absent
 
-  def save_datasource
     # change organizations
     response = send_request 'POST', format('%s/user/using/%s', resource[:grafana_api_path], fetch_organization[:id])
     raise format('Failed to switch to org %s (HTTP response: %s/%s)', fetch_organization[:id], response.code, response.body) unless response.code == '200'
 
+    # Build the `data` to POST/PUT by first creating a hash with some defaults which will be used if we're _creating_ a datasource
     data = {
-      name: resource[:name],
-      type: resource[:type],
-      url: resource[:url],
-      access: resource[:access_mode],
-      database: resource[:database],
-      user: resource[:user],
-      password: resource[:password],
-      isDefault: (resource[:is_default] == :true),
-      basicAuth: (resource[:basic_auth] == :true),
-      basicAuthUser: resource[:basic_auth_user],
-      basicAuthPassword: resource[:basic_auth_password],
-      withCredentials: (resource[:with_credentials] == :true),
-      jsonData: resource[:json_data],
-      secureJsonData: resource[:secure_json_data]
+      access: :direct,
+      isDefault: false,
+      basicAuth: false,
+      withCredentials: false,
     }
 
-    if datasource.nil?
-      response = send_request('POST', format('%s/datasources', resource[:grafana_api_path]), data)
-    else
-      data[:id] = datasource[:id]
-      response = send_request 'PUT', format('%s/datasources/%s', resource[:grafana_api_path], datasource[:id]), data
+    # If we're updating a datasource, merge in the current state (overwriting the defaults above)
+    unless datasource.nil?
+      data.merge!(datasource.transform_keys(&:to_sym).slice(
+                    :access,
+                    :basicAuth,
+                    :basicAuthUser,
+                    :basicAuthPassword,
+                    :database,
+                    :isDefault,
+                    :jsonData,
+                    :type,
+                    :url,
+                    :user,
+                    :password,
+                    :withCredentials,
+                    :uid
+                  ))
     end
-    raise format('Failed to create save %s (HTTP response: %s/%s)', resource[:name], response.code, response.body) if response.code != '200'
+
+    # Finally, merge in the properies the user has specified
+    data.merge!(
+      {
+        name: resource['name'],
+        access: resource['access_mode'],
+        basicAuth: resource['basic_auth'],
+        basicAuthUser: resource['basic_auth_user'],
+        basicAuthPassword: resource['basic_auth_password'],
+        database: resource['database'],
+        isDefault: resource['is_default'],
+        jsonData: resource['json_data'],
+        type: resource['type'],
+        url: resource['url'],
+        user: resource['user'],
+        password: resource['password'],
+        withCredentials: resource['with_credentials'],
+        secureJsonData: resource['secure_json_data'],
+        uid: resource['uid']
+      }.compact
+    )
+
+    # Puppet properties need to work with symbols, but the Grafana API will want to receive actual Booleans
+    data.transform_values! do |v|
+      case v
+      when :true
+        true
+      when :false
+        false
+      else
+        v
+      end
+    end
+
+    if datasource.nil?
+      Puppet.debug 'Creating datasource'
+      response = send_request('POST', format('%s/datasources', resource[:grafana_api_path]), data)
+    elsif uid.nil?
+      # This API call is deprecated in Grafana 9 so we only use it if our datasource doesn't have a uid (eg Grafana 6)
+      Puppet.debug 'Updating datasource by id'
+      response = send_request 'PUT', format('%s/datasources/%s', resource[:grafana_api_path], id), data
+    else
+      Puppet.debug 'Updating datasource by uid'
+      response = send_request 'PUT', format('%s/datasources/uid/%s', resource[:grafana_api_path], uid), data
+    end
+
+    raise format('Failed to create/update %s (HTTP response: %s/%s)', resource[:name], response.code, response.body) if response.code != '200'
 
     self.datasource = nil
   end
 
   def delete_datasource
-    response = send_request 'DELETE', format('%s/datasources/%s', resource[:grafana_api_path], datasource[:id])
+    response = send_request 'DELETE', format('%s/datasources/name/%s', resource[:grafana_api_path], ERB::Util.url_encode(resource[:name]))
 
     raise format('Failed to delete datasource %s (HTTP response: %s/%s', resource[:name], response.code, response.body) if response.code != '200'
 
@@ -254,7 +242,9 @@ Puppet::Type.type(:grafana_datasource).provide(:grafana, parent: Puppet::Provide
   end
 
   def create
-    save_datasource
+    # There's no sensible default for `type` when creating a new datasource so perform some validation here
+    # The actual creation happens when `flush` gets called.
+    raise Puppet::Error, 'type is required when creating a new datasource' if resource[:type].nil?
   end
 
   def destroy

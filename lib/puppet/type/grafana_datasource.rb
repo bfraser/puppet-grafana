@@ -37,6 +37,10 @@ Puppet::Type.newtype(:grafana_datasource) do
     desc 'The password for the Grafana server'
   end
 
+  newproperty(:uid) do
+    desc 'An optional unique identifier for the datasource. Supported by grafana 7.3 onwards. If you do not specify this parameter, grafana will assign a uid for you'
+  end
+
   newproperty(:url) do
     desc 'The URL/Endpoint of the datasource'
   end
@@ -66,35 +70,29 @@ Puppet::Type.newtype(:grafana_datasource) do
   newproperty(:access_mode) do
     desc 'Whether the datasource is accessed directly or not by the clients'
     newvalues(:direct, :proxy)
-    defaultto :direct
   end
 
   newproperty(:is_default) do
     desc 'Whether the datasource is the default one'
     newvalues(:true, :false)
-    defaultto :false
   end
 
   newproperty(:basic_auth) do
     desc 'Whether basic auth is enabled or not'
     newvalues(:true, :false)
-    defaultto :false
   end
 
   newproperty(:basic_auth_user) do
     desc 'The username for basic auth if enabled'
-    defaultto ''
   end
 
   newproperty(:basic_auth_password) do
     desc 'The password for basic auth if enabled'
-    defaultto ''
   end
 
   newproperty(:with_credentials) do
     desc 'Whether credentials such as cookies or auth headers should be sent with cross-site requests'
     newvalues(:true, :false)
-    defaultto :false
   end
 
   newproperty(:json_data) do
@@ -111,6 +109,19 @@ Puppet::Type.newtype(:grafana_datasource) do
 
     validate do |value|
       raise ArgumentError, 'secure_json_data should be a Hash!' unless value.nil? || value.is_a?(Hash)
+    end
+
+    # Unwrap any sensitive values _in_ the hash. For instance those created by
+    # node_encrypt. The whole property is automatically marked as `sensitive`
+    # anyway and puppet won't unwrap the nested sensitive data for us.
+    munge do |hash|
+      hash.transform_values do |v|
+        if v.instance_of?(Puppet::Pops::Types::PSensitiveType::Sensitive)
+          v.unwrap
+        else
+          v
+        end
+      end
     end
   end
 
