@@ -160,12 +160,13 @@ class grafana::config {
       # template uses:
       #   - pdatasources
       file { $grafana::provisioning_datasources_file:
-        ensure  => file,
-        owner   => 'grafana',
-        group   => 'grafana',
-        mode    => '0640',
-        content => epp('grafana/pdatasources.yaml.epp'),
-        notify  => Class['grafana::service'],
+        ensure    => file,
+        owner     => 'grafana',
+        group     => 'grafana',
+        mode      => '0640',
+        show_diff => false,
+        content   => epp('grafana/pdatasources.yaml.epp'),
+        notify    => Class['grafana::service'],
       }
     }
   }
