@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v11.1.0](https://github.com/voxpupuli/puppet-grafana/tree/v11.1.0) (2022-11-01)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v11.0.0...v11.1.0)
+
+**Implemented enhancements:**
+
+- Refactor `grafana_datasource` and add `uid` property [\#301](https://github.com/voxpupuli/puppet-grafana/pull/301) ([alexjfisher](https://github.com/alexjfisher))
+
+**Fixed bugs:**
+
+- Do not show datasource config changes [\#296](https://github.com/voxpupuli/puppet-grafana/pull/296) ([fklajn](https://github.com/fklajn))
+
+**Closed issues:**
+
+- `grafana_folder` `permissions` not idempotent [\#304](https://github.com/voxpupuli/puppet-grafana/issues/304)
+- 'uid' property is not included in datasource provisioning [\#229](https://github.com/voxpupuli/puppet-grafana/issues/229)
+
+**Merged pull requests:**
+
+- Update the link to the toml gem [\#303](https://github.com/voxpupuli/puppet-grafana/pull/303) ([16c7x](https://github.com/16c7x))
+
 ## [v11.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v11.0.0) (2022-08-17)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v10.0.1...v11.0.0)
