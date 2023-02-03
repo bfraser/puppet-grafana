@@ -1,8 +1,6 @@
-# == Class grafana::service
+# @summary Manage grafana service
 #
-# This class is meant to be called from grafana
-# It ensure the service is running
-#
+# @api private
 class grafana::service {
   case $grafana::install_method {
     'docker': {

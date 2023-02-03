@@ -1,3 +1,5 @@
+# @summary Manage grafana configuration
+#
 # @api private
 class grafana::config {
   if $grafana::cfg =~ Sensitive {
