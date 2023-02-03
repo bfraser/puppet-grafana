@@ -9,13 +9,13 @@
 #### Public Classes
 
 * [`grafana`](#grafana): Installs and configures Grafana.
-* [`grafana::install`](#grafana--install): == Class grafana::install
-* [`grafana::service`](#grafana--service): == Class grafana::service  This class is meant to be called from grafana It ensure the service is running
 * [`grafana::validator`](#grafana--validator): Manage grafana_conn_validator resource
 
 #### Private Classes
 
-* `grafana::config`
+* `grafana::config`: Manage grafana configuration
+* `grafana::install`: Manage grafana installation
+* `grafana::service`: Manage grafana service
 
 ### Resource types
 
@@ -64,6 +64,8 @@ class { '::grafana':
 The following parameters are available in the `grafana` class:
 
 * [`archive_source`](#-grafana--archive_source)
+* [`cfg_location`](#-grafana--cfg_location)
+* [`ldap_cfg`](#-grafana--ldap_cfg)
 * [`container_cfg`](#-grafana--container_cfg)
 * [`container_params`](#-grafana--container_params)
 * [`data_dir`](#-grafana--data_dir)
@@ -93,9 +95,7 @@ The following parameters are available in the `grafana` class:
 * [`toml_package_name`](#-grafana--toml_package_name)
 * [`toml_package_ensure`](#-grafana--toml_package_ensure)
 * [`toml_package_provider`](#-grafana--toml_package_provider)
-* [`cfg_location`](#-grafana--cfg_location)
 * [`cfg`](#-grafana--cfg)
-* [`ldap_cfg`](#-grafana--ldap_cfg)
 * [`docker_image`](#-grafana--docker_image)
 * [`docker_ports`](#-grafana--docker_ports)
 * [`rpm_iteration`](#-grafana--rpm_iteration)
@@ -105,7 +105,22 @@ The following parameters are available in the `grafana` class:
 Data type: `Optional[String]`
 
 Download location of tarball to be used with the 'archive' install method.
-Defaults to the URL of the latest version of Grafana available at the time of module release.
+
+Default value: `undef`
+
+##### <a name="-grafana--cfg_location"></a>`cfg_location`
+
+Data type: `String`
+
+Location of the configuration file.
+
+##### <a name="-grafana--ldap_cfg"></a>`ldap_cfg`
+
+Data type: `Optional[Variant[Hash,Array[Hash],Sensitive[Hash],Sensitive[Array[Hash]]]]`
+
+
+
+Default value: `undef`
 
 ##### <a name="-grafana--container_cfg"></a>`container_cfg`
 
@@ -113,78 +128,78 @@ Data type: `Boolean`
 
 Determines whether a configuration file should be generated when using the 'docker' install method.
 If true, use the `cfg` and `cfg_location` parameters to control creation of the file.
-Defaults to false.
+
+Default value: `false`
 
 ##### <a name="-grafana--container_params"></a>`container_params`
 
 Data type: `Hash`
 
-Hash of parameters to use when creating the Docker container. For use with the 'docker' install method.
+Parameters to use when creating the Docker container. For use with the 'docker' install method.
 Refer to documentation of the `docker::run` resource in the `garethr-docker` module for details of available parameters.
-Defaults to:
 
-container_params => {
-  'image' => 'grafana/grafana:latest',
-  'ports' => '3000'
-}
+Default value: `{}`
 
 ##### <a name="-grafana--data_dir"></a>`data_dir`
 
 Data type: `String`
 
 The directory Grafana will use for storing its data.
-Defaults to '/var/lib/grafana'.
+
+Default value: `'/var/lib/grafana'`
 
 ##### <a name="-grafana--install_dir"></a>`install_dir`
 
 Data type: `String`
 
 Installation directory to be used with the 'archive' install method.
-Defaults to '/usr/share/grafana'.
+
+Default value: `'/usr/share/grafana'`
 
 ##### <a name="-grafana--install_method"></a>`install_method`
 
-Data type: `String`
+Data type: `Enum['archive', 'docker', 'package', 'repo']`
 
 Set to 'archive' to install Grafana using the tar archive.
 Set to 'docker' to install Grafana using the official Docker container.
 Set to 'package' to install Grafana using .deb or .rpm packages.
 Set to 'repo' to install Grafana using an apt or yum repository.
-Defaults to 'package'.
 
 ##### <a name="-grafana--manage_package_repo"></a>`manage_package_repo`
 
 Data type: `Boolean`
 
-If true this will setup the official grafana repositories on your host. Defaults to true.
+If true this will setup the official grafana repositories on your host.
 
 ##### <a name="-grafana--package_name"></a>`package_name`
 
 Data type: `String`
 
 The name of the package managed with the 'package' install method.
-Defaults to 'grafana'.
 
 ##### <a name="-grafana--package_source"></a>`package_source`
 
 Data type: `Optional[String]`
 
 Download location of package to be used with the 'package' install method.
-Defaults to the URL of the latest version of Grafana available at the time of module release.
+
+Default value: `undef`
 
 ##### <a name="-grafana--service_name"></a>`service_name`
 
 Data type: `String`
 
 The name of the service managed with the 'archive' and 'package' install methods.
-Defaults to 'grafana-server'.
+
+Default value: `'grafana'`
 
 ##### <a name="-grafana--version"></a>`version`
 
 Data type: `String`
 
 The version of Grafana to install and manage.
-Defaults to 'installed'
+
+Default value: `'installed'`
 
 ##### <a name="-grafana--repo_name"></a>`repo_name`
 
@@ -194,23 +209,24 @@ When using 'repo' install_method, the repo to look for packages in.
 Set to 'stable' to install only stable versions
 Set to 'beta' to install beta versions
 Set to 'custom' to install from custom repo. Use full URL
-Defaults to stable.
+
+Default value: `'stable'`
 
 ##### <a name="-grafana--repo_gpg_key_url"></a>`repo_gpg_key_url`
 
 Data type: `Stdlib::HTTPUrl`
 
 When using 'repo' install_method, the repo_gpg_key_url to look for the gpg signing key of the repo.
-Defaults to https://packages.grafana.com/gpg.key.
 
 Default value: `'https://packages.grafana.com/gpg.key'`
 
 ##### <a name="-grafana--repo_key_id"></a>`repo_key_id`
 
-Data type: `Optional[String[1]]`
+Data type: `String[1]`
 
 When using 'repo' install_method, the repo_key_id of the repo_gpg_key_url key on Debian based systems.
-Defaults to 4E40DDF6D76E284A4A6780E48C8C34C524098CB6.
+
+Default value: `'0E22EB88E39E12277A7760AE9E439B102CF3C0C6'`
 
 ##### <a name="-grafana--repo_release"></a>`repo_release`
 
@@ -219,58 +235,70 @@ Data type: `Optional[String[1]]`
 Optional value, needed on Debian based systems.
 If repo name is set to custom, used to identify the release of the repo. No default value.
 
+Default value: `undef`
+
 ##### <a name="-grafana--repo_url"></a>`repo_url`
 
 Data type: `Optional[Stdlib::HTTPUrl]`
 
 When using 'repo' install_method, the repo_url to look for packages in.
-Set to a custom string value to install from a custom repo. Defaults to https://packages.grafana.com/oss/OS_SPECIFIC_SLUG_HERE.
+Set to a custom string value to install from a custom repo.
 
 ##### <a name="-grafana--plugins"></a>`plugins`
 
 Data type: `Hash`
 
-A hash of plugins to be passed to `create_resources`, wraps around the
+Plugins to be passed to `create_resources`, wraps around the
 `grafana_plugin` resource.
+
+Default value: `{}`
 
 ##### <a name="-grafana--provisioning_dashboards"></a>`provisioning_dashboards`
 
 Data type: `Hash`
 
-Hash of dashboards to provision into grafana. grafana > v5.0.0
-required. Hash will be converted into YAML and used by grafana to
+Dashboards to provision into grafana. grafana > v5.0.0
+required. Will be converted into YAML and used by grafana to
 provision dashboards.
+
+Default value: `{}`
 
 ##### <a name="-grafana--provisioning_datasources"></a>`provisioning_datasources`
 
 Data type: `Hash`
 
-Hash of datasources to provision into grafana, grafana > v5.0.0
-required. Hash will be converted into YAML and used by granfana to
+Datasources to provision into grafana, grafana > v5.0.0
+required. Will be converted into YAML and used by granfana to
 configure datasources.
+
+Default value: `{}`
 
 ##### <a name="-grafana--provisioning_dashboards_file"></a>`provisioning_dashboards_file`
 
 Data type: `String`
 
-String with the fully qualified path to place the provisioning file
+Fully qualified path to place the provisioning file
 for dashboards, only used if provisioning_dashboards is specified.
-Defaults to '/etc/grafana/provisioning/dashboards/puppetprovisioned.yaml'
+
+Default value: `'/etc/grafana/provisioning/dashboards/puppetprovisioned.yaml'`
 
 ##### <a name="-grafana--provisioning_datasources_file"></a>`provisioning_datasources_file`
 
 Data type: `String`
 
-String with the fully qualified path to place the provisioning file
+Fully qualified path to place the provisioning file
 for datasources, only used if provisioning_datasources is specified.
-Default to '/etc/grafana/provisioning/datasources/puppetprovisioned.yaml'
+
+Default value: `'/etc/grafana/provisioning/datasources/puppetprovisioned.yaml'`
 
 ##### <a name="-grafana--create_subdirs_provisioning"></a>`create_subdirs_provisioning`
 
 Data type: `Boolean`
 
-Boolean, defaults to false. If true puppet will create any
+If true puppet will create any
 subdirectories in the given path when provisioning dashboards.
+
+Default value: `false`
 
 ##### <a name="-grafana--sysconfig_location"></a>`sysconfig_location`
 
@@ -283,39 +311,49 @@ This is only used when the install_method is 'package' or 'repo'.
 
 Data type: `Optional[Hash]`
 
-A hash of environment variables for the grafana-server service
+Environment variables for the grafana-server service
 
 Example:
   sysconfig => { 'http_proxy' => 'http://proxy.example.com/' }
+
+Default value: `undef`
 
 ##### <a name="-grafana--ldap_servers"></a>`ldap_servers`
 
 Data type: `Hash[String[1], Hash]`
 
-A hash of ldap_servers to be passed to `create_resources`, wraps around the
+Servers to be passed to `create_resources`, wraps around the
 `grafana_ldap_server` resource.
+
+Default value: `{}`
 
 ##### <a name="-grafana--ldap_group_mappings"></a>`ldap_group_mappings`
 
 Data type: `Hash[String[1], Hash]`
 
-A hash of ldap_servers to be passed to `create_resources`, wraps around the
+ldap_group_mappings
+Mappings to be passed to `create_resources`, wraps around the
 `grafana_ldap_group_mapping` resource.
+
+Default value: `{}`
 
 ##### <a name="-grafana--toml_manage_package"></a>`toml_manage_package`
 
 Data type: `Boolean`
 
 ruby-toml is required to generate the TOML-based LDAP config for Grafana.
-Defaults to true. Set to false if you manage package- or gem-install
+Set to false if you manage package- or gem-install
 somewhere else.
+
+Default value: `true`
 
 ##### <a name="-grafana--toml_package_name"></a>`toml_package_name`
 
 Data type: `String[1]`
 
 Name of the software-package providing the TOML parser library.
-Defaults to ruby-toml.
+
+Default value: `'ruby-toml'`
 
 ##### <a name="-grafana--toml_package_ensure"></a>`toml_package_ensure`
 
@@ -323,21 +361,16 @@ Data type: `String[1]`
 
 Ensure the package-resource - e.g. installed, absent, etc.
 https://puppet.com/docs/puppet/latest/types/package.html#package-attribute-ensure
-Defaults to present
+
+Default value: `'present'`
 
 ##### <a name="-grafana--toml_package_provider"></a>`toml_package_provider`
 
 Data type: `Optional[String[1]]`
 
 The package-provider used to install the TOML parser library.
-Defaults to undef, to let Puppet decide. See
-https://puppet.com/docs/puppet/latest/types/package.html#package-attribute-provider
 
-##### <a name="-grafana--cfg_location"></a>`cfg_location`
-
-Data type: `String`
-
-
+Default value: `undef`
 
 ##### <a name="-grafana--cfg"></a>`cfg`
 
@@ -345,11 +378,7 @@ Data type: `Variant[Hash,Sensitive[Hash]]`
 
 
 
-##### <a name="-grafana--ldap_cfg"></a>`ldap_cfg`
-
-Data type: `Optional[Variant[Hash,Array[Hash],Sensitive[Hash],Sensitive[Array[Hash]]]]`
-
-
+Default value: `{}`
 
 ##### <a name="-grafana--docker_image"></a>`docker_image`
 
@@ -357,11 +386,15 @@ Data type: `String`
 
 
 
+Default value: `'grafana/grafana'`
+
 ##### <a name="-grafana--docker_ports"></a>`docker_ports`
 
 Data type: `String`
 
 
+
+Default value: `'3000:3000'`
 
 ##### <a name="-grafana--rpm_iteration"></a>`rpm_iteration`
 
@@ -369,16 +402,7 @@ Data type: `String`
 
 
 
-### <a name="grafana--install"></a>`grafana::install`
-
-== Class grafana::install
-
-### <a name="grafana--service"></a>`grafana::service`
-
-== Class grafana::service
-
-This class is meant to be called from grafana
-It ensure the service is running
+Default value: `'1'`
 
 ### <a name="grafana--validator"></a>`grafana::validator`
 

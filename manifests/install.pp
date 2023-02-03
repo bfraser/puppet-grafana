@@ -1,5 +1,6 @@
-# == Class grafana::install
+# @summary Manage grafana installation
 #
+# @api private
 class grafana::install {
   $base_url = 'https://dl.grafana.com/oss/release'
   if $grafana::archive_source != undef {
