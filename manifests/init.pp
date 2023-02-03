@@ -53,7 +53,7 @@
 #   Defaults to https://packages.grafana.com/gpg.key.
 #
 # @param repo_key_id When using 'repo' install_method, the repo_key_id of the repo_gpg_key_url key on Debian based systems.
-#   Defaults to 4E40DDF6D76E284A4A6780E48C8C34C524098CB6.
+#   Defaults to 0E22EB88E39E12277A7760AE9E439B102CF3C0C6.
 #
 # @param repo_release Optional value, needed on Debian based systems.
 #   If repo name is set to custom, used to identify the release of the repo. No default value.
