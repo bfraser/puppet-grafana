@@ -95,10 +95,10 @@ The following parameters are available in the `grafana` class:
 * [`toml_package_name`](#-grafana--toml_package_name)
 * [`toml_package_ensure`](#-grafana--toml_package_ensure)
 * [`toml_package_provider`](#-grafana--toml_package_provider)
-* [`cfg`](#-grafana--cfg)
 * [`docker_image`](#-grafana--docker_image)
 * [`docker_ports`](#-grafana--docker_ports)
 * [`rpm_iteration`](#-grafana--rpm_iteration)
+* [`cfg`](#-grafana--cfg)
 
 ##### <a name="-grafana--archive_source"></a>`archive_source`
 
@@ -370,19 +370,11 @@ The package-provider used to install the TOML parser library.
 
 Default value: `undef`
 
-##### <a name="-grafana--cfg"></a>`cfg`
-
-Data type: `Variant[Hash,Sensitive[Hash]]`
-
-
-
-Default value: `{}`
-
 ##### <a name="-grafana--docker_image"></a>`docker_image`
 
 Data type: `String`
 
-
+name of the docker image that provides grafana
 
 Default value: `'grafana/grafana'`
 
@@ -390,7 +382,7 @@ Default value: `'grafana/grafana'`
 
 Data type: `String`
 
-
+ports docker should expose
 
 Default value: `'3000:3000'`
 
@@ -398,9 +390,17 @@ Default value: `'3000:3000'`
 
 Data type: `String`
 
-
+explicit Iteration / epoch for the rpm
 
 Default value: `'1'`
+
+##### <a name="-grafana--cfg"></a>`cfg`
+
+Data type: `Variant[Hash,Sensitive[Hash]]`
+
+The whole grafana configuration
+
+Default value: `{}`
 
 ### <a name="grafana--validator"></a>`grafana::validator`
 

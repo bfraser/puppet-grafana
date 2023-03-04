@@ -8,3 +8,4 @@ spec/spec_helper_acceptance.rb:
 .puppet-lint.rc:
   enabled_lint_checks:
     - parameter_types
+    - parameter_documentation
