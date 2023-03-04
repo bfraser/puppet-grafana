@@ -191,8 +191,6 @@ Data type: `String`
 
 The name of the service managed with the 'archive' and 'package' install methods.
 
-Default value: `'grafana'`
-
 ##### <a name="-grafana--version"></a>`version`
 
 Data type: `String`
