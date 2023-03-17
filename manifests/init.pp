@@ -124,6 +124,18 @@
 # @param toml_package_provider
 #   The package-provider used to install the TOML parser library.
 #
+# @param docker_image
+#   name of the docker image that provides grafana
+#
+# @param docker_ports
+#   ports docker should expose
+#
+# @param rpm_iteration
+#   explicit Iteration / epoch for the rpm
+#
+# @param cfg
+#   The whole grafana configuration
+#
 # @example Using the Class
 #  class { '::grafana':
 #    install_method  => 'docker',
