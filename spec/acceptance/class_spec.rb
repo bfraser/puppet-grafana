@@ -125,10 +125,11 @@ supported_versions.each do |grafana_version|
 end
 
 describe 'grafana class with latest grafana version' do
-  context 'update to beta release' do
+  context 'update to beta release', unless: fact('os.family') == 'Debian' do
     it 'works idempotently with no errors' do
       case fact('os.family')
       when 'Debian'
+        # As of 2023-03-22, Debian beta packages are non functinal and disabled
         pp = <<-EOS
         class { 'grafana':
           version   => 'latest',
