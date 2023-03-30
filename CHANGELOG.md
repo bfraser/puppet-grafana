@@ -4,7 +4,31 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v11.1.0](https://github.com/voxpupuli/puppet-grafana/tree/v11.1.0) (2022-11-01)
+## [v11.2.0](https://github.com/voxpupuli/puppet-grafana/tree/v11.2.0) (2023-03-30)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v11.1.0...v11.2.0)
+
+**Implemented enhancements:**
+
+- Add AlmaLinux 8 support [\#312](https://github.com/voxpupuli/puppet-grafana/pull/312) ([bastelfreak](https://github.com/bastelfreak))
+- Add Rocky 8 support [\#311](https://github.com/voxpupuli/puppet-grafana/pull/311) ([bastelfreak](https://github.com/bastelfreak))
+
+**Fixed bugs:**
+
+- Fix default PGP key [\#308](https://github.com/voxpupuli/puppet-grafana/pull/308) ([smortex](https://github.com/smortex))
+
+**Closed issues:**
+
+- repository setup: new GPG repository keys [\#307](https://github.com/voxpupuli/puppet-grafana/issues/307)
+- Failure to install Grafana using module on fresh install of Debian 11 [\#278](https://github.com/voxpupuli/puppet-grafana/issues/278)
+
+**Merged pull requests:**
+
+- Disable beta packages tests on Debian [\#316](https://github.com/voxpupuli/puppet-grafana/pull/316) ([smortex](https://github.com/smortex))
+- Update repo urls [\#314](https://github.com/voxpupuli/puppet-grafana/pull/314) ([promasu](https://github.com/promasu))
+- Move static default settings from Hiera to Puppet [\#309](https://github.com/voxpupuli/puppet-grafana/pull/309) ([smortex](https://github.com/smortex))
+
+## [v11.1.0](https://github.com/voxpupuli/puppet-grafana/tree/v11.1.0) (2022-11-02)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v11.0.0...v11.1.0)
 
