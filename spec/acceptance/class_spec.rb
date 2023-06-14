@@ -8,7 +8,7 @@ supported_versions.each do |grafana_version|
     shell('mkdir -p /etc/puppetlabs/code/environments/production/modules/my_custom_module/files/dashboards')
     context 'default parameters' do
       before do
-        install_module_from_forge('puppetlabs/apt', '>= 7.5.0 < 9.0.0')
+        install_module_from_forge('puppetlabs/apt', '>= 9.1.0 < 10.0.0')
       end
       # Using puppet_apply as a helper
 
