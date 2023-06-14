@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v12.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v12.0.0) (2023-06-14)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v11.2.0...v12.0.0)
+
+**Breaking changes:**
+
+- puppet/archive: Allow 7.x; puppetlabs/stdlib: Require 9.x [\#322](https://github.com/voxpupuli/puppet-grafana/pull/322) ([bastelfreak](https://github.com/bastelfreak))
+- Drop Puppet 6 support [\#320](https://github.com/voxpupuli/puppet-grafana/pull/320) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v11.2.0](https://github.com/voxpupuli/puppet-grafana/tree/v11.2.0) (2023-03-30)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v11.1.0...v11.2.0)
