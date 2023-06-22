@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v13.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v13.0.0) (2023-06-22)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v12.0.0...v13.0.0)
+
+**Breaking changes:**
+
+- puppetlabs/stdlib: Require 9.x [\#325](https://github.com/voxpupuli/puppet-grafana/pull/325) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Add Ubuntu 22.04 support [\#329](https://github.com/voxpupuli/puppet-grafana/pull/329) ([bastelfreak](https://github.com/bastelfreak))
+- Add EL9 support [\#328](https://github.com/voxpupuli/puppet-grafana/pull/328) ([bastelfreak](https://github.com/bastelfreak))
+
+**Merged pull requests:**
+
+- cleanup .fixtures.yml [\#326](https://github.com/voxpupuli/puppet-grafana/pull/326) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v12.0.0](https://github.com/voxpupuli/puppet-grafana/tree/v12.0.0) (2023-06-14)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-grafana/compare/v11.2.0...v12.0.0)
