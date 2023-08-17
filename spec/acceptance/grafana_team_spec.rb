@@ -137,7 +137,7 @@ supported_versions.each do |grafana_version|
       end
 
       it 'creates team on organization' do
-        shell('curl --user admin:admin -X POST http://localhost:3000/api/user/using/2 && '\
+        shell('curl --user admin:admin -X POST http://localhost:3000/api/user/using/2 && ' \
               'curl --user admin:admin http://localhost:3000/api/teams/search?name=example-team-on-org') do |f|
           expect(f.stdout).to match(%r{example-team-on-org})
         end
@@ -198,14 +198,14 @@ supported_versions.each do |grafana_version|
       end
 
       it 'has no example-team' do
-        shell('curl --user admin:admin -X POST http://localhost:3000/api/user/using/1 && '\
+        shell('curl --user admin:admin -X POST http://localhost:3000/api/user/using/1 && ' \
               'curl --user admin:admin http://localhost:3000/api/teams/search') do |f|
           expect(f.stdout).not_to match(%r{example-team})
         end
       end
 
       it 'has no example-team-on-org' do
-        shell('curl --user admin:admin -X POST http://localhost:3000/api/user/using/2 && '\
+        shell('curl --user admin:admin -X POST http://localhost:3000/api/user/using/2 && ' \
               'curl --user admin:admin http://localhost:3000/api/teams') do |f|
           expect(f.stdout).not_to match(%r{example-team-on-org})
         end

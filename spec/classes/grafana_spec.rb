@@ -279,28 +279,28 @@ describe 'grafana' do
             }
           end
 
-          expected = "# This file is managed by Puppet, any changes will be overwritten\n\n"\
-                     "app_mode = production\n\n"\
-                     "[section]\n"\
-                     "boolean = false\n"\
-                     "empty = \n"\
-                     "number = 8080\n"\
+          expected = "# This file is managed by Puppet, any changes will be overwritten\n\n" \
+                     "app_mode = production\n\n" \
+                     "[section]\n" \
+                     "boolean = false\n" \
+                     "empty = \n" \
+                     "number = 8080\n" \
                      "string = production\n"
 
           it { is_expected.to contain_file('grafana.ini').with_content(expected) }
 
-          ldap_expected = "\n[[servers]]\n"\
-                          "host = \"server1\"\n"\
-                          "search_base_dns = [\"dc=domain1,dc=com\"]\n"\
-                          "search_filter = \"(sAMAccountName=%s)\"\n"\
-                          "use_ssl = true\n"\
-                          "\n"\
-                          "[servers.attributes]\n"\
-                          "email = \"mail\"\n"\
-                          "member_of = \"memberOf\"\n"\
-                          "name = \"givenName\"\n"\
-                          "surname = \"sn\"\n"\
-                          "username = \"sAMAccountName\"\n"\
+          ldap_expected = "\n[[servers]]\n" \
+                          "host = \"server1\"\n" \
+                          "search_base_dns = [\"dc=domain1,dc=com\"]\n" \
+                          "search_filter = \"(sAMAccountName=%s)\"\n" \
+                          "use_ssl = true\n" \
+                          "\n" \
+                          "[servers.attributes]\n" \
+                          "email = \"mail\"\n" \
+                          "member_of = \"memberOf\"\n" \
+                          "name = \"givenName\"\n" \
+                          "surname = \"sn\"\n" \
+                          "username = \"sAMAccountName\"\n" \
                           "\n"
 
           it { is_expected.to contain_file('/etc/grafana/ldap.toml').with_content(ldap_expected) }
@@ -381,31 +381,31 @@ describe 'grafana' do
             }
           end
 
-          ldap_expected = "\n[[servers]]\n"\
-                          "host = \"server1a server1b\"\n"\
-                          "search_base_dns = [\"dc=domain1,dc=com\"]\n"\
-                          "search_filter = \"(sAMAccountName=%s)\"\n"\
-                          "use_ssl = true\n"\
-                          "\n"\
-                          "[servers.attributes]\n"\
-                          "email = \"mail\"\n"\
-                          "member_of = \"memberOf\"\n"\
-                          "name = \"givenName\"\n"\
-                          "surname = \"sn\"\n"\
-                          "username = \"sAMAccountName\"\n"\
-                          "\n"\
-                          "\n[[servers]]\n"\
-                          "host = \"server2a server2b\"\n"\
-                          "search_base_dns = [\"dc=domain2,dc=com\"]\n"\
-                          "search_filter = \"(sAMAccountName=%s)\"\n"\
-                          "use_ssl = true\n"\
-                          "\n"\
-                          "[servers.attributes]\n"\
-                          "email = \"mail\"\n"\
-                          "member_of = \"memberOf\"\n"\
-                          "name = \"givenName\"\n"\
-                          "surname = \"sn\"\n"\
-                          "username = \"sAMAccountName\"\n"\
+          ldap_expected = "\n[[servers]]\n" \
+                          "host = \"server1a server1b\"\n" \
+                          "search_base_dns = [\"dc=domain1,dc=com\"]\n" \
+                          "search_filter = \"(sAMAccountName=%s)\"\n" \
+                          "use_ssl = true\n" \
+                          "\n" \
+                          "[servers.attributes]\n" \
+                          "email = \"mail\"\n" \
+                          "member_of = \"memberOf\"\n" \
+                          "name = \"givenName\"\n" \
+                          "surname = \"sn\"\n" \
+                          "username = \"sAMAccountName\"\n" \
+                          "\n" \
+                          "\n[[servers]]\n" \
+                          "host = \"server2a server2b\"\n" \
+                          "search_base_dns = [\"dc=domain2,dc=com\"]\n" \
+                          "search_filter = \"(sAMAccountName=%s)\"\n" \
+                          "use_ssl = true\n" \
+                          "\n" \
+                          "[servers.attributes]\n" \
+                          "email = \"mail\"\n" \
+                          "member_of = \"memberOf\"\n" \
+                          "name = \"givenName\"\n" \
+                          "surname = \"sn\"\n" \
+                          "username = \"sAMAccountName\"\n" \
                           "\n"
 
           it { is_expected.to contain_file('/etc/grafana/ldap.toml').with_content(ldap_expected) }
