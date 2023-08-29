@@ -224,7 +224,7 @@ Data type: `String[1]`
 
 When using 'repo' install_method, the repo_key_id of the repo_gpg_key_url key on Debian based systems.
 
-Default value: `'0E22EB88E39E12277A7760AE9E439B102CF3C0C6'`
+Default value: `'B53AE77BADB630A683046005963FA27710458545'`
 
 ##### <a name="-grafana--repo_release"></a>`repo_release`
 
