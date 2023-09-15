@@ -160,7 +160,7 @@ class grafana (
   String $install_dir = '/usr/share/grafana',
   Optional[String] $package_source = undef,
   Enum['stable', 'beta', 'custom'] $repo_name = 'stable',
-  String[1] $repo_key_id = '0E22EB88E39E12277A7760AE9E439B102CF3C0C6',
+  String[1] $repo_key_id = 'B53AE77BADB630A683046005963FA27710458545',
   Optional[String[1]] $repo_release = undef,
   String $rpm_iteration = '1',
   String $version = 'installed',
