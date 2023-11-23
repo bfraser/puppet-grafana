@@ -137,7 +137,7 @@
 #   The whole grafana configuration
 #
 # @example Using the Class
-#  class { '::grafana':
+#  class { 'grafana':
 #    install_method  => 'docker',
 #  }
 #
