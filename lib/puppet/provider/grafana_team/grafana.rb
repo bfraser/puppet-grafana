@@ -77,7 +77,7 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
   def map_preferences(preferences)
     {
       theme: preferences['theme'],
-      home_dashboard: preferences['homeDashboardId'],
+      home_dashboard: preferences['homeDashboardUID'],
       timezone: preferences['timezone']
     }
   end
@@ -97,7 +97,7 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
     dash = get_dashboard(resource[:home_dashboard], resource[:home_dashboard_folder])
     request_data = {
       theme: resource[:theme],
-      homeDashboardId: dash[:id],
+      homeDashboardUID: dash[:uid],
       timezone: resource[:timezone]
     }
     ['PUT', endpoint, request_data]
@@ -123,7 +123,7 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
 
   def home_dashboard_folder
     preferences unless @preferences
-    dash = get_dashboard(@preferences[:home_dashboard])
+    dash = get_dashboard(@preferences[:home_dashboard], nil, true)
     return dash[:folder_name] if dash
 
     nil
@@ -136,7 +136,7 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
 
   def home_dashboard
     preferences unless @preferences
-    dash = get_dashboard(@preferences[:home_dashboard])
+    dash = get_dashboard(@preferences[:home_dashboard], nil, true)
     return dash[:name] if dash
 
     nil
@@ -147,10 +147,10 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
     save_preferences
   end
 
-  def setup_search_path(ident, folder_id = nil)
-    query = if ident.is_a?(Numeric) || ident.match(%r{/^[0-9]*$/})
+  def setup_search_path(ident, folder_id = nil, isUID = false)
+    query = if isUID
               {
-                dashboardIds: ident,
+                dashboardUIDs: ident,
                 type: 'dash-db'
               }
             else
@@ -163,14 +163,14 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
     query
   end
 
-  def get_dashboard(ident, folder = nil)
+  def get_dashboard(ident, folder = nil, isUID = false)
     set_current_organization
-    return { id: 0, name: 'Default' } if ident == 0 # rubocop:disable Style/NumericPredicate
+    return { id: 0, name: 'Default' } if ident == 0 || ident.nil? # rubocop:disable Style/NumericPredicate
 
     folder_id = nil
     folder_id = get_dashboard_folder_id(folder) unless folder.nil?
 
-    search_path = setup_search_path(ident, folder_id)
+    search_path = setup_search_path(ident, folder_id, isUID)
     response = send_request('GET', format('%s/search', resource[:grafana_api_path]), nil, search_path)
     raise_on_error(response.code, format('Fail to retrieve dashboars (HTTP response: %s/%s)', response.code, response.body))
 
