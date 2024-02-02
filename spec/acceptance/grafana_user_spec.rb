@@ -135,11 +135,11 @@ supported_versions.each do |grafana_version|
         it_behaves_like 'an idempotent resource' do
           let(:manifest) do
             <<-PUPPET
-            grafana_user { 'admin1':
+            grafana_user { 'user1':
               ensure           => absent,
               grafana_url      => 'http://localhost:3000',
-              grafana_user     => 'user1',
-              grafana_password => 'newpassword',
+              grafana_user     => 'admin1',
+              grafana_password => 'Admin5ecret',
             }
             PUPPET
           end

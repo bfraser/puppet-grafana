@@ -205,6 +205,7 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
 
     {
       id: dashboard.first['id'],
+      uid: dashboard.first['uid'],
       name: dashboard.first['title'],
       folder_uid: dashboard.first['folderUid'],
       folder_name: dashboard.first['folderTitle'],
