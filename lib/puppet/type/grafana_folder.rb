@@ -52,8 +52,8 @@ Puppet::Type.newtype(:grafana_folder) do
       # Doing sort_by on array of values from each Hash was producing
       # inconsistent results where Puppet would think changes were necessary when
       # not actually necessary
-      is_m = is.map { |p| "#{p['role']}-#{p['teamId']}-#{p['permission']}" }
-      should_m = should.map { |p| "#{p['role']}-#{p['teamId']}-#{p['permission']}" }
+      is_m = is.map { |p| p.keys.sort.map { |k| p[k] }.join('-') }
+      should_m = should.map { |p| p.keys.sort.map { |k| p[k] }.join('-') }
       is_m.sort == should_m.sort
     end
   end
