@@ -49,7 +49,7 @@ Puppet::Type.newtype(:grafana_folder) do
   newproperty(:permissions, array_matching: :all) do
     desc 'The permissions of the folder'
     def insync?(is)
-      is.sort_by { |k| k['permission'] } == should.sort_by { |k| k['permission'] }
+      is.sort_by { |k| [k['permission'], k['role'], k['teamId']] } == should.sort_by { |k| [k['permission'], k['role'], k['teamId']] }
     end
   end
 

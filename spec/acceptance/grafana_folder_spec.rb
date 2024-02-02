@@ -47,6 +47,7 @@ supported_versions.each do |grafana_version|
           grafana_password => 'admin',
           permissions      => [
             {'permission' => 1, 'role' => 'Editor'},
+            {'permission' => 1, 'role' => 'Admin'},
           ],
         }
         EOS
@@ -102,6 +103,7 @@ supported_versions.each do |grafana_version|
         grafana_password => 'admin',
         permissions      => [
           {'permission' => 1, 'role' => 'Viewer'},
+          {'permission' => 1, 'role' => 'Admin'},
         ],
       }
         EOS
