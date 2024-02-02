@@ -77,7 +77,7 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
   def map_preferences(preferences)
     {
       theme: preferences['theme'],
-      home_dashboard: preferences['homeDashboardUID'],
+      home_dashboard: preferences['homeDashboardId'] || preferences['homeDashboardUID'],
       timezone: preferences['timezone']
     }
   end
@@ -94,12 +94,16 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
 
   def setup_save_preferences_data
     endpoint = format('%s/teams/%s/preferences', resource[:grafana_api_path], @team[:id])
-    dash = get_dashboard(resource[:home_dashboard], resource[:home_dashboard_folder])
+    dash = get_dashboard(resource[:home_dashboard], resource[:home_dashboard_folder], true)
     request_data = {
       theme: resource[:theme],
-      homeDashboardUID: dash[:uid],
       timezone: resource[:timezone]
     }
+    if major_version >= 10
+      request_data[:homeDashboardUID] = dash[:uid]
+    else
+      request_data[:homeDashboardId] = dash[:id]
+    end
     ['PUT', endpoint, request_data]
   end
 
@@ -123,7 +127,7 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
 
   def home_dashboard_folder
     preferences unless @preferences
-    dash = get_dashboard(@preferences[:home_dashboard], nil, true)
+    dash = get_dashboard(@preferences[:home_dashboard], nil)
     return dash[:folder_name] if dash
 
     nil
@@ -136,7 +140,7 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
 
   def home_dashboard
     preferences unless @preferences
-    dash = get_dashboard(@preferences[:home_dashboard], nil, true)
+    dash = get_dashboard(@preferences[:home_dashboard], nil)
     return dash[:name] if dash
 
     nil
@@ -147,15 +151,33 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
     save_preferences
   end
 
-  def setup_search_path(ident, folder_id = nil, isUID = false)
-    query = if isUID
+  def version
+    return if @version
+
+    response = send_request('GET', format('%s/health', resource[:grafana_api_path]))
+    data = parse_response(response.body)
+    @version = data['version']
+  end
+
+  def major_version
+    version unless @version
+    @version.split('.').first.to_i
+  end
+
+  def setup_search_path(ident, folder_id = nil, search = false)
+    query = if search
               {
-                dashboardUIDs: ident,
+                query: ident,
+                type: 'dash-db'
+              }
+            elsif ident.is_a?(Numeric) || ident.match(%r{/^[0-9]*$/})
+              {
+                dashboardIds: ident,
                 type: 'dash-db'
               }
             else
               {
-                query: ident,
+                dashboardUIDs: ident,
                 type: 'dash-db'
               }
             end
@@ -163,14 +185,14 @@ Puppet::Type.type(:grafana_team).provide(:grafana, parent: Puppet::Provider::Gra
     query
   end
 
-  def get_dashboard(ident, folder = nil, isUID = false)
+  def get_dashboard(ident, folder = nil, search = false)
     set_current_organization
     return { id: 0, name: 'Default' } if ident == 0 || ident.nil? # rubocop:disable Style/NumericPredicate
 
     folder_id = nil
     folder_id = get_dashboard_folder_id(folder) unless folder.nil?
 
-    search_path = setup_search_path(ident, folder_id, isUID)
+    search_path = setup_search_path(ident, folder_id, search)
     response = send_request('GET', format('%s/search', resource[:grafana_api_path]), nil, search_path)
     raise_on_error(response.code, format('Fail to retrieve dashboars (HTTP response: %s/%s)', response.code, response.body))
 
