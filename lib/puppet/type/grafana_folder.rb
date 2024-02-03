@@ -49,7 +49,12 @@ Puppet::Type.newtype(:grafana_folder) do
   newproperty(:permissions, array_matching: :all) do
     desc 'The permissions of the folder'
     def insync?(is)
-      is.sort_by { |k| k['permission'] } == should.sort_by { |k| k['permission'] }
+      # Doing sort_by on array of values from each Hash was producing
+      # inconsistent results where Puppet would think changes were necessary when
+      # not actually necessary
+      is_m = is.map { |p| p.keys.sort.map { |k| p[k] }.join('-') }
+      should_m = should.map { |p| p.keys.sort.map { |k| p[k] }.join('-') }
+      is_m.sort == should_m.sort
     end
   end
 
