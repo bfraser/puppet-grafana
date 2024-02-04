@@ -54,7 +54,7 @@ Installs and configures Grafana.
 ##### Using the Class
 
 ```puppet
-class { '::grafana':
+class { 'grafana':
   install_method  => 'docker',
 }
 ```
