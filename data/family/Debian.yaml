@@ -1,0 +1,5 @@
+---
+grafana::install_method: 'repo'
+grafana::repo_url: 'https://apt.grafana.com'
+grafana::repo_key_id: 'B53AE77BADB630A683046005963FA27710458545'
+grafana::sysconfig_location: '/etc/default/grafana-server'

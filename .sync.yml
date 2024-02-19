@@ -1,0 +1,9 @@
+---
+Gemfile:
+  optional:
+    ':test':
+      - gem: 'toml'
+.puppet-lint.rc:
+  enabled_lint_checks:
+    - parameter_types
+    - parameter_documentation

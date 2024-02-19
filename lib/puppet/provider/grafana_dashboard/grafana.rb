@@ -1,109 +1,164 @@
+# frozen_string_literal: true
+
 #    Copyright 2015 Mirantis, Inc.
 #
-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
-#    not use this file except in compliance with the License. You may obtain
-#    a copy of the License at
-#
-#         http://www.apache.org/licenses/LICENSE-2.0
-#
-#    Unless required by applicable law or agreed to in writing, software
-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-#    License for the specific language governing permissions and limitations
-#    under the License.
 require 'json'
 
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'grafana'))
 
-# Note: this class doesn't implement the self.instances and self.prefetch
+# NOTE: this class doesn't implement the self.instances and self.prefetch
 # methods because the Grafana API doesn't allow to retrieve the dashboards and
 # all their properties in a single call.
-Puppet::Type.type(:grafana_dashboard).provide(:grafana, :parent => Puppet::Provider::Grafana) do
-    desc "Support for Grafana dashboards stored into Grafana"
+Puppet::Type.type(:grafana_dashboard).provide(:grafana, parent: Puppet::Provider::Grafana) do
+  desc 'Support for Grafana dashboards stored into Grafana'
 
-    defaultfor :kernel => 'Linux'
+  defaultfor kernel: 'Linux'
 
-    # Return the list of dashboards
-    def dashboards
-        response = self.send_request('GET', '/api/search', nil, {:q => '', :starred => false})
-        if response.code != '200'
-            fail("Fail to retrieve the dashboards (HTTP response: %s/%s)" %
-                 [response.code, response.body])
-        end
+  def organization
+    resource[:organization]
+  end
 
-        begin
-            JSON.parse(response.body)
-        rescue JSON::ParserError
-            fail("Fail to parse dashboards (HTTP response: %s/%s)" %
-                 [response_code, response.body])
-        end
-    end
+  def grafana_api_path
+    resource[:grafana_api_path]
+  end
 
-    # Return the dashboard matching with the resource's title
-    def find_dashboard
-        if not self.dashboards.find{ |x| x['title'] == resource[:title] }
-            return
-        end
+  def fetch_organizations
+    response = send_request('GET', format('%s/orgs', resource[:grafana_api_path]))
+    raise format('Fail to retrieve organizations (HTTP response: %s/%s)', response.code, response.body) if response.code != '200'
 
-        response = self.send_request('GET', '/api/dashboards/db/%s' % self.slug)
-        if response.code != '200'
-            fail("Fail to retrieve dashboard '%s' (HTTP response: %s/%s)" %
-                 [resource[:title], response.code, response.body])
-        end
+    begin
+      fetch_organizations = JSON.parse(response.body)
 
-        begin
-            # Cache the dashboard's content
-            @dashboard = JSON.parse(response.body)["dashboard"]
-        rescue JSON::ParserError
-            fail("Fail to parse dashboard '%s': %s" %
-                 [resource[:title], response.body])
-        end
-    end
+      fetch_organizations.map { |x| x['id'] }.map do |id|
+        response = send_request 'GET', format('%s/orgs/%s', resource[:grafana_api_path], id)
+        raise format('Failed to retrieve organization %d (HTTP response: %s/%s)', id, response.code, response.body) if response.code != '200'
 
-    def save_dashboard(dashboard)
-        data = {
-            :dashboard => dashboard.merge({
-                'title' => resource[:title],
-                'id' => @dashboard ? @dashboard['id'] : nil,
-                'version' => @dashboard ? @dashboard['version'] + 1 : 0
-            }),
-            :overwrite => @dashboard != nil
+        fetch_organization = JSON.parse(response.body)
+
+        {
+          id: fetch_organization['id'],
+          name: fetch_organization['name']
         }
-
-        response = self.send_request('POST', '/api/dashboards/db', data)
-        if response.code != '200'
-            fail("Fail to save dashboard '%s' (HTTP response: %s/%s)" %
-                 [resource[:name], response.code, response.body])
-        end
+      end
+    rescue JSON::ParserError
+      raise format('Failed to parse response: %s', response.body)
     end
+  end
 
-    def slug
-        resource[:title].downcase.gsub(/[^\w\- ]/, '').gsub(/ +/, '-')
+  def fetch_organization
+    @fetch_organization ||= if resource[:organization].is_a?(Numeric) || resource[:organization].match(%r{^[0-9]*$})
+                              fetch_organizations.find { |x| x[:id] == resource[:organization] }
+                            else
+                              fetch_organizations.find { |x| x[:name] == resource[:organization] }
+                            end
+    @fetch_organization
+  end
+
+  def folders
+    response = send_request('GET', format('%s/folders', resource[:grafana_api_path]))
+    raise format('Fail to retrieve the folders (HTTP response: %s/%s)', response.code, response.body) if response.code != '200'
+
+    begin
+      @folders = JSON.parse(response.body)
+    rescue JSON::ParserError
+      raise format('Fail to parse folders (HTTP response: %s/%s)', response.code, response.body)
     end
+  end
 
-    def content
-        @dashboard
+  def find_folder
+    folders unless @folders
+
+    begin
+      @folder = @folders.find { |folder| folder['title'] == resource[:folder] }
+      raise format('Folder not found: %s', resource[:folder]) unless @folder
+    rescue JSON::ParserError
+      raise format('Fail to parse folder %s: %s', resource[:folder], response.body)
     end
+  end
 
-    def content=(value)
-        self.save_dashboard(value)
+  # Return the list of dashboards
+  def dashboards
+    # change organizations
+    response = send_request 'POST', format('%s/user/using/%s', resource[:grafana_api_path], fetch_organization[:id])
+    raise format('Failed to switch to org %s (HTTP response: %s/%s)', fetch_organization[:id], response.code, response.body) unless response.code == '200'
+
+    response = send_request('GET', format('%s/search', resource[:grafana_api_path]), nil, q: '', starred: false)
+    raise format('Fail to retrieve the dashboards (HTTP response: %s/%s)', response.code, response.body) if response.code != '200'
+
+    begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError
+      raise format('Fail to parse dashboards (HTTP response: %s/%s)', response.code, response.body)
     end
+  end
 
-    def create
-        self.save_dashboard(resource[:content])
+  # Return the dashboard matching with the resource's title
+  def find_dashboard
+    db = dashboards.find { |x| x['title'] == resource[:title] }
+    return if db.nil?
+
+    response = send_request('GET', format('%s/dashboards/uid/%s', resource[:grafana_api_path], db['uid']))
+
+    raise format('Fail to retrieve dashboard %s by uid %s (HTTP response: %s/%s)', resource[:title], db['uid'], response.code, response.body) if response.code != '200'
+
+    begin
+      # Cache the dashboard's content
+      @dashboard = JSON.parse(response.body)['dashboard']
+    rescue JSON::ParserError
+      raise format('Fail to parse dashboard %s: %s', resource[:title], response.body)
     end
+  end
 
-    def destroy
-        response = self.send_request('DELETE', '/api/dashboards/db/%s' % self.slug)
+  def save_dashboard(dashboard)
+    find_folder if resource[:folder]
 
-        if response.code != '200'
-            raise Puppet::Error, "Failed to delete dashboard '%s' (HTTP "\
-                "response: %s/'%s')" % [resource[:title], response.code,
-                response.body]
-        end
-    end
+    # change organizations
+    response = send_request 'POST', format('%s/user/using/%s', resource[:grafana_api_path], fetch_organization[:id])
+    raise format('Failed to switch to org %s (HTTP response: %s/%s)', fetch_organization[:id], response.code, response.body) unless response.code == '200'
 
-    def exists?
-        self.find_dashboard()
-    end
+    data = {
+      dashboard: dashboard.merge('title' => resource[:title],
+                                 'id' => @dashboard ? @dashboard['id'] : nil,
+                                 'uid' => @dashboard ? @dashboard['uid'] : slug,
+                                 'version' => @dashboard ? @dashboard['version'] + 1 : 0),
+      folderId: @folder ? @folder['id'] : nil,
+      overwrite: !@dashboard.nil?
+    }
+
+    response = send_request('POST', format('%s/dashboards/db', resource[:grafana_api_path]), data)
+    return unless (response.code != '200') && (response.code != '412')
+
+    raise format('Fail to save dashboard %s (HTTP response: %s/%s)', resource[:name], response.code, response.body)
+  end
+
+  def slug
+    resource[:title].downcase.gsub(%r{[ +]+}, '-').gsub(%r{[^\w\- ]}, '')
+  end
+
+  def content
+    @dashboard.reject { |k, _| k =~ %r{^id|uid|version|title$} }
+  end
+
+  def content=(value)
+    save_dashboard(value)
+  end
+
+  def create
+    save_dashboard(resource[:content])
+  end
+
+  def destroy
+    db = dashboards.find { |x| x['title'] == resource[:title] }
+    raise Puppet::Error, format('Failed to delete dashboard %s, dashboard not found', resource[:title]) if db.nil?
+
+    response = send_request('DELETE', format('%s/dashboards/uid/%s', resource[:grafana_api_path], db['uid']))
+
+    return unless response.code != '200'
+
+    raise Puppet::Error, format('Failed to delete dashboard %s (HTTP response: %s/%s)', resource[:title], response.code, response.body)
+  end
+
+  def exists?
+    find_dashboard
+  end
 end

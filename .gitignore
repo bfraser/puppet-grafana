@@ -1,15 +1,23 @@
+# Managed by modulesync - DO NOT EDIT
+# https://voxpupuli.org/docs/updating-files-managed-with-modulesync/
+
+/pkg/
+/Gemfile.lock
+/Gemfile.local
+/vendor/
+/.vendor/
+/spec/fixtures/manifests/
+/spec/fixtures/modules/
+/.vagrant/
+/.bundle/
+/.ruby-version
+/coverage/
+/log/
+/.idea/
+/.dependencies/
+/.librarian/
+/Puppetfile.lock
+*.iml
 .*.sw?
-pkg
-spec/fixtures
-.rspec_system
-.vagrant
-log/
-
-# for a library or gem, you might want to ignore these files since the code is
-# intended to run in multiple environments; otherwise, check them in:
-Gemfile.lock
-.ruby-version
-.ruby-gemset
-
-# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
-.rvmrc
+/.yardoc/
+/Guardfile

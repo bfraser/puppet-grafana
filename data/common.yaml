@@ -1,0 +1,8 @@
+---
+grafana::cfg_location: '/etc/grafana/grafana.ini'
+grafana::install_method: 'package'
+grafana::manage_package_repo: true
+grafana::package_name: 'grafana'
+grafana::repo_url: ~
+grafana::service_name: 'grafana-server'
+grafana::sysconfig_location: ~
